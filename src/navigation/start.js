@@ -5,13 +5,18 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "../containers/home";
 import AccountScreen from "../containers/account";
 
+
+
 const Tab=createBottomTabNavigator();
 
 export default function StartScreen() {
     return (
       <>
         <NavigationContainer>
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{
+                          tabBarStyle:{height:35},
+                          headerStyle:{height:60},
+                          }}>
             <Tab.Screen name="Home" component={HomeScreen} options={{tabBarLabelStyle:{fontSize:20,fontWeight:"bold"}}}/>
             <Tab.Screen name="Account" component={AccountScreen} options={{tabBarLabelStyle:{fontSize:20,fontWeight:"bold"}}}/>
         </Tab.Navigator>
@@ -25,3 +30,4 @@ const styles = StyleSheet.create({
          
     },
 });
+
