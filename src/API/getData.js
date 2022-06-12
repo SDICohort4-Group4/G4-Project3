@@ -10,8 +10,9 @@ export default async function getData(props){
     const response = await API.get(props.dataType);
 
     if (response.status===200){
-        const result=JSON.stringify(response.data.data);
-        props.getItemData(result);
+        // const result=JSON.stringify(response.data);
+        const result=response.data
+        // props.getItemData(result);
         console.log("GetData function:\n",result);
     }
     

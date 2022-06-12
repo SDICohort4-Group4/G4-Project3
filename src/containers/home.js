@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import {useEffect, useState} from "react";
 import GetData from "../API/getData";
 
@@ -9,7 +9,7 @@ export default function AccountScreen() {
 
     useEffect(()=>{
       
-        const dataType="/item/brand/intel"
+        const dataType="/item/sku/filletofish"
         GetData({dataType,getItemData});
     
     },[]);
@@ -21,8 +21,11 @@ export default function AccountScreen() {
     return(
         <>
         <View style={styles.container}>
-            <Text>Test Screen</Text>
+         
             <Text>{itemData}</Text>
+            {/* {console.log("itemData:",itemData)} */}
+            {/* {console.log("picture URL:",itemData[0])} */}
+            {/* <Image style={styles.image1} source={{uri:itemData.itemPic1}}></Image> */}
           
         </View>
         </>
@@ -33,5 +36,9 @@ const styles = StyleSheet.create({
     container: {
         alignSelf:"center",       
   
+    },
+    image1:{
+        width:"50%",
+        height:150,
     }
   });
