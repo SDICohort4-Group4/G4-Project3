@@ -1,14 +1,25 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
+import noImage from "../../assets/photo-soon.jpg";
+
 
 export default function DisplayItem(props){
     return(
     <View style={styles.itemContainer}>
-        <Image style={styles.image1} source={{uri:(props.itemData[0].itemPic1)}}></Image>
+        {props.itemData.itemPic1? 
+            <Image style={styles.image1} source={{uri:(props.itemData.itemPic1)}}></Image>
+        :
+            <Image style={styles.image1} source={noImage}></Image>
+        }
+        
         <View style={styles.itemInfoContainer}>
-            <Text style={styles.itemText1}>{props.itemData[0].itemName}</Text>
-            <Text style={styles.itemText2}>Price: ${props.itemData[0].itemPrice}</Text>
+            <Text style={styles.itemText1}>{props.itemData.itemName}</Text>
+            <Text style={styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
+            {props.itemData.Qty>0? 
+                <Text style={styles.itemTextBlue}>In Stock Buy Now!</Text>
+            :
+                <Text style={styles.itemTextRed}>Oops, Sorry No Stock!</Text>
+            }
             
-            <Text style={styles.itemText3}>{"\n"}In Stock Buy Now!</Text>
         </View>
     </View>
     )
@@ -27,17 +38,24 @@ const styles = StyleSheet.create({
     itemInfoContainer:{
         margin:5,
         justifyContent:"center",
-        
+        width:"50%",
+        paddingRight:5,
     },
     itemText1:{
-        fontSize:15,
+        fontSize:13,
         fontWeight:"bold",
     },
     itemText2:{
 
     },
-    itemText3:{
+    itemTextBlue:{
+        fontSize:13,
         fontWeight:"bold",
         color:"blue",
+    },
+    itemTextRed:{
+        fontSize:13,
+        fontWeight:"bold",
+        color:"red",
     }
 })

@@ -9,7 +9,7 @@ export default function AccountScreen() {
 
     useEffect(()=>{
       
-        const dataType="/item/brand/mac"
+        const dataType="/item/"
         GetData({dataType,getItemData});
            
     },[]);
@@ -23,7 +23,9 @@ export default function AccountScreen() {
             
             {itemData===undefined ? null 
             :
-            <DisplayItem itemData={itemData}/>
+            itemData.map((itemData, index)=>(
+                <DisplayItem itemData={itemData} key={index}/>
+            ))
             }
             
         </ScrollView>
