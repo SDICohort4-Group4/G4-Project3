@@ -34,6 +34,6 @@ export default function AccountScreen() {
 
 const styles=StyleSheet.create({
     container:{
-        backgroundColor:"yellow",
+        backgroundColor:"#FDD100",
     }
 })
