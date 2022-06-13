@@ -29,11 +29,14 @@ const styles = StyleSheet.create({
     image1:{
         width:"50%",
         height:150,
+        backgroundColor:"white",
     },
     itemContainer:{
         flex:1,
         flexDirection:"row",
-        margin:5.
+        margin:5,
+        backgroundColor:"#f1e9cb",
+        
     },
     itemInfoContainer:{
         margin:5,
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
         fontWeight:"bold",
     },
     itemText2:{
-
+        fontSize:14,
     },
     itemTextBlue:{
         fontSize:13,
