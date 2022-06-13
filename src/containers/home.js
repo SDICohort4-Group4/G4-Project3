@@ -19,7 +19,7 @@ export default function AccountScreen() {
     }
 
     return(
-        <ScrollView>
+        <ScrollView style={styles.container}>
             
             {itemData===undefined ? null 
             :
@@ -34,6 +34,6 @@ export default function AccountScreen() {
 
 const styles=StyleSheet.create({
     container:{
-        
+        backgroundColor:"#FDD100",
     }
 })
