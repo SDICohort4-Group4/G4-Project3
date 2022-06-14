@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import noImage from "../../assets/photo-soon.jpg";
+import DisplaySalePrice from "./displaySalePrice"
 
 
 export default function DisplayItem(props){
@@ -13,7 +14,19 @@ export default function DisplayItem(props){
         
         <View style={styles.itemInfoContainer}>
             <Text style={styles.itemText1}>{props.itemData.itemName}</Text>
-            <Text style={styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
+            
+            {props.itemData.onSale==="NONE"? 
+                <Text style={styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
+            : 
+                <DisplaySalePrice 
+                    itemPrice={props.itemData.itemPrice}
+                    salePrice={props.itemData.itemSalePrice} 
+                    onSale={props.itemData.onSale}
+                    itemDiscount={props.itemData.itemDiscount}
+                />
+               
+            }
+            
             {props.itemData.Qty>0? 
                 <Text style={styles.itemTextBlue}>In Stock Buy Now!</Text>
             :
@@ -60,5 +73,6 @@ const styles = StyleSheet.create({
         fontSize:13,
         fontWeight:"bold",
         color:"red",
-    }
+    },
+  
 })
