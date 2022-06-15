@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function AccountScreen() {
     return(
         <View style = {styles.container}>
-            <Text>Account Screen</Text>
+            <Text>Cart Page</Text>
         </View>
     )
 }

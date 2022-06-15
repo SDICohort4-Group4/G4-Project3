@@ -4,7 +4,7 @@ const API = axios.create({
     baseURL:"https://sdic4-g4-project2.herokuapp.com/",
 });
 
-export default async function getData(props){
+export async function getData(props){
     
     const response = await API.get(props.dataType);
 
@@ -16,3 +16,12 @@ export default async function getData(props){
     
    
 }
+
+// export async function searchData(props){
+//     const response = await API.get(props)
+
+//     if(response.status === 200){
+//         const result = response.data.data;
+//         props.searchItemData(result);
+//     }
+// }
