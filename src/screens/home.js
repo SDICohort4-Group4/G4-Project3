@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator,View, Image } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator,View, Image, Text } from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import GetData from "../components/getData";
 import DisplayItem from "../components/displayitem";
@@ -50,11 +50,15 @@ export default function AccountScreen() {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }>
             
-            {itemData===undefined ? <ActivityIndicator size="large"/>
-            :
-            itemData.map((itemData, index)=>(
-                <DisplayItem itemData={itemData} key={index}/>
-            ))
+            {(searchText == undefined || searchText == '') ? 
+                itemData === undefined ? <ActivityIndicator size="large"/>
+                :
+                itemData.map((itemData, index)=>(
+                    <DisplayItem itemData={itemData} key={index}/>
+                ))
+                :
+                <Text>{searchText}</Text>
+
             }
             
         </ScrollView>
