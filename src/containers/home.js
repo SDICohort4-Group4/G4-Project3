@@ -39,7 +39,7 @@ export default function AccountScreen() {
                 style = {styles.searchBox}
                 onChangeText = {onChangeText}
                 value = {searchText}
-                />
+            />
             
             {itemData === undefined ? null 
             :
