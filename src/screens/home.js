@@ -1,7 +1,7 @@
 import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator,View, Image } from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import GetData from "../components/getData";
-import DisplayItem from "../components/displayItem";
+import DisplayItem from "../components/displayitem";
 import SearchBar from "../components/searchBar"
 import CartIcon from "../../assets/cart-icon.png"
 
