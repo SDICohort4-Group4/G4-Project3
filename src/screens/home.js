@@ -1,11 +1,11 @@
 import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image, Text } from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import {getData as GetData} from "../components/getData";
-import DisplayItem from "../components/displayItem.js";
+import DisplayItem from "../components/displayitem.js";
 import SearchBar from "../components/searchBar.js"
 import CartIcon from "../../assets/cart-icon.png"
 
-import {searchData as SearchData} from "../components/getData";
+// import {searchData as SearchData} from "../components/getData";
 // import { NavigationContainer } from "@react-navigation/native";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // const Stack = createNativeStackNavigator();
