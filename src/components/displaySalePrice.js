@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function DisplaySalePrice(props){
     
     function CalDiscount(){
-        return (props.itemPrice*(1-(parseInt(props.itemDiscount)/100))).toFixed(2);
+        return (props.itemPrice*(1-((props.itemDiscount)/100))).toFixed(2);
     }
 
     return(
