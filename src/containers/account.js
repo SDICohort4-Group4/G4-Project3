@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export default function AccountScreen() {
     return(
-        <View style={styles.container}>
+        <View style = {styles.container}>
             <Text>Account Screen</Text>
         </View>
     )
@@ -10,7 +10,7 @@ export default function AccountScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        alignSelf:"center",       
+    alignSelf:"center",       
         
     }
-  });
+});

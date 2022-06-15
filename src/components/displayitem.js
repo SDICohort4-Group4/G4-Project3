@@ -5,32 +5,32 @@ import DisplaySalePrice from "./displaySalePrice"
 
 export default function DisplayItem(props){
     return(
-    <View style={styles.itemContainer}>
+    <View style = {styles.itemContainer}>
         {props.itemData.itemPic1? 
-            <Image style={styles.image1} source={{uri:(props.itemData.itemPic1)}}></Image>
+            <Image style = {styles.image1} source = {{uri: (props.itemData.itemPic1)}}></Image>
         :
-            <Image style={styles.image1} source={noImage}></Image>
+            <Image style = {styles.image1} source = {noImage}></Image>
         }
         
-        <View style={styles.itemInfoContainer}>
-            <Text style={styles.itemText1}>{props.itemData.itemName}</Text>
+        <View style = {styles.itemInfoContainer}>
+            <Text style = {styles.itemText1}>{props.itemData.itemName}</Text>
             
-            {props.itemData.onSale==="NONE"? 
-                <Text style={styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
+            {props.itemData.onSale === "NONE"? 
+                <Text style = {styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
             : 
                 <DisplaySalePrice 
-                    itemPrice={props.itemData.itemPrice}
-                    salePrice={props.itemData.itemSalePrice} 
-                    onSale={props.itemData.onSale}
-                    itemDiscount={props.itemData.itemDiscount}
+                    itemPrice = {props.itemData.itemPrice}
+                    salePrice = {props.itemData.itemSalePrice} 
+                    onSale = {props.itemData.onSale}
+                    itemDiscount = {props.itemData.itemDiscount}
                 />
                
             }
             
-            {props.itemData.Qty>0? 
-                <Text style={styles.itemTextBlue}>In Stock Buy Now!</Text>
+            {props.itemData.Qty > 0? 
+                <Text style = {styles.itemTextBlue}>In Stock Buy Now!</Text>
             :
-                <Text style={styles.itemTextRed}>Oops, Sorry No Stock!</Text>
+                <Text style = {styles.itemTextRed}>Oops, Sorry No Stock!</Text>
             }
             
         </View>

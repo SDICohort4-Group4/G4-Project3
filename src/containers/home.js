@@ -6,21 +6,21 @@ import DisplayItem from "../components/displayitem";
 
 export default function AccountScreen() {
 
-    const [itemData, setItemData]=useState();
-    const [refreshing, setRefreshing]=useState(false);
-    const [searchText, onChangeText]=useState();
+    const [itemData, setItemData] = useState();
+    const [refreshing, setRefreshing] = useState(false);
+    const [searchText, onChangeText] = useState();
 
-    useEffect(()=>{
+    useEffect(() => {
       
-        const dataType="/item/"
+        const dataType = "/item/"
         GetData({dataType,getItemData});
            
     },[]);
 
-    const onRefresh=useCallback(()=>{
+    const onRefresh = useCallback(() => {
         setRefreshing(true);
-        const dataType="/item/";
-        GetData({dataType,getItemData});
+        const dataType = "/item/";
+        GetData({dataType, getItemData});
         setRefreshing(false);
     },[])
 
@@ -30,21 +30,21 @@ export default function AccountScreen() {
 
     return(
         <ScrollView 
-            style={styles.container}
-            refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+            style = {styles.container}
+            refreshControl = {
+                <RefreshControl refreshing = {refreshing} onRefresh = {onRefresh}/>
             }>
             
             <TextInput 
-                style={styles.searchBox}
-                onChangeText={onChangeText}
-                value={searchText}
+                style = {styles.searchBox}
+                onChangeText = {onChangeText}
+                value = {searchText}
                 />
             
-            {itemData===undefined ? null 
+            {itemData === undefined ? null 
             :
             itemData.map((itemData, index)=>(
-                <DisplayItem itemData={itemData} key={index}/>
+                <DisplayItem itemData = {itemData} key = {index}/>
             ))
             }
             
@@ -52,7 +52,7 @@ export default function AccountScreen() {
     )
 }
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     container:{
         backgroundColor:"#FDD100",
     },

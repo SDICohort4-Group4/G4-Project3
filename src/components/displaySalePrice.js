@@ -8,15 +8,15 @@ export default function DisplaySalePrice(props){
 
     return(
         <View>
-            {props.onSale==="DOLLAR" ? 
+            {props.onSale === "DOLLAR" ? 
                 <View>
-                    <Text style={styles.itemTextSale}>Price: ${props.itemPrice}</Text>
-                    <Text style={styles.itemTextBlue}>Sale Price: ${props.salePrice}</Text>
+                    <Text style = {styles.itemTextSale}>Price: ${props.itemPrice}</Text>
+                    <Text style = {styles.itemTextBlue}>Sale Price: ${props.salePrice}</Text>
                 </View>
             :
                 <View>
-                    <Text style={styles.itemTextSale}>Price: ${props.itemPrice}</Text>
-                    <Text style={styles.itemTextBlue}>Sale Price: ${CalDiscount()}</Text>
+                    <Text style = {styles.itemTextSale}>Price: ${props.itemPrice}</Text>
+                    <Text style = {styles.itemTextBlue}>Sale Price: ${CalDiscount()}</Text>
                 </View>
             }
             
@@ -24,7 +24,7 @@ export default function DisplaySalePrice(props){
     )
 }
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     itemTextSale:{
         textDecorationLine:"line-through",
         color:"gray",
