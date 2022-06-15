@@ -16,18 +16,15 @@ export default function DisplayItem(props){
                     \nIn-stock: ${props.itemData.Qty}
                     \nSKU: ${props.itemData.SKU}`,
                     [
-                        {
+                        props.itemData.Qty > 0 ? {
                             text: "Buy", 
                             onPress: () => Alert.alert(
                                 "Added to cart",
-                                '',
+                                null,
                                 [{text: "Okay"}],
                                 {cancelable:true}),
-                        },      
-                        {
-                            text: "Cancel",
-                            style: "cancel",
-                        },
+                        }:      
+                        {text: "Cancel"}, props.itemData.Qty > 0 ?{text: "Cancel",} : null
                     ],
                     {cancelable: true}
                 )}
