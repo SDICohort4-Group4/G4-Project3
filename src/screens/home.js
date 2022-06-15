@@ -1,25 +1,36 @@
-import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator,View, Image } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image, Text } from 'react-native';
 import {useCallback, useEffect, useState} from "react";
-import GetData from "../components/getData";
-import DisplayItem from "../components/displayItem";
-import SearchBar from "../components/searchBar"
+import {getData as GetData} from "../components/getData";
+import DisplayItem from "../components/displayItem.js";
+import SearchBar from "../components/searchBar.js"
 import CartIcon from "../../assets/cart-icon.png"
 
+import {searchData as SearchData} from "../components/getData";
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// const Stack = createNativeStackNavigator();
 
 
-export default function AccountScreen() {
+export function HomeScreen() {
 
     const [itemData, setItemData] = useState();
     const [refreshing, setRefreshing] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [clicked, setClicked] = useState();
 
-    useEffect(()=>{
+    useEffect(() => {
       
         const dataType = "/item/"
         GetData({dataType, getItemData});
            
     },[]);
+
+    // useEffect(() => {
+    //     if(searchText != undefined || searchText != ''){
+    //         const searchType = `/item/description/${searchText}`
+    //         SearchData({searchType, searchItemData});
+    //     }
+    // },[]);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -32,12 +43,16 @@ export default function AccountScreen() {
         setItemData(data);
     }
 
+    // function searchItemData(data){
+    //     setSearchText(data);
+    // }
+
     return(
         <>
-        <View style ={ styles.container1}>
+        <View style = {styles.container1}>
             <SearchBar
-                searchText = {searchText}
                 setSearchText = {setSearchText}
+                searchText = {searchText}
                 clicked = {clicked}
                 setClicked = {setClicked}
             />
@@ -47,15 +62,22 @@ export default function AccountScreen() {
         <ScrollView 
             style = {styles.container2}
             refreshControl = {
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                <RefreshControl refreshing = {refreshing} onRefresh = {onRefresh}/>
             }>
             
-            {itemData === undefined ? <ActivityIndicator size = "large"/>
-            :
-            itemData.map((itemData, index)=>(
-                <DisplayItem itemData = {itemData} key = {index}/>
-            ))
+            {(searchText == undefined || searchText == "") ? 
+                itemData === undefined ? <ActivityIndicator size = "large"/>
+                :
+                itemData.map((itemData, index)=>(
+                    <DisplayItem itemData = {itemData} key = {index}/>
+                ))
+            : 
+            // itemData.map((searchText, index) => {
+            //     <DisplayItem itemData = {searchText} key = {index} />
+            // })
+            <Text>{searchText}</Text>
             }
+
             
         </ScrollView>
         </>
