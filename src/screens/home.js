@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator,View, Image, Text } from 'react-native';
-=======
 import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image, Text } from 'react-native';
->>>>>>> 9bbe3297656c1a3c31b4ba903398da630106c642
 import {useCallback, useEffect, useState} from "react";
 import {getData as GetData} from "../components/getData";
 import DisplayItem from "../components/displayItem.js";
