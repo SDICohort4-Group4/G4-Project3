@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import HomeScreen from "../containers/home";
-import AccountScreen from "../containers/account";
+import HomeScreen from "../screens/home";
+import AccountScreen from "../screens/account";
 
 const Tab=createBottomTabNavigator();
 
