@@ -69,7 +69,7 @@ const styles=StyleSheet.create({
         
     },
     container2:{
-        backgroundColor:"#FDD100",
+        backgroundColor:"#fffaed",
     },
     cartIconContainer:{
         width:40,

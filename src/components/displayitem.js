@@ -46,9 +46,15 @@ const styles = StyleSheet.create({
     },
     itemContainer:{
         flex:1,
+        width: '95%',
         flexDirection:"row",
         margin:5,
         backgroundColor:"#f1e9cb",
+        alignSelf: 'center',
+        padding: 8,
+        borderRadius: 5,
+        elevation: 5,
+        
         
     },
     itemInfoContainer:{
@@ -56,6 +62,7 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         width:"50%",
         paddingRight:5,
+        paddingLeft: 5,
     },
     itemText1:{
         fontSize:13,

@@ -22,8 +22,6 @@ function LoginStack() {
     )
 }
 
-
-
 export default function AccountScreen() {
 
     // to be set after getting
