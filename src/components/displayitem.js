@@ -8,7 +8,29 @@ export default function DisplayItem(props){
     return(
         <Card
             style = {styles.itemContainer}
-            onPress = {() => Alert.alert(`${props.itemData.itemName}`)}
+            onPress = {() =>   Alert.alert(
+                    `${props.itemData.itemName}`,
+                    `Item: ${props.itemData.itemDescription}
+                    \nBrand: ${props.itemData.brand}
+                    \nCategory: ${props.itemData.itemCategory1}, ${props.itemData.itemCategory2}
+                    \nIn-stock: ${props.itemData.Qty}
+                    \nSKU: ${props.itemData.SKU}`,
+                    [
+                        {
+                            text: "Buy", 
+                            onPress: () => Alert.alert(
+                                "Added to cart",
+                                '',
+                                [{text: "Okay"}],
+                                {cancelable:true}),
+                        },      
+                        {
+                            text: "Cancel",
+                            style: "cancel",
+                        },
+                    ],
+                    {cancelable: true}
+                )}
             onLongPress = {() => Alert.alert(`LONNGGGGGGGGGGGGGGGGGGGGGGG Press`)}>
 
             <View style = {styles.itemContainer}>
