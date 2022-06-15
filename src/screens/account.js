@@ -1,16 +1,54 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
+import AuthContext from '../contexts/AuthContext';
+import { useContext} from "react";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from '../components/Login.js';
+import Registration from '../components/Registration.js'
+import RegisterSuccess from '../components/RegisterSuccess';
+import AccountDetails from '../components/AccountDetails';
+
+const AccountStack = createNativeStackNavigator();
+
+function LoginStack() {
+    return (
+        <NavigationContainer independent={true}>
+            <AccountStack.Navigator screenOptions={{headerShown: false, animation: "slide_from_right"}}>
+                <AccountStack.Screen name='Login' component={Login}/>
+                <AccountStack.Screen name='Registration' component={Registration}/>
+                <AccountStack.Screen name='RegisterSuccess' component={RegisterSuccess}/>
+            </AccountStack.Navigator>
+        </NavigationContainer>
+    )
+}
+
+
 
 export default function AccountScreen() {
+
+    // to be set after getting
+    const {auth} = useContext(AuthContext);
+
+
     return(
-        <View style = {styles.container}>
-            <Text>Account Screen</Text>
-        </View>
+        <>
+        {auth? 
+        <AccountDetails />: 
+        <LoginStack />
+        }
+        </>
+
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-    alignSelf:"center",       
-        
-    }
-});
+        alignItems:'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%', 
+        backgroundColor: '#fffaed',
+    },
+
+
+  });
