@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from '../contexts/AuthContext';
 import { useContext, useEffect, useState } from "react";
 import {getAuth} from "../Api/Auth";
+let icon = require('../../assets/shopin-no-tagline.png')
 
 export default function Login({navigation}) {
 
@@ -33,7 +34,7 @@ export default function Login({navigation}) {
 
     return(
         <View style={styles.container}>
-            <Text>Login To Shopin</Text>
+            <Image style={styles.icon} source={icon}></Image>
             <View style={styles.form}>
                 <Text style={styles.label}>Email</Text>
                 <TextInput style={styles.input} placeholder='Email' onChangeText={text => setUserMail(text)}></TextInput>
@@ -125,6 +126,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'pink',
         borderRadius: 5,
         padding: 5,
+        position: 'absolute',
+        bottom: 5,
     },
 
     emptyErr: {
@@ -147,4 +150,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
 
+    icon:{
+        height: 80,
+        width: 80,
+        borderRadius: 100,
+    },
   });
