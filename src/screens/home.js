@@ -10,8 +10,7 @@ import CartIcon from "../../assets/cart-icon.png"
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // const Stack = createNativeStackNavigator();
 
-
-export function HomeScreen() {
+function BrowseScreen() {
 
     const [itemData, setItemData] = useState();
     const [refreshing, setRefreshing] = useState(false);
@@ -70,6 +69,13 @@ export function HomeScreen() {
             }
         </ScrollView>
         </>
+    )
+}
+
+export function HomeScreen() {
+  
+    return(
+        <BrowseScreen/>
     )
 }
 
