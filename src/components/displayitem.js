@@ -7,8 +7,8 @@ export default function DisplayItem(props){
 
 
     return(
-        <Card onPress={()=>props.navigation.navigate('itemDetails', {itemInfo: props.itemData})}
-            style={styles.cardContainer}>
+        <Card onPress = {()=>props.navigation.navigate('itemDetails', {itemInfo: props.itemData})}
+            style = {styles.cardContainer}>
             <View>
                 <View style = {styles.itemContainer}>
                     {props.itemData.itemPic1? 
@@ -17,11 +17,11 @@ export default function DisplayItem(props){
                         <Image style={styles.image1} source = {noImage}></Image>
                     }
                 
-                    <View style={styles.itemInfoContainer}>
-                        <Text style={styles.itemText1}>{props.itemData.itemName}</Text>
+                    <View style = {styles.itemInfoContainer}>
+                        <Text style = {styles.itemText1}>{props.itemData.itemName}</Text>
                     
                         {props.itemData.onSale==="NONE"? 
-                            <Text style={styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
+                            <Text style = {styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
                         : 
                             <DisplaySalePrice 
                                 itemPrice={props.itemData.itemPrice}
