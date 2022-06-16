@@ -62,8 +62,8 @@ export default function DisplayItem(props){
                                     {cancelable: true}
                                 )}
                                 onLongPress = {() => Alert.alert(`LONNGGGGGGGGGGGGGGGGGGGGGGG Press`)}>
-                                In Stock <Text style = {styles.buyButton}>Buy Now!</Text></Text>
-                        :
+                            In Stock <Text style = {styles.buyButton}>Buy Now!</Text></Text>
+                            :
                             <Text style={styles.itemTextRed}>Oops, Sorry No Stock!</Text>
                         }
                     
