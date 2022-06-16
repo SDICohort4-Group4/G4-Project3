@@ -5,18 +5,11 @@ import {Card, Button } from "react-native-paper";
 
 export default function DisplayItem(props){
 
-    function checkSearchText(props){
-        
-        if(props.searchText==="") return true;
-        if(props.itemData.itemName.toUpperCase().includes(props.searchText.toUpperCase())) return true;
-
-        return false
-    }
 
     return(
-        <View>
-            {/* calls function to check whether a filter by searchText needs to be done */}
-            {checkSearchText(props)?
+        <Card onPress={()=>props.navigation.navigate('itemDetails', {itemInfo: props.itemData})}
+            style={styles.cardContainer}>
+            <View>
                 <View style = {styles.itemContainer}>
                     {props.itemData.itemPic1? 
                         <Image style={styles.image1} source = {{uri:(props.itemData.itemPic1)}}></Image>
@@ -69,12 +62,8 @@ export default function DisplayItem(props){
                     
                     </View>
                 </View>
-            : null
-            }   
-        </View>
-            
-
-
+            </View>
+        </Card> 
     )
 }
 
@@ -82,21 +71,17 @@ const styles = StyleSheet.create({
     image1:{
         width:"50%",
         height:150,
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
+        borderRadius: 10,
         backgroundColor:"white",
     },
     itemContainer:{
         flex:1,
-        width: '95%',
         flexDirection:"row",
-        margin: 1,
+        marginHorizontal: 5,
         padding: 0, 
-        backgroundColor:"#f1e9cb",
         alignSelf: 'center',
         padding: 8,
         borderRadius: 5,
-        elevation: 5,
         
     },
     itemInfoContainer:{
@@ -126,8 +111,12 @@ const styles = StyleSheet.create({
     cardContainer: {
         elevation: 0,
         padding: 0,
-        margin: 0,
-        borderRadius: 10
+        margin: 5,
+        borderRadius: 10,
+        backgroundColor: '#f1e9cb',
+        width: '95%',
+        alignSelf: 'center',
+        elevation: 5,
     },
     buyButton: {
         color: "#FDD100",
