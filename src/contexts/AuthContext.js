@@ -22,7 +22,7 @@ let checkAuth = async() =>{
             setAuth(true);
         }
     } catch(err) {
-        console.log(`jwt has expired`);
+        console.log(`jwt has expired/ does not exist`);
     }
 };
 

@@ -2,14 +2,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import HomeScreen from "../screens/home";
-import AccountScreen from "../screens/account";
+import { HomeScreen } from "../screens/home.js";
+import AccountScreen from "../screens/account.js";
+import ProductScreen from "../screens/product.js"
 
-const Tab=createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function StartScreen() {
     return (
-      <>
+        <>
         <NavigationContainer>
         <Tab.Navigator screenOptions={{
                           headerStyle:{height:60, backgroundColor:"#D1920D"},
@@ -24,9 +25,9 @@ export default function StartScreen() {
                                                                             tabBarIconStyle:{display:'none'},}}/>
         </Tab.Navigator>
         </NavigationContainer>
-      </>
+        </>
     );
-  }
+}
 
 
   

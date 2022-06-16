@@ -8,23 +8,19 @@ export default function DisplaySalePrice(props){
 
     return(
         <View>
-            {props.onSale==="DOLLAR" ? 
-                <View>
-                    <Text style={styles.itemTextSale}>Price: ${props.itemPrice}</Text>
-                    <Text style={styles.itemTextBlue}>Sale Price: ${props.salePrice}</Text>
-                </View>
+            <Text style = {styles.itemTextSale}>Price: ${props.itemPrice}</Text>
+            {props.onSale === "DOLLAR" ? 
+                <Text style = {styles.itemTextBlue}>Sale Price: ${props.salePrice}</Text>
+                
             :
-                <View>
-                    <Text style={styles.itemTextSale}>Price: ${props.itemPrice}</Text>
-                    <Text style={styles.itemTextBlue}>Sale Price: ${CalDiscount()}</Text>
-                </View>
+                <Text style = {styles.itemTextBlue}>Sale Price: ${CalDiscount()}</Text>
             }
             
         </View>
     )
 }
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     itemTextSale:{
         textDecorationLine:"line-through",
         color:"gray",
