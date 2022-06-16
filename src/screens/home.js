@@ -4,24 +4,29 @@ import {getData as GetData} from "../components/getData";
 import DisplayItem from "../components/displayitem.js";
 import SearchBar from "../components/searchBar.js"
 import CartIcon from "../../assets/cart-icon-gray.png"
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Product from "../screens/product.js"
+import ItemDetails from '../components/ItemDetails';
 // import {searchData as SearchData} from "../components/getData";
 // import { NavigationContainer } from "@react-navigation/native";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // const Stack = createNativeStackNavigator();
 
-function BrowseScreen() {
+const ShopStack = createNativeStackNavigator();
+
+function BrowseScreen({navigation}) {
 
     const [itemData, setItemData] = useState();
     const [refreshing, setRefreshing] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [clicked, setClicked] = useState();
+    const [filterData, setFilterData] = useState();
 
     useEffect(()=>{
-      
         const dataType = "/item/"
         GetData({dataType, getItemData});
+
            
     },[]);
 
@@ -41,14 +46,25 @@ function BrowseScreen() {
 
     function getItemData(data){
         setItemData(data);
+        setFilterData(data);
+    }
+    
+    function searchChange(searchText) {
+        setSearchText(searchText);
+
+        if(searchText) {
+            let filtered = [...itemData].filter((obj) => obj.itemName.toUpperCase().includes(searchText.toUpperCase()))
+            setFilterData(filtered);
+        };
     }
 
-  
+
+
     return(
         <>
         <View style = {styles.container1}>
             <SearchBar
-                setSearchText = {setSearchText}
+                searchChange = {searchChange}
                 searchText = {searchText}
                 clicked = {clicked}
                 setClicked = {setClicked}
@@ -62,10 +78,10 @@ function BrowseScreen() {
                 <RefreshControl refreshing = {refreshing} onRefresh = {onRefresh}/>
             }>
             
-            {itemData === undefined ? <ActivityIndicator size = "large"/>
-                :
-                itemData.map((itemData, index)=>(
-                    <DisplayItem itemData = {itemData} searchText={searchText} key = {index}/>
+            {itemData === undefined? 
+                <ActivityIndicator size = "large"/>:
+                filterData?.map((filteredData, index)=>(
+                    <DisplayItem itemData = {filteredData} navigation={navigation} searchText={searchText} key = {index}/>
                 ))
             }
         </ScrollView>
@@ -76,10 +92,12 @@ function BrowseScreen() {
 export function HomeScreen() {
   
     return(
-        <>
-            <BrowseScreen/>
-        </>
-
+        <NavigationContainer independent={true}>
+            <ShopStack.Navigator screenOptions={{headerShown: false, animation: "slide_from_right"}}>
+                <ShopStack.Screen name='browse' component={BrowseScreen}/>
+                <ShopStack.Screen name='itemDetails' component={ItemDetails}/>
+            </ShopStack.Navigator>
+        </NavigationContainer>       
     )
 }
 
@@ -90,7 +108,7 @@ const styles = StyleSheet.create({
         
     },
     container2:{
-        backgroundColor:"#FDD100",
+        backgroundColor:"#fffaed",
     },
     cartIconContainer:{
         width:40,

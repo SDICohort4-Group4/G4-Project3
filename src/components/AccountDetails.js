@@ -1,17 +1,16 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import {getAuth} from "../Api/Auth";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from '../contexts/AuthContext';
 import jwt_decode from "jwt-decode";
+import { Feather } from "@expo/vector-icons";
 
 export default function AccountDetails({navigation}) {
     let [user, setUser] = useState(null);
     let {setAuth} = useContext(AuthContext);
 
     async function getInfo() {
-        let curKey = await SecureStore.getItemAsync('key');
-        let decoded = jwt_decode(curKey);
+        let decoded = jwt_decode(await SecureStore.getItemAsync('key'));
         let user = {email: decoded?.email, role: decoded?.role}
         setUser(user);
     }
@@ -31,16 +30,19 @@ export default function AccountDetails({navigation}) {
     return(
         <View style={styles.container}>
             <View style={styles.userDetails}>
-                <View style={styles.icon}>
-   
-                </View>
+                <Feather style={styles.icon} name="user" size={30} color="#000"/>
                 <View style={styles.info}>
                     <Text style={styles.infoText}>{`User: ${user?.email}`}</Text>
-                    <Text style={styles.infoText}>{`Role: ${user?.role}`}</Text>
+                    <Text style={styles.infoText}>{`Access: ${user?.role}`}</Text>
                 </View>
             </View>
-            <View style={styles.others}>
+            
+            <View style={styles.buttonsCon}>
+                <Feather onPress={()=>{console.log(`cart pressed`)}} style={styles.button} name="shopping-cart" size={30} color="#000"/>
+                <Feather onPress={()=>{console.log(`settings pressed`)}} style={styles.button} name="settings" size={30} color="#000"/>
+ 
             </View>
+
             <View style={styles.logout}>
                 <Text onPress={()=>logout()} style={styles.logoutBtn}>Logout</Text>
             </View>
@@ -51,56 +53,72 @@ export default function AccountDetails({navigation}) {
 const styles = StyleSheet.create({
     container: {
         alignItems:'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         width: '100%',
         height: '100%', 
         backgroundColor: '#fffaed',
     },
 
-    userDetails: {
-        flex:1,
-        width: '100%',
-        flexDirection: 'row',
-        borderBottomWidth: 1,
+    icon: {
+        padding: 20,
+        backgroundColor: 'white',
+        marginHorizontal: 10,
+        borderRadius: 100,
+        elevation: 3,
     },
 
-    icon: {
-        flex: 1,
-        borderRightWidth: 1,
-        padding: 5,
+    userDetails: {
+        width: '90%',
+        flexDirection: 'row',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        margin: 20,
+        paddingVertical: 10,
+        elevation: 10,
+        backgroundColor: '#f1e9cb',
     },
 
     info: {
-        flex: 4,
         justifyContent: 'space-evenly',
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
     },
 
     infoText: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
     },
 
-    others: {
-        flex:9,
-        width: '100%',
+    buttonsCon: {
+        width: '90%',
+        flexDirection: 'row',
+    },
+
+    button:{
+        padding: 20,
+        backgroundColor: '#f1e9cb',
+        borderRadius: 5,
+        marginRight: 20,
+        elevation: 10,
     },
 
     logout: {
-        flex: 1,
+        position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
+        bottom: 10,
     },
 
     logoutBtn: {
-        width: '60%',
-        fontSize: 25,
+        width: '50%',
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'white',
         textAlign: 'center',
         backgroundColor: '#d61100',
         padding: 5,
         borderRadius: 10,
-        color: 'white',
         elevation: 20,
     },
   });
