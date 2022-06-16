@@ -1,17 +1,62 @@
-import { StyleSheet, Text, View, TextInput, Image, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, ScrollView, Dimensions, Alert } from 'react-native';
 import { useContext, useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import noImage from "../../assets/photo-soon.jpg";
-import { DataTable } from 'react-native-paper';
+import { DataTable, Button } from 'react-native-paper';
+import { Table, Row, Rows } from 'react-native-table-component'
 
 const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').Width;
+const windowWidth = Dimensions.get('window').width;
 
 export default function ItemDetails({route, navigation}) {
     // check what data/format of data is given
     console.log(route.params.itemInfo);
 
+    const [qty, setQty] = useState(0);
 
+    function incrementQty(){
+        if(qty >= route.params.itemInfo.Qty){
+            setQty(route.params.itemInfo.Qty)
+            return
+        }
+        setQty(qty + 1)
+        return qty;
+    }
+
+    function decrementQty(){
+        if(qty <= 0 ){
+            setQty(0)
+            return
+        }
+        setQty(qty - 1)
+        return qty;
+    }
+
+    function buyItem(qty){
+        if(qty <= 0) return;
+        return(Alert.alert(
+            "Added to cart",
+            `Amount : ${qty}x ${route.params.itemInfo.itemName}
+            \nPrice: $${qty*route.params.itemInfo.itemPrice}`,
+            [{text: "Okay"}],
+            {cancelable:true}))
+
+    }
+
+    const tableData = {
+        tableData: [
+            ['Item : ', route.params.itemInfo.itemName],
+            ['Description : ', route.params.itemInfo.itemDescription],
+            ['Price : ', `$${route.params.itemInfo.itemPrice}`],
+            ['SKU : ', route.params.itemInfo.SKU],
+            ['Brand :', route.params.itemInfo.brand],
+            ['Stock : ', route.params.itemInfo.Qty],
+            ['Category :', `${route.params.itemInfo.itemCategory1}, ${route.params.itemInfo.itemCategory2}`]
+
+        ]
+    };
+
+    const [data, setData] = useState(tableData);
     
     return(
         <ScrollView>
@@ -24,42 +69,41 @@ export default function ItemDetails({route, navigation}) {
                         <Image style = {styles.image} source = {noImage}></Image>
                     }
                 </View>
-
+                <View style = {styles.buttonsCon}>
+                    {route.params.itemInfo.Qty > 0 ?
+                    <Text>
+                        <Button
+                            style = {styles.qtyButtons}
+                            onPress = {() => {
+                                decrementQty();
+                            }}>-
+                        </Button> 
+                        <Button 
+                            keyboardType = "numeric"
+                            style = {styles.qtyField}>                        
+                            {qty}                    
+                        </Button>  
+                        <Button 
+                            style = {styles.qtyButtons}
+                            onPress = {() => {
+                                incrementQty();
+                            }}>+
+                        </Button>
+                        <Button 
+                            onPress = {() => {
+                                buyItem(qty)
+                            }}>
+                            Buy
+                        </Button>                            
+                    </Text>: <Text style = {styles.qtyButtons}>Please check back soon!</Text>}
+                </View>
             
                 <View style = {styles.infoCon}>
-                    <DataTable>
-                        <DataTable.Row>
-                            <DataTable.Cell style = {styles.nameCon}>Item : </DataTable.Cell>
-                            <DataTable.Cell style = {styles.valueCon}>{route.params.itemInfo.itemName} </DataTable.Cell>
-                        </DataTable.Row>
-                        <DataTable.Row>
-                            <DataTable.Cell style = {styles.nameCon}>Description : </DataTable.Cell>
-                            <DataTable.Cell style = {styles.valueCon}>{route.params.itemInfo.itemDescription} </DataTable.Cell>
-                        </DataTable.Row>
-                        <DataTable.Row>
-                            <DataTable.Cell style = {styles.nameCon}>SKU :</DataTable.Cell>
-                            <DataTable.Cell style = {styles.valueCon}>{route.params.itemInfo.SKU}</DataTable.Cell>
-                        </DataTable.Row>
-                        <DataTable.Row>
-                            <DataTable.Cell style = {styles.nameCon}>Brand :</DataTable.Cell>
-                            <DataTable.Cell style = {styles.valueCon}>{route.params.itemInfo.brand}</DataTable.Cell>
-                        </DataTable.Row>
-                        <DataTable.Row>
-                            <DataTable.Cell style = {styles.nameCon}>Stock : </DataTable.Cell>
-                            <DataTable.Cell style = {styles.valueCon}>{route.params.itemInfo.Qty} </DataTable.Cell>
-                        </DataTable.Row>
-                        <DataTable.Row>
-                            <DataTable.Cell style = {styles.nameCon}>Category : </DataTable.Cell>
-                            <DataTable.Cell style = {styles.valueCon}>{route.params.itemInfo.itemCategory1}, {route.params.itemInfo.itemCategory2}</DataTable.Cell>
-                        </DataTable.Row>
-                    </DataTable>
+                <Table 
+                    borderStyle = {{ borderWidth: 0.2, borderColor: 'black' }}>
+                    <Rows data = {data.tableData} textStyle = {styles.text} />
+                </Table>
                 </View> 
-
-                <View style = {styles.buttonsCon}>
-
-                </View>
-
-
             </View>
         </ScrollView>
     )
@@ -105,11 +149,18 @@ const styles = StyleSheet.create({
     valueCon: {
         flex: 3,
     },
-
+    qtyCon: {
+        flex: 1
+    },
     buttonsCon:{
         flex: 1
     },
-
+    qtyButtons:{
+        fontSize: 20,
+    },
+    qtyField: {
+        fontSize: 20,
+    },
     userDetails: {
         width: '90%',
         flexDirection: 'row',
@@ -121,5 +172,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         elevation: 10,
     },
+    // head: { height: 44, backgroundColor: 'darkblue' },
+    // headText: { fontSize: 20, fontWeight: 'bold' , textAlign: 'center', color: 'white' },
+    text: { margin: 6, fontSize: 16, fontWeight: 'bold' },
 
   });
