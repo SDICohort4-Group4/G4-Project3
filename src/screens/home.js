@@ -5,6 +5,7 @@ import DisplayItem from "../components/displayitem.js";
 import SearchBar from "../components/searchBar.js"
 import CartIcon from "../../assets/cart-icon.png"
 
+import Product from "../screens/product.js"
 // import {searchData as SearchData} from "../components/getData";
 // import { NavigationContainer } from "@react-navigation/native";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -75,7 +76,10 @@ function BrowseScreen() {
 export function HomeScreen() {
   
     return(
-        <BrowseScreen/>
+        <>
+            <BrowseScreen/>
+        </>
+
     )
 }
 

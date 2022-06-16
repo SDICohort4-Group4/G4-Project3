@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert} from 'react-native';
 import noImage from "../../assets/photo-soon.jpg";
 import DisplaySalePrice from "./displaySalePrice";
-import {Card} from "react-native-paper";
-
+import {Card, Button } from "react-native-paper";
 
 export default function DisplayItem(props){
 
@@ -15,30 +14,7 @@ export default function DisplayItem(props){
     }
 
     return(
-        <Card
-            style = {styles.itemContainer}
-            onPress = {() =>   Alert.alert(
-                    `${props.itemData.itemName}`,
-                    `Item: ${props.itemData.itemDescription}
-                    \nBrand: ${props.itemData.brand}
-                    \nCategory: ${props.itemData.itemCategory1}, ${props.itemData.itemCategory2}
-                    \nIn-stock: ${props.itemData.Qty}
-                    \nSKU: ${props.itemData.SKU}`,
-                    [
-                        props.itemData.Qty > 0 ? {
-                            text: "Buy", 
-                            onPress: () => Alert.alert(
-                                "Added to cart",
-                                null,
-                                [{text: "Okay"}],
-                                {cancelable:true}),
-                        }:      
-                        {text: "Cancel"}, props.itemData.Qty > 0 ?{text: "Cancel",} : null
-                    ],
-                    {cancelable: true}
-                )}
-            onLongPress = {() => Alert.alert(`LONNGGGGGGGGGGGGGGGGGGGGGGG Press`)}>
-            
+        <View>
             {/* calls function to check whether a filter by searchText needs to be done */}
             {checkSearchText(props)?
                 <View style = {styles.itemContainer}>
@@ -63,7 +39,30 @@ export default function DisplayItem(props){
                         }
                     
                         {props.itemData.Qty>0? 
-                            <Text style={styles.itemTextBlue}>In Stock Buy Now!</Text>
+                            <Text 
+                                style = {styles.itemTextBlue}
+                                onPress = {() =>   Alert.alert(
+                                    `${props.itemData.itemName}`,
+                                    `Item: ${props.itemData.itemDescription}
+                                    \nBrand: ${props.itemData.brand}
+                                    \nCategory: ${props.itemData.itemCategory1}, ${props.itemData.itemCategory2}
+                                    \nIn-stock: ${props.itemData.Qty}
+                                    \nSKU: ${props.itemData.SKU}`,
+                                    [
+                                        props.itemData.Qty > 0 ? {
+                                            text: "Buy", 
+                                            onPress: () => Alert.alert(
+                                                "Added to cart",
+                                                null,
+                                                [{text: "Okay"}],
+                                                {cancelable:true}),
+                                        }:      
+                                        {text: "Cancel"}, props.itemData.Qty > 0 ?{text: "Cancel",} : null
+                                    ],
+                                    {cancelable: true}
+                                )}
+                                onLongPress = {() => Alert.alert(`LONNGGGGGGGGGGGGGGGGGGGGGGG Press`)}>
+                                In Stock <Text style = {styles.buyButton}>Buy Now!</Text></Text>
                         :
                             <Text style={styles.itemTextRed}>Oops, Sorry No Stock!</Text>
                         }
@@ -72,7 +71,9 @@ export default function DisplayItem(props){
                 </View>
             : null
             }   
-        </Card>
+        </View>
+            
+
 
     )
 }
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     itemTextRed:{
         fontSize:13,
         fontWeight:"bold",
-        color:"red",
+        color:"#EEBABB",
     },
     cardContainer: {
 
@@ -126,6 +127,10 @@ const styles = StyleSheet.create({
         padding: 0,
         margin: 2,
         borderRadius: 10
+    },
+    buyButton: {
+        color: "#FDD100",
+        fontSize: 16
     }
   
 })
