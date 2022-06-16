@@ -43,10 +43,7 @@ export function HomeScreen() {
         setItemData(data);
     }
 
-    // function searchItemData(data){
-    //     setSearchText(data);
-    // }
-
+  
     return(
         <>
         <View style = {styles.container1}>
@@ -65,20 +62,12 @@ export function HomeScreen() {
                 <RefreshControl refreshing = {refreshing} onRefresh = {onRefresh}/>
             }>
             
-            {(searchText == undefined || searchText == "") ? 
-                itemData === undefined ? <ActivityIndicator size = "large"/>
+            {itemData === undefined ? <ActivityIndicator size = "large"/>
                 :
                 itemData.map((itemData, index)=>(
-                    <DisplayItem itemData = {itemData} key = {index}/>
+                    <DisplayItem itemData = {itemData} searchText={searchText} key = {index}/>
                 ))
-            : 
-            // itemData.map((searchText, index) => {
-            //     <DisplayItem itemData = {searchText} key = {index} />
-            // })
-            <Text>{searchText}</Text>
             }
-
-            
         </ScrollView>
         </>
     )
@@ -99,7 +88,6 @@ const styles = StyleSheet.create({
         position:"absolute",
         right:0,
         top:3,
-        
     }
 
 })

@@ -8,16 +8,12 @@ export default function DisplaySalePrice(props){
 
     return(
         <View>
+            <Text style = {styles.itemTextSale}>Price: ${props.itemPrice}</Text>
             {props.onSale === "DOLLAR" ? 
-                <View>
-                    <Text style = {styles.itemTextSale}>Price: ${props.itemPrice}</Text>
-                    <Text style = {styles.itemTextBlue}>Sale Price: ${props.salePrice}</Text>
-                </View>
+                <Text style = {styles.itemTextBlue}>Sale Price: ${props.salePrice}</Text>
+                
             :
-                <View>
-                    <Text style = {styles.itemTextSale}>Price: ${props.itemPrice}</Text>
-                    <Text style = {styles.itemTextBlue}>Sale Price: ${CalDiscount()}</Text>
-                </View>
+                <Text style = {styles.itemTextBlue}>Sale Price: ${CalDiscount()}</Text>
             }
             
         </View>

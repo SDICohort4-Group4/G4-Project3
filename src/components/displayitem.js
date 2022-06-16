@@ -5,6 +5,15 @@ import {Card} from "react-native-paper";
 
 
 export default function DisplayItem(props){
+
+    function checkSearchText(props){
+        
+        if(props.searchText==="") return true;
+        if(props.itemData.itemName.toUpperCase().includes(props.searchText.toUpperCase())) return true;
+
+        return false
+    }
+
     return(
         <Card
             style = {styles.itemContainer}
@@ -29,37 +38,40 @@ export default function DisplayItem(props){
                     {cancelable: true}
                 )}
             onLongPress = {() => Alert.alert(`LONNGGGGGGGGGGGGGGGGGGGGGGG Press`)}>
-
-            <View style = {styles.itemContainer}>
-                {props.itemData.itemPic1? 
-                    <Image style={styles.image1} source = {{uri:(props.itemData.itemPic1)}}></Image>
-                :
-                    <Image style={styles.image1} source = {noImage}></Image>
-                }
-                
-                <View style={styles.itemInfoContainer}>
-                    <Text style={styles.itemText1}>{props.itemData.itemName}</Text>
-                    
-                    {props.itemData.onSale==="NONE"? 
-                        <Text style={styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
-                    : 
-                        <DisplaySalePrice 
-                            itemPrice={props.itemData.itemPrice}
-                            salePrice={props.itemData.itemSalePrice} 
-                            onSale={props.itemData.onSale}
-                            itemDiscount={props.itemData.itemDiscount}
-                        />
-                    
-                    }
-                    
-                    {props.itemData.Qty>0? 
-                        <Text style={styles.itemTextBlue}>In Stock Buy Now!</Text>
+            
+            {/* calls function to check whether a filter by searchText needs to be done */}
+            {checkSearchText(props)?
+                <View style = {styles.itemContainer}>
+                    {props.itemData.itemPic1? 
+                        <Image style={styles.image1} source = {{uri:(props.itemData.itemPic1)}}></Image>
                     :
-                        <Text style={styles.itemTextRed}>Oops, Sorry No Stock!</Text>
+                        <Image style={styles.image1} source = {noImage}></Image>
                     }
+                
+                    <View style={styles.itemInfoContainer}>
+                        <Text style={styles.itemText1}>{props.itemData.itemName}</Text>
                     
+                        {props.itemData.onSale==="NONE"? 
+                            <Text style={styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
+                        : 
+                            <DisplaySalePrice 
+                                itemPrice={props.itemData.itemPrice}
+                                salePrice={props.itemData.itemSalePrice} 
+                                onSale={props.itemData.onSale}
+                                itemDiscount={props.itemData.itemDiscount}
+                            />
+                        }
+                    
+                        {props.itemData.Qty>0? 
+                            <Text style={styles.itemTextBlue}>In Stock Buy Now!</Text>
+                        :
+                            <Text style={styles.itemTextRed}>Oops, Sorry No Stock!</Text>
+                        }
+                    
+                    </View>
                 </View>
-            </View>
+            : null
+            }   
         </Card>
 
     )
@@ -69,8 +81,8 @@ const styles = StyleSheet.create({
     image1:{
         width:"50%",
         height:150,
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
         backgroundColor:"white",
     },
     itemContainer:{
@@ -79,7 +91,7 @@ const styles = StyleSheet.create({
         margin: 1,
         padding: 0, 
         backgroundColor:"#f1e9cb",
-        borderRadius: 10,
+        borderRadius: 20,
         shadowColor: 'rgba(0,0,0, 0.0)', // Remove Shadow for iOS
         shadowOffset: { height: 0, width: 0 },
         shadowOpacity: 0,
