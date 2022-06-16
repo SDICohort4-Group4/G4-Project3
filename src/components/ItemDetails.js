@@ -12,7 +12,7 @@ export default function ItemDetails({route, navigation}) {
     // check what data/format of data is given
     console.log(route.params.itemInfo);
 
-    const [qty, setQty] = useState(0);
+    const [qty, setQty] = useState(1);
 
     function incrementQty(){
         if(qty >= route.params.itemInfo.Qty){
