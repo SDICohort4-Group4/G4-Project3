@@ -3,7 +3,7 @@ import {useCallback, useEffect, useState} from "react";
 import {getData as GetData} from "../components/getData";
 import DisplayItem from "../components/displayitem.js";
 import SearchBar from "../components/searchBar.js"
-import CartIcon from "../../assets/cart-icon.png"
+import CartIcon from "../../assets/cart-icon-gray.png"
 
 import Product from "../screens/product.js"
 // import {searchData as SearchData} from "../components/getData";
