@@ -17,11 +17,3 @@ export async function getData(props){
    
 }
 
-// export async function searchData(props){
-//     const response = await API.get(props)
-
-//     if(response.status === 200){
-//         const result = response.data.data;
-//         props.searchItemData(result);
-//     }
-// }
