@@ -10,7 +10,7 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function ItemDetails({route, navigation}) {
     // check what data/format of data is given
-    console.log(route.params.itemInfo);
+    // console.log(route.params.itemInfo);
 
     const [qty, setQty] = useState(1);
 
