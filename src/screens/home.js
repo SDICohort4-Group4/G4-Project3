@@ -55,7 +55,8 @@ function BrowseScreen({navigation}) {
         if(searchText) {
             let filtered = [...itemData].filter((obj) => obj.itemName.toUpperCase().includes(searchText.toUpperCase()))
             setFilterData(filtered);
-        };
+        } else { setFilterData(itemData)}
+    
     }
 
 
