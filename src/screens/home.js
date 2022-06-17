@@ -6,7 +6,7 @@ import SearchBar from "../components/searchBar.js"
 import CartIcon from "../../assets/cart-icon-gray.png"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Product from "../screens/product.js"
+
 import ItemDetails from '../components/ItemDetails';
 // import {searchData as SearchData} from "../components/getData";
 // import { NavigationContainer } from "@react-navigation/native";
