@@ -32,7 +32,7 @@ export default function AccountDetails({navigation}) {
             <View style={styles.userDetails}>
                 <Feather style={styles.icon} name="user" size={30} color="#000"/>
                 <View style={styles.info}>
-                    <Text style={styles.infoText}>{`User: ${user?.email}`}</Text>
+                    <Text style={styles.infoText} numberOfLines={1}>{`User: ${user?.email} 11111111`}</Text>
                     <Text style={styles.infoText}>{`Access: ${user?.role}`}</Text>
                 </View>
             </View>
@@ -83,6 +83,8 @@ const styles = StyleSheet.create({
     info: {
         justifyContent: 'space-evenly',
         paddingHorizontal: 10,
+        flexGrow: 1,
+        flexShrink: 1
     },
 
     infoText: {
