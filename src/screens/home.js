@@ -6,7 +6,7 @@ import SearchBar from "../components/searchBar.js"
 import CartIcon from "../../assets/cart-icon-gray.png"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import PriceSortButton from "../components/priceSortButton";
 import ItemDetails from '../components/ItemDetails';
 // import {searchData as SearchData} from "../components/getData";
 // import { NavigationContainer } from "@react-navigation/native";
@@ -20,8 +20,9 @@ function BrowseScreen({navigation}) {
     const [itemData, setItemData] = useState();
     const [refreshing, setRefreshing] = useState(false);
     const [searchText, setSearchText] = useState("");
-    const [clicked, setClicked] = useState();
+    const [clicked, setClicked] = useState(); // status for whether search bar is clicked
     const [filterData, setFilterData] = useState();
+    const [priceSortASC, setpriceSortASC]=useState(true); //true=price is sorted in ASC order, else sort in DESC order
 
     useEffect(()=>{
         const dataType = "/item/"
@@ -70,6 +71,7 @@ function BrowseScreen({navigation}) {
                 clicked = {clicked}
                 setClicked = {setClicked}
             />
+            <PriceSortButton priceSortASC={priceSortASC} setpriceSortASC={setpriceSortASC}/>
             <Image style = {styles.cartIconContainer} source = {CartIcon}/>
         </View>
         
@@ -82,7 +84,7 @@ function BrowseScreen({navigation}) {
             {itemData === undefined? 
                 <ActivityIndicator size = "large"/>:
                 filterData?.map((filteredData, index)=>(
-                    <DisplayItem itemData = {filteredData} navigation={navigation} searchText={searchText} key = {index}/>
+                    <DisplayItem itemData = {filteredData} navigation={navigation} key = {index}/>
                 ))
             }
         </ScrollView>
@@ -106,17 +108,23 @@ const styles = StyleSheet.create({
     container1:{
         backgroundColor:"#FDD100",
         flexDirection:"row",
+        alignItems:"center",
         
     },
     container2:{
         backgroundColor:"#fffaed",
+    },
+    priceSortText:{
+        fontSize:15,
+        fontWeight:"bold",
+        color:"blue",
     },
     cartIconContainer:{
         width:40,
         height:40,
         position:"absolute",
         right:0,
-        top:3,
+        // top:3,
     }
 
 })

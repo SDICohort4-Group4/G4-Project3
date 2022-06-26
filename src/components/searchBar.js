@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { StyleSheet, TextInput, View, Keyboard, TouchableOpacity, Text } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 
@@ -45,6 +45,8 @@ export default function SearchBar ({clicked, searchText, searchChange, setClicke
             </TouchableOpacity>
             
         )}
+        
+        
     </View>
   );
 };
@@ -52,7 +54,7 @@ export default function SearchBar ({clicked, searchText, searchChange, setClicke
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 5,
+    // marginTop: 5,
     marginLeft:5,
     flexDirection: "row",
     width:250,
