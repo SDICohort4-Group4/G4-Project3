@@ -2,10 +2,11 @@ import { View, Text,StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
 
 
-export default function PriceSortButton({priceSortASC, setpriceSortASC}){
+export default function PriceSortButton({priceSortASC, setpriceSortASC, priceSort}){
     return(
         <View >
-            <TouchableOpacity style={styles.container} onPress={()=>{setpriceSortASC(!priceSortASC)}}>
+            <TouchableOpacity style={styles.container} onPress={()=>{setpriceSortASC(!priceSortASC);priceSort()}}>
+               
                 <Text style={   priceSortASC?
                                 styles.sortASC
                                 :
@@ -15,7 +16,7 @@ export default function PriceSortButton({priceSortASC, setpriceSortASC}){
             {priceSortASC?
                 <AntDesign style={styles.upArrow} name="up" size={20} color="blue"/>
             :
-                <AntDesign style={styles.downArrow}name="down" size={20} color="black"/>
+                <AntDesign style={styles.downArrow} name="down" size={20} color="black"/>
             }
             </TouchableOpacity>
         </View>

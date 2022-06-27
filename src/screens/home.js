@@ -8,10 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PriceSortButton from "../components/priceSortButton";
 import ItemDetails from '../components/ItemDetails';
-// import {searchData as SearchData} from "../components/getData";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// const Stack = createNativeStackNavigator();
+
 
 const ShopStack = createNativeStackNavigator();
 
@@ -27,16 +24,8 @@ function BrowseScreen({navigation}) {
     useEffect(()=>{
         const dataType = "/item/"
         GetData({dataType, getItemData});
-
-           
+             
     },[]);
-
-    // useEffect(() => {
-    //     if(searchText != undefined || searchText != ''){
-    //         const searchType = `/item/description/${searchText}`
-    //         SearchData({searchType, searchItemData});
-    //     }
-    // },[]);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -57,7 +46,17 @@ function BrowseScreen({navigation}) {
             let filtered = [...itemData].filter((obj) => obj.itemName.toUpperCase().includes(searchText.toUpperCase()))
             setFilterData(filtered);
         } else { setFilterData(itemData)}
-    
+        
+    }
+
+    function priceSort(){
+        let sorted=null;
+        if(!priceSortASC){
+            sorted=[...filterData].sort((a,b)=>{return a.itemPrice-b.itemPrice})           
+        } else {
+            sorted=[...filterData].sort((a,b)=>{return b.itemPrice-a.itemPrice})            
+        }
+        setFilterData(sorted);
     }
 
 
@@ -71,7 +70,7 @@ function BrowseScreen({navigation}) {
                 clicked = {clicked}
                 setClicked = {setClicked}
             />
-            <PriceSortButton priceSortASC={priceSortASC} setpriceSortASC={setpriceSortASC}/>
+            <PriceSortButton priceSortASC={priceSortASC} setpriceSortASC={setpriceSortASC} priceSort={priceSort}/>
             <Image style = {styles.cartIconContainer} source = {CartIcon}/>
         </View>
         
