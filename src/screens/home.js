@@ -1,13 +1,14 @@
-import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image, Text } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image, Text, Pressable, TouchableHighlight } from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import {getData as GetData} from "../components/getData";
-import DisplayItem from "../components/displayitem.js";
+import DisplayItem from "../components/displayItem.js";
 import SearchBar from "../components/searchBar.js"
 import CartIcon from "../../assets/cart-icon-gray.png"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PriceSortButton from "../components/priceSortButton";
 import ItemDetails from '../components/ItemDetails';
+import {CartDetails} from '../components/CartDetails.js'
 
 
 const ShopStack = createNativeStackNavigator();
@@ -71,7 +72,11 @@ function BrowseScreen({navigation}) {
                 setClicked = {setClicked}
             />
             <PriceSortButton priceSortASC={priceSortASC} setpriceSortASC={setpriceSortASC} priceSort={priceSort}/>
-            <Image style = {styles.cartIconContainer} source = {CartIcon}/>
+            <Pressable 
+                style = {styles.cartIconContainer} 
+                onPress={() => navigation.navigate('cartDetails')}>
+                    <Image style = {styles.cartIconContainer} source = {CartIcon}/>
+            </Pressable>
         </View>
         
         <ScrollView 
@@ -94,10 +99,11 @@ function BrowseScreen({navigation}) {
 export function HomeScreen() {
   
     return(
-        <NavigationContainer independent={true}>
-            <ShopStack.Navigator screenOptions={{headerShown: false, animation: "slide_from_right"}}>
-                <ShopStack.Screen name='browse' component={BrowseScreen}/>
-                <ShopStack.Screen name='itemDetails' component={ItemDetails}/>
+        <NavigationContainer independent = {true}>
+            <ShopStack.Navigator screenOptions = {{headerShown: false, animation: "slide_from_right"}}>
+                <ShopStack.Screen name = 'browse' component = {BrowseScreen}/>
+                <ShopStack.Screen name = 'itemDetails' component = {ItemDetails}/>
+                <ShopStack.Screen name = 'cartDetails' component = {CartDetails} />
             </ShopStack.Navigator>
         </NavigationContainer>       
     )
