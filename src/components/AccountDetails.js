@@ -21,7 +21,6 @@ export default function AccountDetails({navigation}) {
         SecureStore.deleteItemAsync('refresh');
     }
 
-
     useEffect(()=>{
         getInfo()
     },[])
@@ -33,13 +32,39 @@ export default function AccountDetails({navigation}) {
                 <Text style={styles.headerText}>Welcome Back</Text>
             </View>
             <View style={styles.userDetails}>
+                <Text style={styles.infoHeader}>Details</Text>
                 <View style={styles.info}>
-                    <Text style={styles.infoText} numberOfLines={1}>{`User: ${user?.email} 11111111`}</Text>
-                    <Text style={styles.infoText}>{`Access: ${user?.role}`}</Text>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Email:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>TestEmail@gmail.com</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Nickname:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>Test User 1</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Address:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>27 Eddasdad sdas dasd dfsd dfsdff dfs</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Postal:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>TestEmail@gmail.com</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Country:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>Singapore</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Contact:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>+65 12345678</Text>
+                    </View>
                 </View>
             </View>
 
-            <View></View>
+            <View style={styles.menuItemCon}>
+                <Text style={styles.menuItemText}>Update Details</Text>
+                <Feather name="chevron-right" size={24} color="black" />
+            </View>
 
             <View style={styles.logout}>
                 <Text onPress={()=>logout()} style={styles.logoutBtn}>Logout</Text>
@@ -59,7 +84,7 @@ const styles = StyleSheet.create({
 
     headerTextBox: {
         width: "90%",
-        paddingVertical: 20,
+        paddingVertical: 25,
     },
 
     headerText: {
@@ -69,23 +94,52 @@ const styles = StyleSheet.create({
 
     userDetails: {
         width: '90%',
-        height: '30%',
-        flexDirection: 'row',
-
-        paddingVertical: 10,
+        padding: 10,
         elevation: 10,
         backgroundColor: '#f1e9cb',
+        marginBottom: 25,
     },
 
     info: {
-        justifyContent: 'space-evenly',
-        paddingHorizontal: 10,
         flexGrow: 1,
-        flexShrink: 1
+        flexShrink: 1,
+        backgroundColor: 'rgba(52, 52, 52, 0.1)',
+        padding: 15,
+        justifyContent: "center",
+    },
+
+    infoRow:{
+        flexDirection:"row",
+        marginBottom: 5,
     },
 
     infoText: {
-        fontSize: 16,
+        fontSize: 15,
+    },
+
+    infoHeader: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+
+    menuItemCon:{
+        backgroundColor: '#f1e9cb',
+        width: "90%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: 'center',
+        paddingLeft: 10,
+        height: 50,
+        elevation: 10,
+    },
+
+    menuItemText:{
+        fontSize: 15,
+        fontWeight: 'bold',
+        flex: 1,
+        height: "100%",
+        textAlignVertical: "center",
     },
 
     buttonsCon: {
@@ -115,7 +169,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'white',
         textAlign: 'center',
-        backgroundColor: '#d61100',
+        backgroundColor: 'grey',
         padding: 5,
         borderRadius: 10,
         elevation: 20,
