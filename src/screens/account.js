@@ -8,7 +8,10 @@ import Registration from '../components/Registration.js'
 import RegisterSuccess from '../components/RegisterSuccess';
 import AccountDetails from '../components/AccountDetails';
 
+
+
 const AccountStack = createNativeStackNavigator();
+const AcountDetailStack = createNativeStackNavigator();
 
 function LoginStack() {
     return (
@@ -22,6 +25,17 @@ function LoginStack() {
     )
 }
 
+function DetailStack() {
+    return (
+        <NavigationContainer independent={true}>
+            <AcountDetailStack.Navigator screenOptions={{headerShown: false, animation: "slide_from_right"}}>
+                <AcountDetailStack.Screen name='AccountDetails' component={AccountDetails}/>
+            </AcountDetailStack.Navigator>
+        </NavigationContainer>
+    )
+}
+
+
 export default function AccountScreen() {
 
     // to be set after getting
@@ -31,7 +45,7 @@ export default function AccountScreen() {
     return(
         <>
         {auth? 
-        <AccountDetails />: 
+        <DetailStack />: 
         <LoginStack />
         }
         </>

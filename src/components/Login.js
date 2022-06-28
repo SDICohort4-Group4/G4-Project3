@@ -17,9 +17,9 @@ export default function Login({navigation}) {
         let response = await getAuth(user, pass);
         // if login success
         if (response.status === 200) {
-            // storing key into
-            let keyValue = response.data.data;
-            await SecureStore.setItemAsync('key', keyValue);
+            // storing key into secure store
+            await SecureStore.setItemAsync('access', response.accessToken);
+            await SecureStore.setItemAsync('refresh', response.refreshToken);
             setAuth(true);
         };
         // for errors retured 

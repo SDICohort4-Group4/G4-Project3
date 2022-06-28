@@ -40,7 +40,7 @@ export default function Registration({navigation}) {
             return;
         }
 
-        // check password against comnfirm password
+        // check password against confirm password
         if (pass != cPass) {
             setErrMsg('Confirm password is different');
             return;
