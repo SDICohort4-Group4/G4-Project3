@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image, Text, Pressable } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image, Text, Pressable, TouchableHighlight } from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import {getData as GetData} from "../components/getData";
 import DisplayItem from "../components/displayItem.js";
@@ -72,7 +72,11 @@ function BrowseScreen({navigation}) {
                 setClicked = {setClicked}
             />
             <PriceSortButton priceSortASC={priceSortASC} setpriceSortASC={setpriceSortASC} priceSort={priceSort}/>
-            <Pressable onPress={() => props.navigation.navigate('cartDetails')}><Image style = {styles.cartIconContainer} source = {CartIcon}/></Pressable>
+            <Pressable 
+                style = {styles.cartIconContainer} 
+                onPress={() => navigation.navigate('cartDetails')}>
+                    <Image style = {styles.cartIconContainer} source = {CartIcon}/>
+            </Pressable>
         </View>
         
         <ScrollView 
