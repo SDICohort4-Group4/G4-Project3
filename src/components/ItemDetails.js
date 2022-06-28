@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, TextInput, Image, ScrollView, Dimensions, Alert } from 'react-native';
 import { useContext, useEffect, useState } from "react";
-import { Feather } from "@expo/vector-icons";
 import noImage from "../../assets/photo-soon.jpg";
 import { DataTable, Button } from 'react-native-paper';
 import { Table, Row, Rows } from 'react-native-table-component'

@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View, Image, Alert} from 'react-native';
 import noImage from "../../assets/photo-soon.jpg";
 import DisplaySalePrice from "./displaySalePrice";
-import {Card, Button } from "react-native-paper";
+import { Card, Button } from "react-native-paper";
 
 export default function DisplayItem(props){
-
 
     return(
         <Card onPress = {()=>props.navigation.navigate('itemDetails', {itemInfo: props.itemData})}
@@ -43,7 +42,7 @@ export default function DisplayItem(props){
                                     \nSKU: ${props.itemData.SKU}`,
                                     [
                                         props.itemData.Qty > 0 ? {
-                                            text: "Buy", 
+                                            text: "Add to Cart", 
                                             onPress: () => Alert.alert(
                                                 "Added to cart",
                                                 null,
