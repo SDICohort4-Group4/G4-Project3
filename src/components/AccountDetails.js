@@ -10,16 +10,16 @@ export default function AccountDetails({navigation}) {
     let {setAuth} = useContext(AuthContext);
 
     async function getInfo() {
-        let decoded = jwt_decode(await SecureStore.getItemAsync('key'));
+        let decoded = jwt_decode(await SecureStore.getItemAsync('access'));
         let user = {email: decoded?.email, role: decoded?.role}
         setUser(user);
     }
 
     async function logout(){
         setAuth(false);
-        SecureStore.deleteItemAsync('key');
+        SecureStore.deleteItemAsync('access');
+        SecureStore.deleteItemAsync('refresh');
     }
-
 
 
     useEffect(()=>{
@@ -29,19 +29,17 @@ export default function AccountDetails({navigation}) {
 
     return(
         <View style={styles.container}>
+            <View style={styles.headerTextBox}>
+                <Text style={styles.headerText}>Welcome Back</Text>
+            </View>
             <View style={styles.userDetails}>
-                <Feather style={styles.icon} name="user" size={30} color="#000"/>
                 <View style={styles.info}>
                     <Text style={styles.infoText} numberOfLines={1}>{`User: ${user?.email} 11111111`}</Text>
                     <Text style={styles.infoText}>{`Access: ${user?.role}`}</Text>
                 </View>
             </View>
-            
-            <View style={styles.buttonsCon}>
-                <Feather onPress={()=>{console.log(`cart pressed`)}} style={styles.button} name="shopping-cart" size={30} color="#000"/>
-                <Feather onPress={()=>{console.log(`settings pressed`)}} style={styles.button} name="settings" size={30} color="#000"/>
- 
-            </View>
+
+            <View></View>
 
             <View style={styles.logout}>
                 <Text onPress={()=>logout()} style={styles.logoutBtn}>Logout</Text>
@@ -59,22 +57,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#fffaed',
     },
 
-    icon: {
-        padding: 20,
-        backgroundColor: 'white',
-        marginHorizontal: 10,
-        borderRadius: 100,
-        elevation: 3,
+    headerTextBox: {
+        width: "90%",
+        paddingVertical: 20,
+    },
+
+    headerText: {
+        fontSize: 25,
+        fontWeight: "bold",
     },
 
     userDetails: {
         width: '90%',
+        height: '30%',
         flexDirection: 'row',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
-        margin: 20,
+
         paddingVertical: 10,
         elevation: 10,
         backgroundColor: '#f1e9cb',
@@ -113,7 +110,7 @@ const styles = StyleSheet.create({
     },
 
     logoutBtn: {
-        width: '50%',
+        width: '40%',
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white',

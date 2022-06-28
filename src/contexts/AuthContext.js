@@ -11,13 +11,13 @@ const [auth, setAuth] = useState(false);
 //create function to check auth
 let checkAuth = async() =>{
     try{
-        let curKey = await SecureStore.getItemAsync('key');
-        let decoded = jwt_decode(curKey);
+        let access = await SecureStore.getItemAsync('access');
+        let decoded = jwt_decode(access);
     
         if(decoded.exp < new Date().getTime()) {
             //the token has expired
             setAuth(false);
-            SecureStore.deleteItemAsync('key');
+            SecureStore.deleteItemAsync('access');
         } else {
             setAuth(true);
         }
