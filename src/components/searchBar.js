@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     paddingRight:8,
     flexDirection: "row",
     width: "70%",
-    backgroundColor: "##ffffc0",
+    backgroundColor: "#ffffc0",
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "space-evenly",
