@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, Alert} from 'react-native';
 import noImage from "../../assets/photo-soon.jpg";
 import DisplaySalePrice from "./displaySalePrice";
 import { Card, Button } from "react-native-paper";
-// change filename to displayItem.js testing
+
 export default function DisplayItem(props){
 
     return(
