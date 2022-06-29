@@ -1,7 +1,7 @@
 import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image, Text, Pressable, TouchableHighlight } from 'react-native';
 import {useCallback, useEffect, useState} from "react";
-import {getData as GetData} from "../components/getData";
-import DisplayItem from "../components/displayitem.js";
+import {getData as GetData} from "../Api/getData";
+import DisplayItem from "../components/displayItem.js";
 import SearchBar from "../components/searchBar.js"
 import CartIcon from "../../assets/cart-icon-gray.png"
 import { NavigationContainer } from '@react-navigation/native';
