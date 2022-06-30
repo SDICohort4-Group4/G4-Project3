@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from '../contexts/AuthContext';
 import { useContext, useEffect, useState } from "react";
-import {getUser, registerUser} from "../Api/Auth";
+import {registerUser} from "../Api/Auth";
 let icon = require('../../assets/shopin-no-tagline.png')
 
 export default function Registration({navigation}) {

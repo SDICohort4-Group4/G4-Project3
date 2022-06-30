@@ -1,19 +1,11 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { useContext, useEffect, useState } from "react";
+import {useContext} from "react";
 import AuthContext from '../contexts/AuthContext';
-import jwt_decode from "jwt-decode";
 import { Feather } from "@expo/vector-icons";
 
 export default function AccountDetails({navigation}) {
-    let [user, setUser] = useState(null);
-    let {setAuth} = useContext(AuthContext);
-
-    async function getInfo() {
-        let decoded = jwt_decode(await SecureStore.getItemAsync('access'));
-        let user = {email: decoded?.email, role: decoded?.role}
-        setUser(user);
-    }
+    let {setAuth, userData} = useContext(AuthContext);
 
     async function logout(){
         setAuth(false);
@@ -21,48 +13,53 @@ export default function AccountDetails({navigation}) {
         SecureStore.deleteItemAsync('refresh');
     }
 
-    useEffect(()=>{
-        getInfo()
-    },[])
-
+    function DisplayDetails() {
+        return(
+            <>
+            <View style={styles.userDetails}>
+                <Text style={styles.infoHeader}>Details</Text>
+                <View style={styles.info}>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Email:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>{userData?.userEmail}</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Nickname:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>{userData?.userNickname}</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Address:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>{`${userData?.userAddress1} ${userData?.userAddress2? ", " + userData?.userAddress2 : ""}`}</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Postal:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>{userData?.userPostalCode}</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Country:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>{userData?.userCountry}</Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Contact:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>{`+${userData?.userCountryCode} ${userData?.userPhoneNum}`}</Text>
+                    </View>
+                </View>
+            </View>
+            </>
+        )
+    }
+    
 
     return(
         <View style={styles.container}>
             <View style={styles.headerTextBox}>
                 <Text style={styles.headerText}>Welcome Back</Text>
             </View>
-            <View style={styles.userDetails}>
-                <Text style={styles.infoHeader}>Details</Text>
-                <View style={styles.info}>
-                    <View style={styles.infoRow}>
-                        <Text style={[{...styles.infoText},{flex: 2}]}>Email:</Text>
-                        <Text style={[{...styles.infoText},{flex: 5}]}>TestEmail@gmail.com</Text>
-                    </View>
-                    <View style={styles.infoRow}>
-                        <Text style={[{...styles.infoText},{flex: 2}]}>Nickname:</Text>
-                        <Text style={[{...styles.infoText},{flex: 5}]}>Test User 1</Text>
-                    </View>
-                    <View style={styles.infoRow}>
-                        <Text style={[{...styles.infoText},{flex: 2}]}>Address:</Text>
-                        <Text style={[{...styles.infoText},{flex: 5}]}>27 Eddasdad sdas dasd dfsd dfsdff dfs</Text>
-                    </View>
-                    <View style={styles.infoRow}>
-                        <Text style={[{...styles.infoText},{flex: 2}]}>Postal:</Text>
-                        <Text style={[{...styles.infoText},{flex: 5}]}>TestEmail@gmail.com</Text>
-                    </View>
-                    <View style={styles.infoRow}>
-                        <Text style={[{...styles.infoText},{flex: 2}]}>Country:</Text>
-                        <Text style={[{...styles.infoText},{flex: 5}]}>Singapore</Text>
-                    </View>
-                    <View style={styles.infoRow}>
-                        <Text style={[{...styles.infoText},{flex: 2}]}>Contact:</Text>
-                        <Text style={[{...styles.infoText},{flex: 5}]}>+65 12345678</Text>
-                    </View>
-                </View>
-            </View>
+            
+            <DisplayDetails/>
 
             <View style={styles.menuItemCon}>
-                <Text style={styles.menuItemText}>Update Details</Text>
+                <Text onPress={()=>{console.log("Update")}} style={styles.menuItemText}>Update Details</Text>
                 <Feather name="chevron-right" size={24} color="black" />
             </View>
 
@@ -96,14 +93,14 @@ const styles = StyleSheet.create({
         width: '90%',
         padding: 10,
         elevation: 10,
-        backgroundColor: '#f1e9cb',
+        backgroundColor: '#ffffff',
         marginBottom: 25,
     },
 
     info: {
         flexGrow: 1,
         flexShrink: 1,
-        backgroundColor: 'rgba(52, 52, 52, 0.1)',
+        backgroundColor: 'rgba(52, 52, 52, 0.05)',
         padding: 15,
         justifyContent: "center",
     },
@@ -124,7 +121,7 @@ const styles = StyleSheet.create({
     },
 
     menuItemCon:{
-        backgroundColor: '#f1e9cb',
+        backgroundColor: '#ffffff',
         width: "90%",
         flexDirection: "row",
         justifyContent: "space-between",
@@ -171,7 +168,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         backgroundColor: 'grey',
         padding: 5,
-        borderRadius: 10,
+        borderRadius: 5,
         elevation: 20,
     },
   });

@@ -6,6 +6,7 @@ const LoginContext = createContext({});
 
 export const DataProvider = ({children}) => {
 const [auth, setAuth] = useState(false);
+const[userData, setUserData] = useState({});
 
 
 //create function to check auth
@@ -36,7 +37,7 @@ useEffect(()=>{
 
     return(
         // functions and stats to be passed as value
-        <LoginContext.Provider value={{ auth, setAuth}}>
+        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData}}>
             {children}
         </LoginContext.Provider>
     )
