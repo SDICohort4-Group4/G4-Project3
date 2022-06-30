@@ -4,54 +4,71 @@ import noImage from "../../assets/photo-soon.jpg";
 import { DataTable, Button } from 'react-native-paper';
 import { Table, Row, Rows } from 'react-native-table-component'
 
+// import addToCart from '../components/addToCart.js'
+import AuthContext from '../contexts/AuthContext';
+
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 export default function ItemDetails({route, navigation}) {
     // check what data/format of data is given
-    // console.log(route.params.itemInfo);
+    // console.log(route.params.itemData);
 
-    const [qty, setQty] = useState(1);
+    const [orderQty, setOrderQty] = useState(1);
+    let {auth, setAuth} = useContext(AuthContext);
+    let {dbCartArray, setDBCartArray} = useContext(AuthContext)
 
-    function incrementQty(){
-        if(qty >= route.params.itemInfo.Qty){
-            setQty(route.params.itemInfo.Qty)
+    function incrementOrderQty(){
+        if(orderQty >= route.params.itemData.Qty){
+            setOrderQty(route.params.itemData.Qty)
             return
         }
-        setQty(qty + 1)
-        return qty;
+        setOrderQty(orderQty + 1)
+        return orderQty;
     }
 
-    function decrementQty(){
-        if(qty <= 0 ){
-            setQty(0)
+    function decrementOrderQty(){
+        if(orderQty <= 0 ){
+            setOrderQty(0)
             return
         }
-        setQty(qty - 1)
-        return qty;
+        setOrderQty(orderQty - 1)
+        return orderQty;
     }
 
-    function buyItem(qty){
-        if(qty <= 0) return;
+    function addToCart(itemName, orderQty, itemData){
+        
+        if(orderQty <= 0) {
+            return
+        };
+
+        let cartArray = dbCartArray;
+        cartArray.push({itemName: itemData.itemName, itemPrice: itemData.itemPrice, orderQty: orderQty, Qty: itemData.Qty, itemID: itemData.itemID, itemPic1: itemData.itemPic1})
+        setDBCartArray(cartArray)
+        console.log(dbCartArray)
+    
         return(Alert.alert(
-            "Added to cart",
-            `Amount : ${qty}x ${route.params.itemInfo.itemName}
-            \nPrice: $${qty * route.params.itemInfo.itemPrice}`,
-            [{text: "Okay"}],
+            "Added to cart.",
+            `Amount : ${orderQty}x ${itemName}
+            \nPrice: $${(orderQty * itemData.itemPrice).toFixed(2)}`,
+            [{text: "Accept"}],
             {cancelable: true}
         ))
-
     }
+
+    // useEffect(() => {
+    //     setDBCartArray(dbCartArray)
+    // }, [dbCartArray])
 
     const tableData = {
         tableData: [
-            ['Item : ', route.params.itemInfo.itemName],
-            ['Description : ', route.params.itemInfo.itemDescription],
-            ['Price : ', `$${route.params.itemInfo.itemPrice}`],
-            // ['SKU : ', route.params.itemInfo.SKU],
-            ['Brand :', route.params.itemInfo.brand],
-            ['Stock : ', route.params.itemInfo.Qty],
-            ['Category :', `${route.params.itemInfo.itemCategory1}, ${route.params.itemInfo.itemCategory2}`]
+            ['Item : ', route.params.itemData.itemName],
+            ['Description : ', route.params.itemData.itemDescription],
+            ['Price : ', `$${parseFloat(route.params.itemData.itemPrice).toFixed(2)}`],
+            // ['SKU : ', route.params.itemData.SKU],
+            ['Brand :', route.params.itemData.brand],
+            ['Stock : ', route.params.itemData.Qty],
+            ['Category :', `${route.params.itemData.itemCategory1}, ${route.params.itemData.itemCategory2}`]
 
         ]
     };
@@ -63,45 +80,49 @@ export default function ItemDetails({route, navigation}) {
             <View style = {styles.container}>
 
                 <View style = {styles.imageCon}>
-                    {route.params.itemInfo.itemPic1? 
-                        <Image style = {styles.image} source = {{uri: route.params.itemInfo.itemPic1}}></Image>
+                    {route.params.itemData.itemPic1? 
+                        <Image style = {styles.image} source = {{uri: route.params.itemData.itemPic1}}></Image>
                     :
                         <Image style = {styles.image} source = {noImage}></Image>
                     }
                 </View>
                 <View style = {styles.buttonsCon}>
-                    {route.params.itemInfo.Qty > 0 ?
+                    {route.params.itemData.Qty > 0 ?
                     <Text>
                         <Button
-                            style = {styles.qtyButtons}
+                            style = {styles.orderQtyButtons}
                             onPress = {() => {
-                                decrementQty();
+                                decrementOrderQty();
                             }}>-
                         </Button> 
                         <Button 
                             keyboardType = "numeric"
-                            style = {styles.qtyField}>                        
-                            {qty}                    
+                            style = {styles.orderQtyField}>                        
+                            {orderQty}                    
                         </Button>  
                         <Button 
-                            style = {styles.qtyButtons}
+                            style = {styles.orderQtyButtons}
                             onPress = {() => {
-                                incrementQty();
+                                incrementOrderQty();
                             }}>+
                         </Button>
-                        <Button 
-                            onPress = {() => {
-                                buyItem(qty)
-                            }}>
-                            Buy
-                        </Button>                            
-                    </Text>: <Text style = {styles.qtyButtons}>Please check back soon!</Text>}
+                        {auth === true? 
+                            <Button 
+                                onPress = {() => {
+                                    addToCart(route.params.itemData.itemName, orderQty, route.params.itemData)
+                                }}>
+                                Add to Cart
+                            </Button>       
+                        :
+                            <Button>Please Login</Button>}
+                     
+                    </Text>: <Text style = {styles.orderQtyButtons}>Please check back soon!</Text>}
                 </View>
             
                 <View style = {styles.infoCon}>
                 <Table 
                     borderStyle = {{ borderWidth: 0.2, borderColor: 'black' }}>
-                    <Rows data = {data.tableData} textStyle = {styles.text} />
+                    <Rows data = {data.tableData} textStyle = {styles.rowTableText} />
                 </Table>
                 </View> 
             </View>
@@ -156,10 +177,10 @@ const styles = StyleSheet.create({
     buttonsCon:{
         flex: 1
     },
-    qtyButtons:{
+    orderQtyButtons:{
         fontSize: 20,
     },
-    qtyField: {
+    orderQtyField: {
         fontSize: 20,
     },
     userDetails: {
@@ -175,6 +196,9 @@ const styles = StyleSheet.create({
     },
     // head: { height: 44, backgroundColor: 'darkblue' },
     // headText: { fontSize: 20, fontWeight: 'bold' , textAlign: 'center', color: 'white' },
-    text: { margin: 6, fontSize: 16, fontWeight: 'bold' },
-
+    rowTableText: { 
+        margin: 6, 
+        fontSize: 16, 
+        fontWeight: 'bold' 
+    },
   });

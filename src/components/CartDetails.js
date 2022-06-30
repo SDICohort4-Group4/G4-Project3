@@ -9,42 +9,71 @@ const windowWidth = Dimensions.get('window').width;
 export function CartDetails({navigation}){
 
     let {auth, setAuth} = useContext(AuthContext);
-    let {DBcartArray, setDBCartArray} = useContext(AuthContext)
+    let {dbCartArray, setDBCartArray} = useContext(AuthContext)
 
     let [totalPrice, setTotalPrice] = useState()
 
-    let [filterData, setFilterData] = useState(DBcartArray.filter(item => (item.itemName != undefined && item.itemPrice > 0 && item.stock > 0 && item.qty > 0 && item.stock >= item.qty)))
+    let [filterData, setFilterData] = useState(dbCartArray.filter(item => (
+        item.itemName != undefined && 
+        item.itemPrice > 0 && 
+        item.Qty > 0 && 
+        item.orderQty > 0 && 
+        (item.Qty >= item.orderQty)
+        )))
+    
+    // console.log(dbCartArray);
+    // console.log(filterData);
 
+    // useEffect(() => {
+    // }, [dbCartArray, filterData])
+
+    function TotalPayablePrice(itemData){
+        let totalSummaryPrice = 0
+        let itemSummaryPrice = null
+
+        itemData.forEach((item) => {
+            itemSummaryPrice = item.orderQty * item.itemPrice;
+            totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
+            // console.log(itemSummaryPrice)
+            // console.log(totalSummaryPrice)
+        })
+
+        return totalSummaryPrice;
+    }
+  
     return(
         <ScrollView>
-            <View>
-                <Text>CartDetails component Start</Text>
+                {/* <Text>CartDetails component Start</Text> */}
                 {auth === true?
                     <View>
-                        {filterData.map((data, index)=>(
-                            <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
-                        ))}
-                        {DBcartArray.length > 0 ? 
-                            <Text style = {styles.checkoutButton}>Checkout</Text>
+                        {filterData.length > 0 ? 
+                            <View>
+                                {filterData.map((data, index)=>(
+                                    <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
+                                ))}
+                                <Text>Total Price Payable: ${TotalPayablePrice(filterData).toFixed(2)}</Text>
+                                <Text style = {styles.checkoutButton}>Checkout</Text>
+                            </View>
                         :
                             <Text style = {styles.ShoppingButton}>Let's go Shopin</Text>}
                     </View>
                 :
                     <Text style = {styles.loginButton}>Please Login</Text>}
 
+                    {/* <View>
+                        {filterData.length > 0 ? 
+                            <View>
+                                {filterData.map((data, index)=>(
+                                    <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
+                                ))}
+                                <Text style = {styles.totalPayable}>Total Price Payable: ${TotalPayablePrice(filterData).toFixed(2)}</Text>
+                                <Text style = {styles.checkoutButton}>Checkout</Text>
+                            </View>
+                        :
+                            <Text style = {styles.ShoppingButton}>Let's go Shopin</Text>}
+                    </View> */}
+                {/* <Text>CartDetails component End</Text>  */}
 
-                <Text>CartDetails component End</Text>
-                {/* {auth === true ? 
-                    (DBcartArray.length > 0? 
-                    <Text style = {styles.checkoutButton}>Checkout</Text> 
-                : 
-                    <Text style = {styles.ShoppingButton}>Let's go Shopin</Text>)
-                :
-                    <Text style = {styles.loginButton}>Please Login</Text>
-                } */}
-
-                
-            </View>
         </ScrollView>
     )
 }
@@ -59,6 +88,8 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: "#FFD700",
         width: "80%",
+        height: 40,
+        marginTop: windowHeight * 0.01,
         marginBottom: windowHeight * 0.01,
 
     },
@@ -71,7 +102,9 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: "#FFD700",
         width: "80%",
-        marginBottom: windowHeight * 0.01,
+        height: 40,
+        marginTop: windowHeight * 0.40,
+        marginBottom: windowHeight * 0.40,
     },
     loginButton:{
         fontSize: 20,
@@ -82,7 +115,12 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: "#FFD700",
         width: "80%",
-        marginBottom: windowHeight * 0.01,
+        height: 40,
+        marginTop: windowHeight * 0.40,
+        marginBottom: windowHeight * 0.40,
+    },
+    totalPayable: {
+        fontSize: 20,
+        
     }
-
 })

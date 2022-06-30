@@ -9,11 +9,10 @@ import RegisterSuccess from '../components/RegisterSuccess';
 import AccountDetails from '../components/AccountDetails';
 
 
-
 const AccountStack = createNativeStackNavigator();
 const AcountDetailStack = createNativeStackNavigator();
 
-function LoginStack() {
+export function LoginStack() {
     return (
         <NavigationContainer independent={true}>
             <AccountStack.Navigator screenOptions={{headerShown: false, animation: "slide_from_right"}}>

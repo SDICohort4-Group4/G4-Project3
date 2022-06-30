@@ -3,10 +3,42 @@ import noImage from "../../assets/photo-soon.jpg";
 import DisplaySalePrice from "./displaySalePrice";
 import { Card, Button } from "react-native-paper";
 
+// import addToCart from '../components/addToCart.js'
+
+import AuthContext from '../contexts/AuthContext';
+import { useState, useEffect, useContext } from 'react';
+
 export default function DisplayItem(props){
 
+    let {auth, setAuth} = useContext(AuthContext);
+    let {dbCartArray, setDBCartArray} = useContext(AuthContext);
+
+    function addToCart(itemName, orderQty, itemData){
+        
+        if(orderQty <= 0) {
+            return
+        };
+
+        let cartArray = dbCartArray;
+        cartArray.push({itemName: itemData.itemName, itemPrice: itemData.itemPrice, orderQty: orderQty, Qty: itemData.Qty, itemID: itemData.itemID, itemPic1: itemData.itemPic1})
+        setDBCartArray(cartArray)
+        console.log(dbCartArray)
+    
+        return(Alert.alert(
+            "Added to cart.",
+            `Amount : ${orderQty}x ${itemName}
+            \nPrice: $${(orderQty * itemData.itemPrice).toFixed(2)}`,
+            [{text: "Accept"}],
+            {cancelable: true}
+        ))
+    }
+
+    // useEffect(() => {
+        
+    // }, [dbCartArray])
+
     return(
-        <Card onPress = {()=>props.navigation.navigate('itemDetails', {itemInfo: props.itemData})}
+        <Card onPress = {()=>props.navigation.navigate('itemDetails', {itemData: props.itemData})}
             style = {styles.cardContainer}>
             <View>
                 <View style = {styles.itemContainer}>
@@ -20,7 +52,7 @@ export default function DisplayItem(props){
                         <Text style = {styles.itemText1}>{props.itemData.itemName}</Text>
                     
                         {props.itemData.onSale==="NONE"? 
-                            <Text style = {styles.itemText2}>Price: ${props.itemData.itemPrice}{"\n"}</Text>
+                            <Text style = {styles.itemText2}>Price: ${parseFloat(props.itemData.itemPrice).toFixed(2)}{"\n"}</Text>
                         : 
                             <DisplaySalePrice 
                                 itemPrice={props.itemData.itemPrice}
@@ -29,34 +61,34 @@ export default function DisplayItem(props){
                                 itemDiscount={props.itemData.itemDiscount}
                             />
                         }
-                    
-                        {props.itemData.Qty>0? 
+
+                        {props.itemData.Qty > 0? 
                             <Text 
                                 style = {styles.itemTextBlue}
                                 onPress = {() =>   Alert.alert(
                                     `${props.itemData.itemName}`,
                                     `Item: ${props.itemData.itemDescription}
+                                    \nPrice: $${parseFloat(props.itemData.itemPrice).toFixed(2)}
                                     \nBrand: ${props.itemData.brand}
-                                    \nCategory: ${props.itemData.itemCategory1}, ${props.itemData.itemCategory2}
-                                    \nIn-stock: ${props.itemData.Qty}
-                                    \nSKU: ${props.itemData.SKU}`,
+                                    \nCategory: ${props.itemData.itemCategory1}, ${props.itemData.itemCategory2}`,
                                     [
-                                        props.itemData.Qty > 0 ? {
-                                            text: "Add to Cart", 
-                                            onPress: () => Alert.alert(
-                                                "Added to cart",
-                                                null,
-                                                [{text: "Okay"}],
-                                                {cancelable:true}),
-                                        }:      
-                                        {text: "Cancel"}, props.itemData.Qty > 0 ?{text: "Cancel",} : null
+                                        props.itemData.Qty > 0 ? 
+                                            (auth === true?
+                                                {text: "Add to Cart", 
+                                                    onPress: () => addToCart(props.itemData.itemName, 1, props.itemData),
+                                                }
+                                            :   
+                                                {text: "Please login"})
+                                        :
+                                            null
                                     ],
                                     {cancelable: true}
                                 )}
-                                onLongPress = {() => Alert.alert(`LONNGGGGGGGGGGGGGGGGGGGGGGG Press`)}>
-                            In Stock <Text style = {styles.buyButton}>Buy Now!</Text></Text>
+                                // onLongPress = {() => Alert.alert(`LONNGGGGGGGGGGGGGGGGGGGGGGG Press`)}
+                            >
+                                In Stock <Text style = {styles.buyButton}>Buy Now!</Text></Text>
                             :
-                            <Text style={styles.itemTextRed}>Oops, Sorry No Stock!</Text>
+                                <Text style={styles.itemTextRed}>Oops, Sorry No Stock!</Text>
                         }
                     
                     </View>

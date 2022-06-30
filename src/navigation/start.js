@@ -4,11 +4,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { HomeScreen } from "../screens/home.js";
 import AccountScreen from "../screens/account.js";
-import {CartDetails} from '../components/CartDetails.js'
 
 import CartIcon from "../../assets/cart-icon-gray.png"
 import Icon from "../../assets/icon.png"
+import { SimpleLineIcons } from '@expo/vector-icons'; 
+
 import { EvilIcons } from '@expo/vector-icons'; 
+import CartScreen from "../screens/cart.js"
 
 const Tab = createBottomTabNavigator();
 
@@ -34,10 +36,13 @@ export default function StartScreen() {
                         // tabBarIconStyle:{display:'none',},
                         tabBarIcon : () => {
                             return (
-                                <Image
-                                    style = {styles.cartIconContainer}
-                                    source = {Icon} 
-                                />
+                                // <Image
+                                //     style = {styles.cartIconContainer}
+                                //     source = {Icon} 
+                                // />
+                                <View style = {styles.cartIconContainer}>
+                                    <SimpleLineIcons name="bag" size={20} color="black" />
+                                </View>
                             )
                         }
                     }}
@@ -50,14 +55,17 @@ export default function StartScreen() {
                         // tabBarIconStyle:{display:'none',},
                         tabBarIcon : () => {
                             return (
-                                <EvilIcons name = "user" size = {25} style = {styles.cartIconContainer}/>
+                                <View style = {styles.cartIconContainer}>
+                                    <EvilIcons name = "user" size = {28} />
+                                </View>
+
                             )
                         }
                     }}
                 />
                 <Tab.Screen 
                     name = "Cart" 
-                    component = {CartDetails} 
+                    component = {CartScreen} 
                     options = {{
                         tabBarLabelStyle: {fontSize: 15, fontWeight: "bold", flex: 1, textAlignVertical: "center"},
                         tabBarIcon : () => {
@@ -82,6 +90,8 @@ const styles = StyleSheet.create({
         height: windowHeight * 0.03,
         // top:3,
         justifyContent: "center",
+        // alignSelf: "center",
+        alignItems: "center",
         top: 5,
     }
 })

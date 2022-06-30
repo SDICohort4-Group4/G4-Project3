@@ -10,18 +10,29 @@ export default function DisplayCartItem(props){
     return(
         <Card style = {styles.cardContainer}>
             <View>
-                {/* <Text>DisplayCartItem Test</Text> */}
-                <Text>{props.itemData.itemName}</Text>
-                
-                <Text>Price: ${props.itemData.itemPrice.toFixed(2)}</Text>
+                <View style = {styles.itemContainer}>
+                    {/* <Text>DisplayCartItem Test</Text> */}
+                    {props.itemData.itemPic1? 
+                            <Image style={styles.image1} source = {{uri:(props.itemData.itemPic1)}}></Image>
+                        :
+                            <Image style={styles.image1} source = {noImage}></Image>
+                        }
 
-                {props.itemData.stock > 0? 
-                    <Text>In stock</Text>:<Text>Out of stock</Text>
-                }
+                    
+                    <View style = {styles.itemInfoContainer}>
+                        <Text>{props.itemData.itemName}</Text>
 
-                <Text>Qty: {props.itemData.qty}</Text>
+                        {props.itemData.Qty > 0? 
+                            <Text>In stock</Text>:<Text>Out of stock</Text>
+                        }
 
-                <Text>Summary Price: ${((props.itemData.itemPrice) * props.itemData.qty).toFixed(2)}</Text>
+                        <Text>Qty in Cart: {props.itemData.orderQty}</Text>
+
+                        <Text>Price: $ {parseFloat(props.itemData.itemPrice).toFixed(2)}</Text>
+
+                        <Text>Summary Price: ${parseFloat((props.itemData.itemPrice) * props.itemData.orderQty).toFixed(2)}</Text>
+                    </View>
+                </View>
             </View>
         </Card>
     )
@@ -29,13 +40,27 @@ export default function DisplayCartItem(props){
 
 const styles = StyleSheet.create({
     image1:{
-
+        width:"40%",
+        height:120,
+        borderRadius: 10,
+        backgroundColor:"white",
     },
     itemContainer:{
-
+        flex:1,
+        flexDirection:"row",
+        marginHorizontal: 5,
+        padding: 0, 
+        alignSelf: 'center',
+        // padding: 8,
+        borderRadius: 5,
     },
     itemInfoContainer:{
-
+        margin:5,
+        justifyContent:"center",
+        textAlign: "center",
+        width:"60%",
+        paddingRight:5,
+        paddingLeft: 5,
     },
     cardContainer: {
         elevation: 0,
@@ -46,5 +71,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         elevation: 0,
     },
+
     
 })

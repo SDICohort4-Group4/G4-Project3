@@ -8,20 +8,19 @@ export const DataProvider = ({children}) => {
 const [auth, setAuth] = useState(false);
 const[userData, setUserData] = useState({});
 
-const [DBcartArray, setDBCartArray] = useState(
+const [dbCartArray, setDBCartArray] = useState(
     [
-        {itemName: 'Square', itemPrice: 1.70, qty: 10, stock: 100}, 
-        {itemName: 'Circle', itemPrice: 100, stock: 50}, 
-        {itemName: 'Triangle', itemPrice: 7, qty: 10}, 
-        {itemName: 'Non-euclidean space', qty: 3, stock: 20},
-        {itemName: 'Pentagon', itemPrice: 2.50, qty: 20, stock: 100},
-        {itemName: 'Oreo McFlurry', itemPrice: 4, qty: 20, stock: 300},
-        {itemName: 'Happy Meal', itemPrice: 3.5, qty: 50, stock: 2500},
-        {itemName: '20pc McNuggets', itemPrice: 13.70, qty: 2, stock: 50},
-        {itemName: 'Dbl Filet-O-Fish Extra Value Meal', itemPrice: 9, qty: 5, stock: 5},
+        // {itemName: 'Square', itemPrice: 1.70, orderQty: 30, Qty: 100}, 
+        // {itemName: 'Circle', itemPrice: 100, Qty: 50}, 
+        // {itemName: 'Triangle', itemPrice: 7, orderQty: 10}, 
+        // {itemName: 'Non-euclidean space', orderQty: 3, Qty: 20},
+        // {itemName: 'Pentagon', itemPrice: 2.50, orderQty: 20, Qty: 100},
+        // {itemName: 'Oreo McFlurry', itemPrice: 4, orderQty: 20, Qty: 300},
+        // {itemName: 'Happy Meal', itemPrice: 3.5, orderQty: 50, Qty: 2500},
+        // {itemName: '20pc McNuggets', itemPrice: 13.70, orderQty: 2, Qty: 50},
+        // {itemName: 'Dbl Filet-O-Fish Extra Value Meal', itemPrice: 9, orderQty: 5, Qty: 5},
     ]
 );
-
 
 //create function to check auth
 let checkAuth = async() =>{
@@ -51,7 +50,7 @@ useEffect(()=>{
 
     return(
         // functions and stats to be passed as value
-        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, DBcartArray, setDBCartArray}}>
+        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, dbCartArray, setDBCartArray}}>
             {children}
         </LoginContext.Provider>
     )
