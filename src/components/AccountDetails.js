@@ -20,6 +20,10 @@ export default function AccountDetails({navigation}) {
                 <Text style={styles.infoHeader}>Details</Text>
                 <View style={styles.info}>
                     <View style={styles.infoRow}>
+                        <Text style={[{...styles.infoText},{flex: 2}]}>Name:</Text>
+                        <Text style={[{...styles.infoText},{flex: 5}]}>{userData?.userName}</Text>
+                    </View>
+                    <View style={styles.infoRow}>
                         <Text style={[{...styles.infoText},{flex: 2}]}>Email:</Text>
                         <Text style={[{...styles.infoText},{flex: 5}]}>{userData?.userEmail}</Text>
                     </View>
@@ -59,7 +63,7 @@ export default function AccountDetails({navigation}) {
             <DisplayDetails/>
 
             <View style={styles.menuItemCon}>
-                <Text onPress={()=>{console.log("Update")}} style={styles.menuItemText}>Update Details</Text>
+                <Text onPress={()=> navigation.navigate('UpdateDetails')} style={styles.menuItemText}>Update Details</Text>
                 <Feather name="chevron-right" size={24} color="black" />
             </View>
 
