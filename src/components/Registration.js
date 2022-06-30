@@ -124,9 +124,9 @@ const styles = StyleSheet.create({
 
     btnContainer: {
         backgroundColor: 'gold',
-        width: '100%',
+        width: '70%',
         height: 40,
-        borderRadius: 20,
+        borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
     },
