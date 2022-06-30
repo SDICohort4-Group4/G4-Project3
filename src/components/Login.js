@@ -2,13 +2,13 @@ import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from '../contexts/AuthContext';
 import { useContext, useEffect, useState } from "react";
-import {getAuth} from "../Api/Auth";
+import {getAuth, getUserInfo} from "../Api/Auth";
 let icon = require('../../assets/shopin-no-tagline.png')
 
 export default function Login({navigation}) {
 
     // to be set after getting
-    const {auth, setAuth} = useContext(AuthContext);
+    const {setAuth, setUserData} = useContext(AuthContext);
     const [errMsg, setErrMsg] = useState (null);
     const [userMail, setUserMail] = useState(null);
     const [userPass, setUserPass] = useState(null);
@@ -20,6 +20,14 @@ export default function Login({navigation}) {
             // storing key into secure store
             await SecureStore.setItemAsync('access', response.accessToken);
             await SecureStore.setItemAsync('refresh', response.refreshToken);
+            // get user data to global userData
+            let userRes = await getUserInfo();
+            if (userRes.status === 200) {
+                setUserData(userRes.data);
+            } else {
+                setErrMsg(err);
+            }
+            
             setAuth(true);
         };
         // for errors retured 
