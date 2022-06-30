@@ -19,10 +19,19 @@ export function CartDetails({navigation}){
         <ScrollView>
             <View>
                 <Text>CartDetails component Start</Text>
-                    {/* {console.log(tempCartArray)} */}
-                    {filterData.map((data, index)=>(
-                        <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
-                    ))}
+                {auth === true?
+                    <View>
+                        {filterData.map((data, index)=>(
+                            <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
+                        ))}
+                        {DBcartArray.length > 0 ? 
+                            <Text style = {styles.checkoutButton}>Checkout</Text>
+                        :
+                            <Text style = {styles.ShoppingButton}>Let's go Shopin</Text>}
+                    </View>
+                :
+                    <Text style = {styles.loginButton}>Please Login</Text>}
+
 
                 <Text>CartDetails component End</Text>
                 {/* {auth === true ? 
@@ -31,7 +40,7 @@ export function CartDetails({navigation}){
                 : 
                     <Text style = {styles.ShoppingButton}>Let's go Shopin</Text>)
                 :
-                    <Text>Please Login</Text>
+                    <Text style = {styles.loginButton}>Please Login</Text>
                 } */}
 
                 
@@ -54,6 +63,17 @@ const styles = StyleSheet.create({
 
     },
     ShoppingButton:{
+        fontSize: 20,
+        textAlign: "center",
+        alignSelf: "center",
+        borderWidth: 0.02,
+        borderRadius: 20,
+        padding: 5,
+        backgroundColor: "#FFD700",
+        width: "80%",
+        marginBottom: windowHeight * 0.01,
+    },
+    loginButton:{
         fontSize: 20,
         textAlign: "center",
         alignSelf: "center",
