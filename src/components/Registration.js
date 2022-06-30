@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from '../contexts/AuthContext';
 import { useContext, useEffect, useState } from "react";
-import {getUser, registerUser} from "../Api/Auth";
+import {registerUser} from "../Api/Auth";
 let icon = require('../../assets/shopin-no-tagline.png')
 
 export default function Registration({navigation}) {
@@ -26,14 +26,6 @@ export default function Registration({navigation}) {
             return;
         } 
 
-        // get a list of user 
-        let userList = await getUser();
-        // check if user is in list
-        if(userList.data.data?.some((obj) => obj["userEmail"]?.toLowerCase() == userMail.toLowerCase())) {
-            setErrMsg('Email is already registered');
-            return;
-        } 
-        
         // check password agains regex
         if(!PassRegex.test(pass)) {
             setErrMsg('Requires at least 8 characters, both cases, 1 number and 1 special character');
@@ -51,6 +43,8 @@ export default function Registration({navigation}) {
         if (response.status === 200) {
             // Register success
             navigation.navigate('RegisterSuccess')
+        } else if(response.status === 400) {
+            setErrMsg(`User already exist`); 
         } else {
             // Registeration failed
             setErrMsg(`Registration failed with ${response.status} code`);

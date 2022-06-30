@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 // create functions to retreive tokens
 
@@ -47,23 +48,20 @@ APIAuth.interceptors.response.use(
     async (err) => {
         const originalConfig = err.config;
 
-        if(err.response) {
-            //When the Access Token has expired
-            if (err.response.status === 401 && !originalConfig._retry) {
-                originalConfig._retry = true;
-                try {
-                    // call refresh token api and get new access token
-                    const refreshToken = await getLocalRefreshToken();
-                    API.defaults.headers.common["x-refresh-token"] = refreshToken;
-                    let response = API.post("/auth/refreshToken");
-                    console.log(response)
-                } catch {
+        //When the Access Token has expired
+        if (err.response.status === 401 && !originalConfig._retry) {
+            originalConfig._retry = true;
 
-                }
-            }
+            // call refresh token api and get new access token
+            const refreshToken = await getLocalRefreshToken();
+            API.defaults.headers["x-refresh-token"] = refreshToken;
+            let newToken = APIAuth.post("/auth/refreshToken");
+            API.defaults.headers["x-access-token"] = newToken;
+            await SecureStore.setItemAsync('access', newToken);
+            return APIAuth(originalConfig);
         }
-    }
-)
+        return Promise.reject(error); 
+    });
 
 export async function getAuth(user, pass){
     
@@ -82,10 +80,10 @@ export async function getAuth(user, pass){
     }
 }
 
-export async function getUser(){
+export async function getUserInfo(){
     try {
-        const response = await API.get('/user');
-        return {status: response.status, data: response.data};
+        const response = await APIAuth.get('/user/user-info');
+        return {status: response.status, data: response.data.data};
     } catch(err) {
         return {status: err.response.status};
     }

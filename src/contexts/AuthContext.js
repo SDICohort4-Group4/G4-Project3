@@ -6,6 +6,7 @@ const LoginContext = createContext({});
 
 export const DataProvider = ({children}) => {
 const [auth, setAuth] = useState(false);
+const[userData, setUserData] = useState({});
 
 const [DBcartArray, setDBCartArray] = useState(
     [
@@ -50,7 +51,7 @@ useEffect(()=>{
 
     return(
         // functions and stats to be passed as value
-        <LoginContext.Provider value={{ auth, setAuth, DBcartArray, setDBCartArray}}>
+        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, DBcartArray, setDBCartArray}}>
             {children}
         </LoginContext.Provider>
     )
