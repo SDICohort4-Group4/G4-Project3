@@ -27,11 +27,11 @@ export default function Login({navigation}) {
             } else {
                 setErrMsg(err);
             }
-            
+
             setAuth(true);
         };
         // for errors retured 
-        if (response.status === 400) setErrMsg('Account does not exist');
+        if (response.status === 400 || response.status === 404) setErrMsg('Account does not exist');
         if (response.status === 401) setErrMsg('Incorrect password');
     }
 
@@ -106,9 +106,9 @@ const styles = StyleSheet.create({
 
     btnContainer: {
         backgroundColor: 'gold',
-        width: '100%',
+        width: '70%',
         height: 40,
-        borderRadius: 20,
+        borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
     },

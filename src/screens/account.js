@@ -7,6 +7,8 @@ import Login from '../components/Login.js';
 import Registration from '../components/Registration.js'
 import RegisterSuccess from '../components/RegisterSuccess';
 import AccountDetails from '../components/AccountDetails';
+import UpdateDetails from '../components/UpdateDetails';
+
 
 
 
@@ -30,6 +32,7 @@ function DetailStack() {
         <NavigationContainer independent={true}>
             <AcountDetailStack.Navigator screenOptions={{headerShown: false, animation: "slide_from_right"}}>
                 <AcountDetailStack.Screen name='AccountDetails' component={AccountDetails}/>
+                <AcountDetailStack.Screen name='UpdateDetails' component={UpdateDetails}/>
             </AcountDetailStack.Navigator>
         </NavigationContainer>
     )

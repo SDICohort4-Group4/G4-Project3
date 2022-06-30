@@ -49,18 +49,20 @@ APIAuth.interceptors.response.use(
         const originalConfig = err.config;
 
         //When the Access Token has expired
-        if (err.response.status === 401 && !originalConfig._retry) {
+        if (err.response.status === 401 && !originalConfig._retry ) {
             originalConfig._retry = true;
 
             // call refresh token api and get new access token
             const refreshToken = await getLocalRefreshToken();
-            API.defaults.headers["x-refresh-token"] = refreshToken;
-            let newToken = APIAuth.post("/auth/refreshToken");
-            API.defaults.headers["x-access-token"] = newToken;
-            await SecureStore.setItemAsync('access', newToken);
-            return APIAuth(originalConfig);
+            if (refreshToken) {
+                API.defaults.headers["x-refresh-token"] = refreshToken;
+                let newToken = APIAuth.post("/auth/refreshToken");
+                API.defaults.headers["x-access-token"] = newToken;
+                await SecureStore.setItemAsync('access', newToken);
+                return APIAuth(originalConfig);
+            }
         }
-        return Promise.reject(error); 
+        return Promise.reject(err); 
     });
 
 export async function getAuth(user, pass){
@@ -68,7 +70,7 @@ export async function getAuth(user, pass){
     let loginData = {"email": user,
                     "pwd": pass}
     try {
-        const response = await API.post('/user/login', loginData);
+        const response = await APIAuth.post('/user/login', loginData);
         return {
             status: response.status,
             accessToken: response.headers["x-access-token"],
@@ -93,7 +95,17 @@ export async function registerUser(user, pass){
     let RegisterData = {"email": user,
                         "pwd": pass}
     try {
-        const response = await API.post('/user/register', RegisterData);
+        const response = await APIAuth.post('/user/register', RegisterData);
+        return {status: response.status, data: response.data};
+    } catch(err) {
+        return {status: err.response.status};
+    }
+}
+
+export async function updateUser(userData){
+    let updateData = JSON.stringify(userData);
+    try {
+        const response = await APIAuth.put('/user/update', updateData);
         return {status: response.status, data: response.data};
     } catch(err) {
         return {status: err.response.status};
