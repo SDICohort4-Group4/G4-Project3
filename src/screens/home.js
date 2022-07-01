@@ -72,11 +72,11 @@ function BrowseScreen({navigation}) {
                 setClicked = {setClicked}
             />
             <PriceSortButton priceSortASC={priceSortASC} setpriceSortASC={setpriceSortASC} priceSort={priceSort}/>
-            <Pressable 
+            {/* <Pressable 
                 style = {styles.cartIconContainer} 
-                onPress={() => navigation.navigate('cartDetails')}>
-                    <Image style = {styles.cartIconContainer} source = {CartIcon}/>
-            </Pressable>
+                onPress={() => navigation.navigate('cartDetails')}> */}
+            {/* </Pressable> */}
+            {/* <Image style = {styles.cartIconContainer} source = {CartIcon}/> */}
         </View>
         
         <ScrollView 
@@ -103,7 +103,7 @@ export function HomeScreen() {
             <ShopStack.Navigator screenOptions = {{headerShown: false, animation: "slide_from_right"}}>
                 <ShopStack.Screen name = 'browse' component = {BrowseScreen}/>
                 <ShopStack.Screen name = 'itemDetails' component = {ItemDetails}/>
-                <ShopStack.Screen name = 'cartDetails' component = {CartDetails} />
+                {/* <ShopStack.Screen name = 'cartDetails' component = {CartDetails} /> */}
             </ShopStack.Navigator>
         </NavigationContainer>       
     )

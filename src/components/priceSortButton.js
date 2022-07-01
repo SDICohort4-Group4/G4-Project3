@@ -5,19 +5,21 @@ import { AntDesign } from "@expo/vector-icons";
 export default function PriceSortButton({priceSortASC, setpriceSortASC, priceSort}){
     return(
         <View >
-            <TouchableOpacity style={styles.container} onPress={()=>{setpriceSortASC(!priceSortASC);priceSort()}}>
-               
-                <Text style={   priceSortASC?
-                                styles.sortASC
-                                :
-                                styles.sortDESC}>
-                Price</Text>
-            
-            {priceSortASC?
-                <AntDesign style={styles.upArrow} name="up" size={20} color="blue"/>
-            :
-                <AntDesign style={styles.downArrow} name="down" size={20} color="black"/>
-            }
+            <TouchableOpacity style = {styles.container} onPress = {() => {setpriceSortASC(!priceSortASC);priceSort()}}>
+                <Text 
+                    style = {priceSortASC? 
+                        styles.sortASC
+                    :
+                        styles.sortDESC
+                    }
+                >
+                Price
+                </Text>
+                {priceSortASC?
+                    <AntDesign style = {styles.upArrow} name = "up" size = {20} color = "blue"/>
+                :
+                    <AntDesign style = {styles.downArrow} name = "down" size = {20} color = "black"/>
+                }
             </TouchableOpacity>
         </View>
     )
@@ -39,9 +41,9 @@ const styles = StyleSheet.create({
         color:"black",
     },
     upArrow:{
-        top:0,
+        top: 1,
     },
     downArrow:{
-        top:7,
+        top: 1,
     }
 })

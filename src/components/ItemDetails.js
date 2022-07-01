@@ -36,9 +36,10 @@ export default function ItemDetails({route, navigation}) {
         return(Alert.alert(
             "Added to cart",
             `Amount : ${qty}x ${route.params.itemInfo.itemName}
-            \nPrice: $${qty*route.params.itemInfo.itemPrice}`,
+            \nPrice: $${qty * route.params.itemInfo.itemPrice}`,
             [{text: "Okay"}],
-            {cancelable:true}))
+            {cancelable: true}
+        ))
 
     }
 
@@ -47,7 +48,7 @@ export default function ItemDetails({route, navigation}) {
             ['Item : ', route.params.itemInfo.itemName],
             ['Description : ', route.params.itemInfo.itemDescription],
             ['Price : ', `$${route.params.itemInfo.itemPrice}`],
-            ['SKU : ', route.params.itemInfo.SKU],
+            // ['SKU : ', route.params.itemInfo.SKU],
             ['Brand :', route.params.itemInfo.brand],
             ['Stock : ', route.params.itemInfo.Qty],
             ['Category :', `${route.params.itemInfo.itemCategory1}, ${route.params.itemInfo.itemCategory2}`]
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
         // flex: 5,
         height: windowHeight*0.4,
         width: '100%',
+        backgroundColor: "white",
     },
 
     image:{

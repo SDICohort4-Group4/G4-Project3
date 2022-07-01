@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     width: "80%",
   },
-    cancelButtonText:{
+  cancelButtonText:{
     fontSize:15,
     color:"blue",
     fontWeight:"bold",

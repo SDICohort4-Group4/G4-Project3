@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 // create functions to retreive tokens
 
@@ -47,30 +48,29 @@ APIAuth.interceptors.response.use(
     async (err) => {
         const originalConfig = err.config;
 
-        if(err.response) {
-            //When the Access Token has expired
-            if (err.response.status === 401 && !originalConfig._retry) {
-                originalConfig._retry = true;
-                try {
-                    // call refresh token api and get new access token
-                    const refreshToken = await getLocalRefreshToken();
-                    API.defaults.headers.common["x-refresh-token"] = refreshToken;
-                    let response = API.post("/auth/refreshToken");
-                    console.log(response)
-                } catch {
+        //When the Access Token has expired
+        if (err.response.status === 401 && !originalConfig._retry ) {
+            originalConfig._retry = true;
 
-                }
+            // call refresh token api and get new access token
+            const refreshToken = await getLocalRefreshToken();
+            if (refreshToken) {
+                API.defaults.headers["x-refresh-token"] = refreshToken;
+                let newToken = APIAuth.post("/auth/refreshToken");
+                API.defaults.headers["x-access-token"] = newToken;
+                await SecureStore.setItemAsync('access', newToken);
+                return APIAuth(originalConfig);
             }
         }
-    }
-)
+        return Promise.reject(err); 
+    });
 
 export async function getAuth(user, pass){
     
     let loginData = {"email": user,
                     "pwd": pass}
     try {
-        const response = await API.post('/user/login', loginData);
+        const response = await APIAuth.post('/user/login', loginData);
         return {
             status: response.status,
             accessToken: response.headers["x-access-token"],
@@ -82,10 +82,10 @@ export async function getAuth(user, pass){
     }
 }
 
-export async function getUser(){
+export async function getUserInfo(){
     try {
-        const response = await API.get('/user');
-        return {status: response.status, data: response.data};
+        const response = await APIAuth.get('/user/user-info');
+        return {status: response.status, data: response.data.data};
     } catch(err) {
         return {status: err.response.status};
     }
@@ -95,7 +95,17 @@ export async function registerUser(user, pass){
     let RegisterData = {"email": user,
                         "pwd": pass}
     try {
-        const response = await API.post('/user/register', RegisterData);
+        const response = await APIAuth.post('/user/register', RegisterData);
+        return {status: response.status, data: response.data};
+    } catch(err) {
+        return {status: err.response.status};
+    }
+}
+
+export async function updateUser(userData){
+    let updateData = JSON.stringify(userData);
+    try {
+        const response = await APIAuth.put('/user/update', updateData);
         return {status: response.status, data: response.data};
     } catch(err) {
         return {status: err.response.status};
