@@ -111,13 +111,13 @@ export function HomeScreen() {
 
 const styles = StyleSheet.create({
     container1:{
-        backgroundColor:"#FDD100",
+        backgroundColor:"#FFEFB7",
         flexDirection:"row",
         alignItems:"center",
         
     },
     container2:{
-        backgroundColor:"#fffaed",
+        backgroundColor:"#FFFEFA",
     },
     priceSortText:{
         fontSize:15,

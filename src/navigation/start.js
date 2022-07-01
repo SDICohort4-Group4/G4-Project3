@@ -13,7 +13,7 @@ export default function StartScreen() {
         <>
         <NavigationContainer>
         <Tab.Navigator screenOptions={{
-                          headerStyle:{height:60, backgroundColor:"#D1920D"},
+                          headerStyle:{height:60, backgroundColor:"#FFD700"},
                           headerTitleStyle:{color:"white"},
                           tabBarStyle:{backgroundColor:"#FFD700", height: 40},
                           }}>
