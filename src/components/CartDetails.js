@@ -13,13 +13,13 @@ export function CartDetails({navigation}){
 
     let [totalPrice, setTotalPrice] = useState()
 
-    let [filterData, setFilterData] = useState(dbCartArray.filter(item => (
-        item.itemName != undefined && 
-        item.itemPrice > 0 && 
-        item.Qty > 0 && 
-        item.orderQty > 0 && 
-        (item.Qty >= item.orderQty)
-        )))
+    // let [filterData, setFilterData] = useState(dbCartArray.filter(item => (
+    //     item.itemName != undefined && 
+    //     item.itemPrice > 0 && 
+    //     item.Qty > 0 && 
+    //     item.orderQty > 0 && 
+    //     (item.Qty >= item.orderQty)
+    // )))
     
     // console.log(dbCartArray);
     // console.log(filterData);
@@ -37,8 +37,14 @@ export function CartDetails({navigation}){
             // console.log(itemSummaryPrice)
             // console.log(totalSummaryPrice)
         })
-
+        
         return totalSummaryPrice;
+    }
+
+    // setTotalPrice(TotalPayablePrice(filterData))
+
+    function printValue(){
+        console.log(dbCartArray, new Date)
     }
   
     return(
@@ -46,31 +52,31 @@ export function CartDetails({navigation}){
                 {/* <Text>CartDetails component Start</Text> */}
                 {auth === true?
                     <View>
-                        {filterData.length > 0 ? 
+                        {dbCartArray.length > 0 ? 
                             <View>
-                                {filterData.map((data, index)=>(
+                                {dbCartArray.map((data, index)=>(
                                     <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
                                 ))}
-                                <Text>Total Price Payable: ${TotalPayablePrice(filterData).toFixed(2)}</Text>
-                                <Text style = {styles.checkoutButton}>Checkout</Text>
+                                <Text style = {styles.totalPayable}>Total Price Payable: ${TotalPayablePrice(dbCartArray).toFixed(2)}</Text>
+                                <Text style = {styles.checkoutButton} onPress = {() => printValue()}>Checkout</Text>
                             </View>
                         :
-                            <Text style = {styles.ShoppingButton}>Let's go Shopin</Text>}
+                            <Text style = {styles.ShoppingButton } onPress = {() => printValue()}>Let's go Shopin</Text>}
                     </View>
                 :
-                    <Text style = {styles.loginButton}>Please Login</Text>}
+                    <Text style = {styles.loginButton} onPress = {() => printValue()}>Please Login</Text>}
 
                     {/* <View>
-                        {filterData.length > 0 ? 
+                        {dbCartArray.length > 0 ? 
                             <View>
-                                {filterData.map((data, index)=>(
+                                {dbCartArray.map((data, index)=>(
                                     <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
                                 ))}
-                                <Text style = {styles.totalPayable}>Total Price Payable: ${TotalPayablePrice(filterData).toFixed(2)}</Text>
-                                <Text style = {styles.checkoutButton}>Checkout</Text>
+                                <Text style = {styles.totalPayable}>Total Price Payable: ${TotalPayablePrice(dbCartArray).toFixed(2)}</Text>
+                                <Text style = {styles.checkoutButton} onPress = {() => printValue()}>Checkout</Text>
                             </View>
                         :
-                            <Text style = {styles.ShoppingButton}>Let's go Shopin</Text>}
+                            <Text style = {styles.ShoppingButton} onPress = {() => printValue()}>Let's go Shopin</Text>}
                     </View> */}
                 {/* <Text>CartDetails component End</Text>  */}
 

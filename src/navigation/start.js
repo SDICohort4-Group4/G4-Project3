@@ -12,6 +12,8 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons'; 
 import CartScreen from "../screens/cart.js"
 
+import { MaterialIcons } from '@expo/vector-icons';
+
 const Tab = createBottomTabNavigator();
 
 const windowHeight = Dimensions.get('window').height;
@@ -24,6 +26,7 @@ export default function StartScreen() {
             <Tab.Navigator 
                 screenOptions = {{
                     headerStyle: {height: 60, backgroundColor: "#D1920D"},
+                    headerShown: false,
                     headerTitleStyle: {color: "white"},
                     tabBarStyle: {backgroundColor: "#FFD700", height: 50},
                 }}>
@@ -41,7 +44,8 @@ export default function StartScreen() {
                                 //     source = {Icon} 
                                 // />
                                 <View style = {styles.cartIconContainer}>
-                                    <SimpleLineIcons name="bag" size={20} color="black" />
+                                    {/* <SimpleLineIcons name="bag" size={20} color="black" /> */}
+                                    <MaterialIcons name="storefront" size={24} color="black" />
                                 </View>
                             )
                         }

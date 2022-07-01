@@ -12,8 +12,12 @@ const CartDetailStack = createNativeStackNavigator();
 function CartStack() {
     return (
         <NavigationContainer independent = {true}>
-            <CartDetailStack.Navigator screenOptions = {{headerShown: false}}>
-                <CartDetailStack.Screen name = "Cart" component = {CartDetails}></CartDetailStack.Screen>
+            <CartDetailStack.Navigator >
+                <CartDetailStack.Screen 
+                name = "Cart" 
+                component = {CartDetails} 
+                    options = {{
+                    title: "Cart"}} ></CartDetailStack.Screen>
             </CartDetailStack.Navigator>
         </NavigationContainer>
     )

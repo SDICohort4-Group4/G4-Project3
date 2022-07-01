@@ -100,8 +100,12 @@ export function HomeScreen() {
   
     return(
         <NavigationContainer independent = {true}>
-            <ShopStack.Navigator screenOptions = {{headerShown: false, animation: "slide_from_right"}}>
-                <ShopStack.Screen name = 'browse' component = {BrowseScreen}/>
+            <ShopStack.Navigator screenOptions = {{ animation: "slide_from_right"}}>
+                <ShopStack.Screen 
+                name = 'browse' 
+                component = {BrowseScreen}                     
+                options = {{
+                    title: "Let's go Shopin"}} />
                 <ShopStack.Screen name = 'itemDetails' component = {ItemDetails}/>
                 {/* <ShopStack.Screen name = 'cartDetails' component = {CartDetails} /> */}
             </ShopStack.Navigator>
