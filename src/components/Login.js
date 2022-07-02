@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, Modal, Animated, Easing } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from '../contexts/AuthContext';
 import { useContext, useEffect, useState } from "react";
 import {getAuth, getUserInfo} from "../Api/Auth";
-let icon = require('../../assets/shopin-no-tagline.png')
+let icon = require('../../assets/shopin-no-tagline.png');
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Login({navigation}) {
 
@@ -12,8 +13,10 @@ export default function Login({navigation}) {
     const [errMsg, setErrMsg] = useState (null);
     const [userMail, setUserMail] = useState(null);
     const [userPass, setUserPass] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     async function handleLogin(user, pass) {
+        setLoading(true);
         let response = await getAuth(user, pass);
         // if login success
         if (response.status === 200) {
@@ -27,7 +30,6 @@ export default function Login({navigation}) {
             } else {
                 setErrMsg(err);
             }
-
             setAuth(true);
         };
         // for errors retured 
@@ -35,6 +37,45 @@ export default function Login({navigation}) {
         if (response.status === 401) setErrMsg('Incorrect password');
     }
 
+    function LoadModal() {
+        let spinValue = new Animated.Value(0);
+        // setting up the animation
+        Animated.loop(
+            Animated.timing(
+                spinValue, {
+                    toValue: 1,
+                    duration: 1000,
+                    easing: Easing.linear,
+                    useNativeDriver: true
+                }
+            )
+        ).start();
+
+        // interpolate for rotation values
+        const spin = spinValue.interpolate({
+            inputRange: [0,1],
+            outputRange: ['0deg', '360deg']
+        });
+
+        return(
+            <Modal 
+            animationType='fade'
+            transparent={true}
+            visible={loading}>
+                <View style={styles.modalView}>
+                    <View style={styles.iconContainer}>
+                        <Animated.View style={{transform: [{rotate: spin}]}}>
+                            <MaterialCommunityIcons name="loading" size={50} color="white" />
+                        </Animated.View>    
+                        <Text style={{fontSize: 16, color:'white', fontWeight: 'bold'}}>Loading</Text>
+                    </View>
+                </View>
+            </Modal>
+        )
+    }
+
+
+    // to refresh err message on input of user and pass
     useEffect(()=>{
         setErrMsg('')
     },[userMail, userPass]);
@@ -42,6 +83,7 @@ export default function Login({navigation}) {
 
     return(
         <View style={styles.container}>
+            <LoadModal />
             <Image style={styles.icon} source={icon}></Image>
             <View style={styles.form}>
                 <Text style={styles.label}>Email</Text>
@@ -162,5 +204,20 @@ const styles = StyleSheet.create({
         height: 80,
         width: 80,
         borderRadius: 100,
+    },
+
+    modalView:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    iconContainer:{
+        backgroundColor: '#00000060',
+        width: 120,
+        height: 120,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
   });

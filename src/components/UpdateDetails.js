@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView, Modal, Animated, Easing } from 'react-native';
 import {useContext, useState} from "react";
 import AuthContext from '../contexts/AuthContext';
 import { updateUser } from '../Api/Auth';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function UpdateDetails({navigation}) {
     let {setAuth, userData, setUserData} = useContext(AuthContext);
@@ -9,24 +10,61 @@ export default function UpdateDetails({navigation}) {
     let [loading, setLoading] = useState(false);
 
     async function handleUpdate(data){
-        if (loading == false) {
-            setLoading(true);
-            // call api to update
-            let response = await updateUser(data);
-                    
-            if (response.status === 200) {
-                console.log(response);
-                setUserData(response.data.data);
+        setLoading(true);
+        // call api to update
+        let response = await updateUser(data);
+                
+        if (response.status === 200) {
+            setUserData(response.data.data);
 
-            } else if(response.status === 401) {
-                setAuth(false)
-            }
-            setLoading(false)
+        } else if(response.status === 401) {
+            setAuth(false)
         }
+        setLoading(false)
+    }
+
+    function LoadModal() {
+        let spinValue = new Animated.Value(0);
+        // setting up the animation
+        Animated.loop(
+            Animated.timing(
+                spinValue, {
+                    toValue: 1,
+                    duration: 1000,
+                    easing: Easing.linear,
+                    useNativeDriver: true
+                }
+            )
+        ).start();
+
+        // interpolate for rotation values
+        const spin = spinValue.interpolate({
+            inputRange: [0,1],
+            outputRange: ['0deg', '360deg']
+        });
+
+        return(
+            <>
+            <Modal 
+            animationType='fade'
+            transparent={true}
+            visible={loading}>
+                <View style={styles.modalView}>
+                    <View style={styles.iconContainer}>
+                        <Animated.View style={{transform: [{rotate: spin}]}}>
+                            <MaterialCommunityIcons name="loading" size={50} color="white" />
+                        </Animated.View>    
+                        <Text style={{fontSize: 16, color:'white', fontWeight: 'bold'}}>Updating</Text>
+                    </View>
+                </View>
+            </Modal>
+            </>
+        )
     }
 
     return(
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <LoadModal />
         <View style={styles.container}> 
             <View style={styles.userDetails}>
                 <Text style={styles.infoHeader}>User Details:</Text>
@@ -137,6 +175,27 @@ const styles = StyleSheet.create({
     contactWrap:{
         flexDirection: 'row',
         width: '100%',
+        justifyContent: 'center',
+    },
+
+    icon:{
+        height: 80,
+        width: 80,
+        borderRadius: 100,
+    },
+
+    modalView:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    iconContainer:{
+        backgroundColor: '#00000060',
+        width: 120,
+        height: 120,
+        borderRadius: 5,
+        alignItems: 'center',
         justifyContent: 'center',
     },
   });
