@@ -31,10 +31,12 @@ export default function Login({navigation}) {
                 setErrMsg(err);
             }
             setAuth(true);
-        };
+            return;
+        }
         // for errors retured 
         if (response.status === 400 || response.status === 404) setErrMsg('Account does not exist');
         if (response.status === 401) setErrMsg('Incorrect password');
+        setLoading(false);
     }
 
     function LoadModal() {
