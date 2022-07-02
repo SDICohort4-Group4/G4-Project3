@@ -101,7 +101,6 @@ export default function UpdateDetails({navigation}) {
                 </View>
 
                 <View style={styles.btnCon}>
-                    <Text onPress={()=> navigation.navigate('AccountDetails')} style={styles.btn}>Back</Text>
                     <Text onPress={()=> handleUpdate(tempData)} style={styles.btn}>Update</Text>
                 </View>
             </View>
