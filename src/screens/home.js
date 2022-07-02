@@ -99,7 +99,6 @@ function BrowseScreen({navigation}) {
 export function HomeScreen() {
   
     return(
-        <NavigationContainer independent = {true}>
             <ShopStack.Navigator screenOptions={{
                                     animation: "slide_from_right",
                                     headerStyle:{height:60, backgroundColor: "#D1920D"},
@@ -112,8 +111,7 @@ export function HomeScreen() {
                     title: "Let's go Shopin"}} />
                 <ShopStack.Screen name = 'itemDetails' component = {ItemDetails}/>
                 {/* <ShopStack.Screen name = 'cartDetails' component = {CartDetails} /> */}
-            </ShopStack.Navigator>
-        </NavigationContainer>       
+            </ShopStack.Navigator>  
     )
 }
 

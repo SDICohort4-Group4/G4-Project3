@@ -9,67 +9,70 @@ const windowWidth = Dimensions.get('window').width;
 export default function DisplayCartItem(props){
     return(
         <Card style = {styles.cardContainer}>
-            <View>
+            <View >
                 <View style = {styles.itemContainer}>
-                    {/* <Text>DisplayCartItem Test</Text> */}
-                    {props.itemData.itemPic1? 
-                            <Image style={styles.image1} source = {{uri:(props.itemData.itemPic1)}}></Image>
-                        :
-                            <Image style={styles.image1} source = {noImage}></Image>
-                        }
 
-                    
+                    <Image style={styles.image1} source={props.itemData.itemPic1?{uri:(props.itemData.itemPic1)}: noImage}></Image>
+
                     <View style = {styles.itemInfoContainer}>
-                        <Text>{props.itemData.itemName}</Text>
+                        <Text numberOfLines={1} style={{fontWeight: "bold"}}>{props.itemData.itemName}</Text>
 
                         {props.itemData.Qty > 0? 
                             <Text>In stock</Text>:<Text>Out of stock</Text>
                         }
 
-                        <Text>Qty in Cart: {props.itemData.orderQty}</Text>
-
                         <Text>Price: $ {parseFloat(props.itemData.itemPrice).toFixed(2)}</Text>
+                    </View>
 
-                        <Text>Summary Price: ${parseFloat((props.itemData.itemPrice) * props.itemData.orderQty).toFixed(2)}</Text>
+                    <View style={{justifyContent: "flex-end"}}>
+                        <Text>{`Qty: ${props.itemData.orderQty}`}</Text>
                     </View>
                 </View>
+                
+                <View style={styles.subTotal}>
+                    <Text>{`Sub Total: $${parseFloat((props.itemData.itemPrice) * props.itemData.orderQty).toFixed(2)}`}</Text>
+                </View>
             </View>
+
         </Card>
     )
 }
 
 const styles = StyleSheet.create({
     image1:{
-        width:"40%",
-        height:120,
-        borderRadius: 10,
+        width: 65,
+        height: 65,
+        borderRadius: 5,
         backgroundColor:"white",
     },
     itemContainer:{
-        flex:1,
+        padding: 10,
         flexDirection:"row",
-        marginHorizontal: 5,
-        padding: 0, 
         alignSelf: 'center',
-        // padding: 8,
-        borderRadius: 5,
+        borderBottomWidth: 1,
+        borderColor: '#D0B44F',
+        width: '100%',
     },
     itemInfoContainer:{
-        margin:5,
-        justifyContent:"center",
+        marginLeft: 10,
         textAlign: "center",
         width:"60%",
         paddingRight:5,
         paddingLeft: 5,
+        flex: 1,
     },
     cardContainer: {
-        elevation: 0,
-        padding: 5,
-        margin: 2,
+        margin: 5,
         backgroundColor: '#f1e9cb',
-        width: '100%',
+        width: '95%',
         alignSelf: 'center',
-        elevation: 0,
+    },
+
+    subTotal:{
+        flexDirection: 'row',
+        justifyContent:'flex-end',
+        margin: 5,
+        marginHorizontal:10,
     },
 
     

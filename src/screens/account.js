@@ -16,7 +16,6 @@ const AccountDetailStack = createNativeStackNavigator();
 
 export function LoginStack() {
     return (
-        <NavigationContainer independent={true}>
             <AccountStack.Navigator screenOptions={{
                                         animation: "slide_from_right",
                                         headerStyle:{height:60, backgroundColor: "#D1920D"},
@@ -26,13 +25,11 @@ export function LoginStack() {
                 <AccountStack.Screen name='Registration' component={Registration} options={{title: 'Registration'}}/>
                 <AccountStack.Screen name='RegisterSuccess' component={RegisterSuccess} options={{title: 'Registration Successful'}}/>
             </AccountStack.Navigator>
-        </NavigationContainer>
     )
 }
 
 function DetailStack() {
     return (
-        <NavigationContainer independent={true}>
             <AccountDetailStack.Navigator screenOptions={{
                                         animation: "slide_from_right",
                                         headerStyle:{height:60, backgroundColor: "#D1920D"},
@@ -41,7 +38,6 @@ function DetailStack() {
                 <AccountDetailStack.Screen name='AccountDetails' component={AccountDetails} options={{title: 'Account Details'}}/>
                 <AccountDetailStack.Screen name='UpdateDetails' component={UpdateDetails} options={{title: 'Update Details'}}/>
             </AccountDetailStack.Navigator>
-        </NavigationContainer>
     )
 }
 

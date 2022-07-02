@@ -1,10 +1,8 @@
-import { View, ScrollView, Text, StyleSheet, TextInput, Dimensions, Alert, Button } from 'react-native';
-import { useState, useEffect, useContext } from 'react';
+import { View, ScrollView, Text, StyleSheet, Dimensions } from 'react-native';
+import { useState, useContext, useCallback } from 'react';
 import DisplayCartItem from '../components/displayCartItem.js'
 import AuthContext from '../contexts/AuthContext';
-
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
+import { useFocusEffect } from '@react-navigation/native';
 
 export function CartDetails({navigation}){
 
@@ -42,91 +40,90 @@ export function CartDetails({navigation}){
     }
 
     // setTotalPrice(TotalPayablePrice(filterData))
-
     function printValue(){
         console.log(dbCartArray, new Date)
     }
-  
+
+    useFocusEffect(()=>{
+        // redirect to login if no auth
+        if (!auth) navigation.navigate('Account',{screen: 'Login'});
+    })
+
+
     return(
-        <ScrollView>
-                {/* <Text>CartDetails component Start</Text> */}
-                {auth === true?
-                    <View>
-                        {dbCartArray.length > 0 ? 
-                            <View>
-                                {dbCartArray.map((data, index)=>(
-                                    <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
-                                ))}
-                                <Text style = {styles.totalPayable}>Total Price Payable: ${TotalPayablePrice(dbCartArray).toFixed(2)}</Text>
-                                <Text style = {styles.checkoutButton} onPress = {() => printValue()}>Checkout</Text>
-                            </View>
-                        :
-                            <Text style = {styles.ShoppingButton } onPress = {() => printValue()}>Let's go Shopin</Text>}
+        <ScrollView contentContainerStyle={{flexGrow: 1}} style={{backgroundColor: '#fffaed'}}>
+            {/* <Text>CartDetails component Start</Text> */}
+            <View style={{flex: 1}}>
+                {dbCartArray.length > 0 ? 
+                    <View style={styles.card}>
+                        {dbCartArray.map((data, index)=>(
+                            <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
+                        ))}
+                        <View style={styles.paymentContainer}>
+                            <Text style = {styles.totalPayable}>Total Price: ${TotalPayablePrice(dbCartArray).toFixed(2)}</Text>
+                            <Text style = {styles.checkoutButton} onPress = {() => printValue()}>Checkout</Text> 
+                        </View>
                     </View>
-                :
-                    <Text style = {styles.loginButton} onPress = {() => printValue()}>Please Login</Text>}
-
-                    {/* <View>
-                        {dbCartArray.length > 0 ? 
-                            <View>
-                                {dbCartArray.map((data, index)=>(
-                                    <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
-                                ))}
-                                <Text style = {styles.totalPayable}>Total Price Payable: ${TotalPayablePrice(dbCartArray).toFixed(2)}</Text>
-                                <Text style = {styles.checkoutButton} onPress = {() => printValue()}>Checkout</Text>
-                            </View>
-                        :
-                            <Text style = {styles.ShoppingButton} onPress = {() => printValue()}>Let's go Shopin</Text>}
-                    </View> */}
-                {/* <Text>CartDetails component End</Text>  */}
-
+                :   
+                    <View style={styles.emptyCon}>
+                        <Text>The Cart is currently empty ...</Text>
+                        <Text style = {styles.ShoppingButton } onPress = {()=> navigation.navigate('Home',{screen: 'browse'})}>Let's go Shopin</Text>
+                    </View>
+                }
+            </View>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
+    card:{
+        marginTop: 20,
+        alignSelf: 'center',
+        width: '90%',
+        backgroundColor: 'white',
+        elevation: 20,
+    },
+
     checkoutButton:{
         fontSize: 20,
         textAlign: "center",
         alignSelf: "center",
         borderWidth: 0.02,
-        borderRadius: 20,
+        borderRadius: 5,
         padding: 5,
+        paddingHorizontal: 20,
         backgroundColor: "#FFD700",
-        width: "80%",
         height: 40,
-        marginTop: windowHeight * 0.01,
-        marginBottom: windowHeight * 0.01,
+        marginHorizontal: 10,
+        flex: 1,
 
     },
     ShoppingButton:{
-        fontSize: 20,
+        fontSize: 18,
         textAlign: "center",
         alignSelf: "center",
-        borderWidth: 0.02,
-        borderRadius: 20,
-        padding: 5,
+        borderRadius: 5,
+        padding: 10,
         backgroundColor: "#FFD700",
-        width: "80%",
-        height: 40,
-        marginTop: windowHeight * 0.40,
-        marginBottom: windowHeight * 0.40,
+        margin: 10,
     },
-    loginButton:{
-        fontSize: 20,
-        textAlign: "center",
-        alignSelf: "center",
-        borderWidth: 0.02,
-        borderRadius: 20,
-        padding: 5,
-        backgroundColor: "#FFD700",
-        width: "80%",
-        height: 40,
-        marginTop: windowHeight * 0.40,
-        marginBottom: windowHeight * 0.40,
-    },
+
     totalPayable: {
-        fontSize: 20,
-        
-    }
+        fontSize: 16,
+        flex: 2,
+        textAlign: 'right',
+        marginRight: 10,
+    },
+
+    paymentContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 10,
+    },
+
+    emptyCon:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })
