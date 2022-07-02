@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, ScrollView } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from '../contexts/AuthContext';
 import { useContext, useEffect, useState } from "react";
@@ -57,33 +57,35 @@ export default function Registration({navigation}) {
 
 
     return(
-        <View style={styles.container}>
-            <Image style={styles.icon} source={icon}></Image>
-            <View style={styles.form}>
-                <Text style={styles.label}>Email</Text>
-                <TextInput style={styles.input} placeholder='Email' onChangeText={text => setUserMail(text)}></TextInput>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+            <View style={styles.container}>
+                <Image style={styles.icon} source={icon}></Image>
+                <View style={styles.form}>
+                    <Text style={styles.label}>Email</Text>
+                    <TextInput style={styles.input} placeholder='Email' onChangeText={text => setUserMail(text)}></TextInput>
 
-                <Text style={styles.label}>Password</Text>
-                <TextInput style={styles.input} placeholder='Password' secureTextEntry={true} onChangeText={text => setUserPass(text)}></TextInput>
+                    <Text style={styles.label}>Password</Text>
+                    <TextInput style={styles.input} placeholder='Password' secureTextEntry={true} onChangeText={text => setUserPass(text)}></TextInput>
 
-                <Text style={styles.label}>Confirm Password</Text>
-                <TextInput style={styles.input} placeholder='Confirm Password' secureTextEntry={true} onChangeText={text => setUserCPass(text)}></TextInput>
+                    <Text style={styles.label}>Confirm Password</Text>
+                    <TextInput style={styles.input} placeholder='Confirm Password' secureTextEntry={true} onChangeText={text => setUserCPass(text)}></TextInput>
 
-                <View style={styles.btnContainer}>
-                    <Text style={styles.btn} onPress={()=> Register(userMail,userPass,userCPass)}>Sign Up</Text>
+                    <View style={styles.btnContainer}>
+                        <Text style={styles.btn} onPress={()=> Register(userMail,userPass,userCPass)}>Sign Up</Text>
+                    </View>
+
+                    <View style={styles.hr}>
+                        <Text style={styles.hrText}>or</Text>
+                    </View>
+
+                    <Text>Already have an account?</Text>
+                    <View style={[{...styles.btnContainer}, {marginTop: 10}]}>
+                        <Text style={styles.btn} onPress={()=> navigation.navigate('Login')}>Login</Text>
+                    </View>
                 </View>
-
-                <View style={styles.hr}>
-                    <Text style={styles.hrText}>or</Text>
-                </View>
-
-                <Text>Already have an account?</Text>
-                <View style={[{...styles.btnContainer}, {marginTop: 10}]}>
-                    <Text style={styles.btn} onPress={()=> navigation.navigate('Login')}>Login</Text>
-                </View>
+                <Text style={errMsg?styles.err:styles.emptyErr}>{errMsg}</Text>
             </View>
-            <Text style={errMsg?styles.err:styles.emptyErr}>{errMsg}</Text>
-        </View>
+        </ScrollView>
     )
 }
 

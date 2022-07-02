@@ -12,15 +12,19 @@ import UpdateDetails from '../components/UpdateDetails';
 
 
 const AccountStack = createNativeStackNavigator();
-const AcountDetailStack = createNativeStackNavigator();
+const AccountDetailStack = createNativeStackNavigator();
 
 export function LoginStack() {
     return (
         <NavigationContainer independent={true}>
-            <AccountStack.Navigator screenOptions={{headerShown: false, animation: "slide_from_right"}}>
+            <AccountStack.Navigator screenOptions={{
+                                        animation: "slide_from_right",
+                                        headerStyle:{height:60, backgroundColor: "#D1920D"},
+                                        headerTitleStyle: {color: 'white'},
+                                        }}>
                 <AccountStack.Screen name='Login' component={Login}/>
-                <AccountStack.Screen name='Registration' component={Registration}/>
-                <AccountStack.Screen name='RegisterSuccess' component={RegisterSuccess}/>
+                <AccountStack.Screen name='Registration' component={Registration} options={{title: 'Registration'}}/>
+                <AccountStack.Screen name='RegisterSuccess' component={RegisterSuccess} options={{title: 'Registration Successful'}}/>
             </AccountStack.Navigator>
         </NavigationContainer>
     )
@@ -29,10 +33,14 @@ export function LoginStack() {
 function DetailStack() {
     return (
         <NavigationContainer independent={true}>
-            <AcountDetailStack.Navigator screenOptions={{headerShown: false, animation: "slide_from_right"}}>
-                <AcountDetailStack.Screen name='AccountDetails' component={AccountDetails}/>
-                <AcountDetailStack.Screen name='UpdateDetails' component={UpdateDetails}/>
-            </AcountDetailStack.Navigator>
+            <AccountDetailStack.Navigator screenOptions={{
+                                        animation: "slide_from_right",
+                                        headerStyle:{height:60, backgroundColor: "#D1920D"},
+                                        headerTitleStyle: {color: 'white'},
+                                        }}>
+                <AccountDetailStack.Screen name='AccountDetails' component={AccountDetails} options={{title: 'Account Details'}}/>
+                <AccountDetailStack.Screen name='UpdateDetails' component={UpdateDetails} options={{title: 'Update Details'}}/>
+            </AccountDetailStack.Navigator>
         </NavigationContainer>
     )
 }
@@ -46,10 +54,7 @@ export default function AccountScreen() {
 
     return(
         <>
-        {auth? 
-        <DetailStack />: 
-        <LoginStack />
-        }
+        {auth? <DetailStack />: <LoginStack />}
         </>
 
     )

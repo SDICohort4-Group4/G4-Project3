@@ -100,7 +100,11 @@ export function HomeScreen() {
   
     return(
         <NavigationContainer independent = {true}>
-            <ShopStack.Navigator screenOptions = {{ animation: "slide_from_right"}}>
+            <ShopStack.Navigator screenOptions={{
+                                    animation: "slide_from_right",
+                                    headerStyle:{height:60, backgroundColor: "#D1920D"},
+                                    headerTitleStyle: {color: 'white'},
+                                    }}>
                 <ShopStack.Screen 
                 name = 'browse' 
                 component = {BrowseScreen}                     
