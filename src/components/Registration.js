@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, ScrollView, Modal } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from '../contexts/AuthContext';
 import { useContext, useEffect, useState } from "react";
@@ -13,6 +13,8 @@ export default function Registration({navigation}) {
     const [userMail, setUserMail] = useState(null);
     const [userPass, setUserPass] = useState(null);
     const [userCPass, setUserCPass] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [displayText, setDisplayText] = useState("");
 
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const PassRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
@@ -38,18 +40,44 @@ export default function Registration({navigation}) {
             return;
         }
         // call api to register the account
+        setLoading(true);
+        setDisplayText("Registering ...");
         let response = await registerUser(user, pass);
+
 
         if (response.status === 200) {
             // Register success
-            navigation.navigate('RegisterSuccess')
+            setDisplayText("Registered!");
+            setTimeout(()=>{
+                navigation.navigate('Login');
+            }, 2000);
+            return;
         } else if(response.status === 400) {
             setErrMsg(`User already exist`); 
         } else {
             // Registeration failed
             setErrMsg(`Registration failed with ${response.status} code`);
         }
+        setLoading(false);
     }
+
+    function LoadModal() {
+      
+        return(
+            <Modal 
+            animationType='fade'
+            transparent={true}
+            visible={loading}>
+                <View style={styles.modalView}>
+                    <View style={styles.iconContainer}> 
+                        <Text style={{fontSize: 16, color:'white', fontWeight: 'bold'}}>{displayText}</Text>
+                    </View>
+                </View>
+            </Modal>
+        )
+    }
+
+
 
     useEffect(()=>{
         setErrMsg('')
@@ -58,6 +86,7 @@ export default function Registration({navigation}) {
 
     return(
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
+            <LoadModal />
             <View style={styles.container}>
                 <Image style={styles.icon} source={icon}></Image>
                 <View style={styles.form}>
@@ -183,5 +212,21 @@ const styles = StyleSheet.create({
         width: 80,
         borderRadius: 100,
     },
+    
+    modalView:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    iconContainer:{
+        backgroundColor: '#00000060',
+        width: 120,
+        height: 120,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
 
   });

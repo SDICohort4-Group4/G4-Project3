@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../components/Login.js';
 import Registration from '../components/Registration.js'
-import RegisterSuccess from '../components/RegisterSuccess';
 import AccountDetails from '../components/AccountDetails';
 import UpdateDetails from '../components/UpdateDetails';
 
@@ -23,7 +22,6 @@ export function LoginStack() {
                                         }}>
                 <AccountStack.Screen name='Login' component={Login}/>
                 <AccountStack.Screen name='Registration' component={Registration} options={{title: 'Registration'}}/>
-                <AccountStack.Screen name='RegisterSuccess' component={RegisterSuccess} options={{title: 'Registration Successful'}}/>
             </AccountStack.Navigator>
     )
 }
