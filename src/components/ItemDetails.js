@@ -7,6 +7,9 @@ import { Table, Row, Rows } from 'react-native-table-component'
 // import addToCart from '../components/addToCart.js'
 import AuthContext from '../contexts/AuthContext';
 
+import {updateCartData} from "../Api/updateCartData.js";
+import axios from "axios";
+
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
@@ -15,7 +18,7 @@ export default function ItemDetails({route, navigation}) {
     // console.log(route.params.itemData);
 
     const [orderQty, setOrderQty] = useState(1);
-    let {auth, setAuth} = useContext(AuthContext);
+    let {auth, userData} = useContext(AuthContext);
     let {dbCartArray, setDBCartArray} = useContext(AuthContext)
 
     function incrementOrderQty(){
@@ -42,10 +45,45 @@ export default function ItemDetails({route, navigation}) {
             return
         };
 
-        let cartArray = dbCartArray;
-        cartArray.push({itemName: itemData.itemName, itemPrice: itemData.itemPrice, orderQty: orderQty, Qty: itemData.Qty, itemID: itemData.itemID, itemPic1: itemData.itemPic1})
+        let cartArray = [...dbCartArray];
+        let exists = false;
+
+        for(let i = 0; i < cartArray.length; i++){
+            if(cartArray[i].itemID == itemData.itemID){
+                exists = true;
+                let payload = null;
+
+                if(cartArray[i].itemQtyCart + orderQty > itemData.Qty){
+                    cartArray[i].itemQtyCart = itemData.Qty
+                } else {
+                    cartArray[i].itemQtyCart = cartArray[i].itemQtyCart + orderQty;
+                }
+                payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: cartArray[i].itemQtyCart}
+                axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+                break;
+            }
+        }
+        
+        if(exists == false){
+            cartArray.push({
+                item:{ 
+                    itemName: itemData.itemName, 
+                    itemPrice: itemData.itemPrice, 
+                    Qty: itemData.Qty, itemPic1: 
+                    itemData.itemPic1
+                }, 
+                itemQtyCart: orderQty, 
+                itemID: itemData.itemID,
+                userID: userData.userID,
+            })
+            // updateCartItem(userData.userID, itemData.itemID, orderQty)
+            let payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: orderQty}
+            axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+        }
+
         setDBCartArray(cartArray)
-        console.log(dbCartArray)
+        // console.log(dbCartArray)
+        console.log(cartArray)
     
         return(Alert.alert(
             "Added to cart.",
@@ -56,9 +94,17 @@ export default function ItemDetails({route, navigation}) {
         ))
     }
 
-    // useEffect(() => {
-    //     setDBCartArray(dbCartArray)
-    // }, [dbCartArray])
+    // function updateCartItem(userID, itemID, itemQtyCart){
+    //     const dataType = `/cart/save`
+    //     const payload = {
+    //         userID: userID, 
+    //         itemID: itemID, 
+    //         itemQtyCart: itemQtyCart
+    //     }
+    //     console.log(dataType)
+    //     console.log(payload)
+    //     updateCartData(dataType, payload)
+    // }
 
     const tableData = {
         tableData: [
