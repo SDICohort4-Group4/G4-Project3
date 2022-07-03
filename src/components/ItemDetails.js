@@ -42,10 +42,28 @@ export default function ItemDetails({route, navigation}) {
             return
         };
 
-        let cartArray = dbCartArray;
-        cartArray.push({itemName: itemData.itemName, itemPrice: itemData.itemPrice, orderQty: orderQty, Qty: itemData.Qty, itemID: itemData.itemID, itemPic1: itemData.itemPic1})
+        let cartArray = [...dbCartArray];
+
+        let exists = false;
+
+        for(let i = 0; i < cartArray.length; i++){
+            if(cartArray[i].itemID == itemData.itemID){
+                exists = true;
+                cartArray[i].orderQty = cartArray[i].orderQty + orderQty;
+                if(cartArray[i].orderQty > itemData.Qty){
+                    cartArray[i].orderQty = itemData.Qty
+                }
+                break;
+            }
+        }
+        
+        if(exists == false){
+            cartArray.push({itemName: itemData.itemName, itemPrice: itemData.itemPrice, orderQty: orderQty, Qty: itemData.Qty, itemID: itemData.itemID, itemPic1: itemData.itemPic1})
+        }
+        // cartArray.push({itemName: itemData.itemName, itemPrice: itemData.itemPrice, orderQty: orderQty, Qty: itemData.Qty, itemID: itemData.itemID, itemPic1: itemData.itemPic1})
         setDBCartArray(cartArray)
-        console.log(dbCartArray)
+        // console.log(dbCartArray)
+        console.log(cartArray)
     
         return(Alert.alert(
             "Added to cart.",

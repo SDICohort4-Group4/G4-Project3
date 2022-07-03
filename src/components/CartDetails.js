@@ -11,6 +11,13 @@ export function CartDetails({navigation}){
 
     let [totalPrice, setTotalPrice] = useState()
 
+    // function checkoutList(){
+    //     let checkoutArray = [...dbCartArray].filter(item => item.itemID != undefined)
+    //     // console.log(checkoutArray)
+    //     setDBCartArray(checkoutArray)        
+    // }
+
+
     // let [filterData, setFilterData] = useState(dbCartArray.filter(item => (
     //     item.itemName != undefined && 
     //     item.itemPrice > 0 && 
@@ -30,8 +37,10 @@ export function CartDetails({navigation}){
         let itemSummaryPrice = null
 
         itemData.forEach((item) => {
-            itemSummaryPrice = item.orderQty * item.itemPrice;
-            totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
+            if(!isNaN(item.orderQty) || !isNaN(item.itemPrice)){
+                itemSummaryPrice = item.orderQty * item.itemPrice;
+                totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
+            }
             // console.log(itemSummaryPrice)
             // console.log(totalSummaryPrice)
         })
@@ -61,7 +70,7 @@ export function CartDetails({navigation}){
                         ))}
                         <View style={styles.paymentContainer}>
                             <Text style = {styles.totalPayable}>Total Price: ${TotalPayablePrice(dbCartArray).toFixed(2)}</Text>
-                            <Text style = {styles.checkoutButton} onPress = {() => printValue()}>Checkout</Text> 
+                            <Text style = {styles.checkoutButton} onPress = {() => {printValue()}}>Checkout</Text> 
                         </View>
                     </View>
                 :   
