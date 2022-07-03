@@ -20,6 +20,7 @@ export default function UpdateDetails({navigation}) {
         } else if(response.status === 401) {
             setAuth(false)
         }
+        // console.log(userData)
         setLoading(false)
     }
 

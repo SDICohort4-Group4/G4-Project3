@@ -6,15 +6,20 @@ import {getAuth, getUserInfo} from "../Api/Auth";
 let icon = require('../../assets/shopin-no-tagline.png');
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import {getCart} from "../Api/getData";
+
 export default function Login({navigation}) {
 
     // to be set after getting
+
     const {setAuth, setUserData} = useContext(AuthContext);
     const [errMsg, setErrMsg] = useState (null);
     const [userMail, setUserMail] = useState(null);
     const [userPass, setUserPass] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    const {userData, dbCartArray, setDBCartArray} = useContext(AuthContext)
+    
     async function handleLogin(user, pass) {
         setLoading(true);
         let response = await getAuth(user, pass);
@@ -31,12 +36,28 @@ export default function Login({navigation}) {
                 setErrMsg(err);
             }
             setAuth(true);
+            cartData();
+            // console.log(cartData);
             return;
         }
         // for errors retured 
         if (response.status === 400 || response.status === 404) setErrMsg('Account does not exist');
         if (response.status === 401) setErrMsg('Incorrect password');
         setLoading(false);
+    }
+
+    function cartData(){
+        console.log("userID: ", userData.userID)
+        const dataType = `/cart/${userData.userID}`
+        const cartData = getCart({dataType, getCartData})
+    }
+
+    function getCartData(data){
+        let cartArray = [...data]
+        setDBCartArray(cartArray);
+        console.log("cartArray: ",cartArray);
+        // console.log("dbCartArray: ",dbCartArray);
+        // console.log("Login.js getCart function")
     }
 
     function LoadModal() {
@@ -46,7 +67,7 @@ export default function Login({navigation}) {
             Animated.timing(
                 spinValue, {
                     toValue: 1,
-                    duration: 1000,
+                    duration: 3000,
                     easing: Easing.linear,
                     useNativeDriver: true
                 }
@@ -96,7 +117,7 @@ export default function Login({navigation}) {
                 <Text style={styles.smolBtn} onPress={()=> console.log("Forgot")}>Forgot Password?</Text>
 
                 <View style={styles.btnContainer}>
-                    <Text style={styles.btn} onPress={()=> handleLogin(userMail,userPass)}>Login</Text>
+                    <Text style={styles.btn} onPress={()=> {handleLogin(userMail,userPass);}}>Login</Text>
                 </View>
 
                 <View style={styles.hr}>

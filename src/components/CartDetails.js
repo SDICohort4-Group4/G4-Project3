@@ -1,5 +1,5 @@
 import { View, ScrollView, Text, StyleSheet, Dimensions } from 'react-native';
-import { useState, useContext, useCallback } from 'react';
+import { useState, useContext, useCallback, useEffect } from 'react';
 import DisplayCartItem from '../components/displayCartItem.js'
 import AuthContext from '../contexts/AuthContext';
 import { useFocusEffect } from '@react-navigation/native';
@@ -9,14 +9,13 @@ export function CartDetails({navigation}){
     let {auth, setAuth} = useContext(AuthContext);
     let {dbCartArray, setDBCartArray} = useContext(AuthContext)
 
-    let [totalPrice, setTotalPrice] = useState()
+    const [totalPrice, setTotalPrice] = useState(0)
 
     // function checkoutList(){
     //     let checkoutArray = [...dbCartArray].filter(item => item.itemID != undefined)
     //     // console.log(checkoutArray)
     //     setDBCartArray(checkoutArray)        
     // }
-
 
     // let [filterData, setFilterData] = useState(dbCartArray.filter(item => (
     //     item.itemName != undefined && 
@@ -26,20 +25,23 @@ export function CartDetails({navigation}){
     //     (item.Qty >= item.orderQty)
     // )))
     
-    // console.log(dbCartArray);
-    // console.log(filterData);
-
     // useEffect(() => {
     // }, [dbCartArray, filterData])
 
-    function TotalPayablePrice(itemData){
+    let TotalPayablePrice = (itemData) =>{
         let totalSummaryPrice = 0
         let itemSummaryPrice = null
 
-        itemData.forEach((item) => {
-            if(!isNaN(item.orderQty) || !isNaN(item.itemPrice)){
-                itemSummaryPrice = item.orderQty * item.itemPrice;
-                totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
+        let spreadData = [...itemData]
+        spreadData.forEach((data) => {
+            if(!isNaN(data.itemQtyCart) || !isNaN(data.item) && data.item != undefined){
+                if(data.item.Qty <= 0){
+                    itemSummaryPrice = itemSummaryPrice;
+                    totalSummaryPrice = totalSummaryPrice;
+                } else {
+                    itemSummaryPrice = data.itemQtyCart * data.item.itemPrice;
+                    totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
+                }
             }
             // console.log(itemSummaryPrice)
             // console.log(totalSummaryPrice)
@@ -57,7 +59,6 @@ export function CartDetails({navigation}){
         // redirect to login if no auth
         if (!auth) navigation.navigate('Account',{screen: 'Login'});
     })
-
 
     return(
         <ScrollView contentContainerStyle={{flexGrow: 1}} style={{backgroundColor: '#fffaed'}}>

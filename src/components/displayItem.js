@@ -3,14 +3,14 @@ import noImage from "../../assets/photo-soon.jpg";
 import DisplaySalePrice from "./displaySalePrice";
 import { Card, Button } from "react-native-paper";
 
-// import addToCart from '../components/addToCart.js'
-
 import AuthContext from '../contexts/AuthContext';
 import { useState, useEffect, useContext } from 'react';
 
+import axios from "axios";
+
 export default function DisplayItem(props){
 
-    let {auth, dbCartArray, setDBCartArray} = useContext(AuthContext);
+    let {auth, userData, dbCartArray, setDBCartArray} = useContext(AuthContext);
 
     function addToCart(itemName, orderQty, itemData){
         
@@ -19,22 +19,39 @@ export default function DisplayItem(props){
         };
 
         let cartArray = [...dbCartArray];
-
         let exists = false;
 
         for(let i = 0; i < cartArray.length; i++){
             if(cartArray[i].itemID == itemData.itemID){
                 exists = true;
-                cartArray[i].orderQty = cartArray[i].orderQty + orderQty;
-                if(cartArray[i].orderQty > itemData.Qty){
-                    cartArray[i].orderQty = itemData.Qty
+                let payload = null;
+
+                if(cartArray[i].itemQtyCart + orderQty > itemData.Qty){
+                    cartArray[i].itemQtyCart = itemData.Qty
+                } else {
+                    cartArray[i].itemQtyCart = cartArray[i].itemQtyCart + orderQty;
                 }
+                payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: cartArray[i].itemQtyCart}
+                axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
                 break;
             }
         }
         
         if(exists == false){
-            cartArray.push({itemName: itemData.itemName, itemPrice: itemData.itemPrice, orderQty: orderQty, Qty: itemData.Qty, itemID: itemData.itemID, itemPic1: itemData.itemPic1})
+            cartArray.push({
+                item:{ 
+                    itemName: itemData.itemName, 
+                    itemPrice: itemData.itemPrice, 
+                    Qty: itemData.Qty, itemPic1: 
+                    itemData.itemPic1
+                }, 
+                itemQtyCart: orderQty, 
+                itemID: itemData.itemID,
+                userID: userData.userID,
+            })
+            // updateCartItem(userData.userID, itemData.itemID, orderQty)
+            let payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: orderQty}
+            axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
         }
 
         setDBCartArray(cartArray)
@@ -49,6 +66,18 @@ export default function DisplayItem(props){
             {cancelable: true}
         ))
     }
+
+    // function updateCartItem(userID, itemID, itemQtyCart){
+    //     const dataType = `/cart/save`
+    //     const payload = {
+    //         userID: userID, 
+    //         itemID: itemID, 
+    //         itemQtyCart: itemQtyCart
+    //     }
+    //     console.log(dataType)
+    //     console.log(payload)
+    //     updateCartData(dataType, payload)
+    // }
 
     return(
         <Card onPress = {()=>props.navigation.navigate('itemDetails', {itemData: props.itemData})}

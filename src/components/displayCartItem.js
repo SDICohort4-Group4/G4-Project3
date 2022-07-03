@@ -5,13 +5,15 @@ import { Card, Button } from 'react-native-paper';
 import { useState, useContext } from 'react'
 import AuthContext from '../contexts/AuthContext';
 
+import axios from 'axios'
+
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-export default function DisplayCartItem(props, key){
+export default function DisplayCartItem(props){
 
-    let {dbCartArray, setDBCartArray} = useContext(AuthContext)
-
+    let {userData, dbCartArray, setDBCartArray} = useContext(AuthContext)
+    
     let [removedItem, setRemovedItem] = useState(false);
 
     function removeItem(){
@@ -23,14 +25,14 @@ export default function DisplayCartItem(props, key){
                 cartArray[i] = {}
                 // cartArray.splice(i,1)
                 // console.log(cartArray)
-                setDBCartArray(cartArray)
+                setDBCartArray(cartArray);
             }
         }
+
+        axios.put(`https://sdic4-g4-project2.herokuapp.com/cart/delete/${userData.userID}/${props.itemData.itemID}`)
         // setItemData({})
         // console.log(itemData)
     }
-
-
 
     return(
         <Card style = {styles.cardContainer}>
@@ -38,26 +40,28 @@ export default function DisplayCartItem(props, key){
                 <View >
                     <View style = {styles.itemContainer}>
     
-                        <Image style={styles.image1} source={props.itemData.itemPic1?{uri:(props.itemData.itemPic1)}: noImage}></Image>
+                        <Image style={styles.image1} source={props.itemData.item.itemPic1?{uri:(props.itemData.item.itemPic1)}: noImage}></Image>
     
                         <View style = {styles.itemInfoContainer}>
-                            <Text numberOfLines={1} style={{fontWeight: "bold"}}>{props.itemData.itemName}</Text>
+                            <Text numberOfLines={1} style={{fontWeight: "bold"}}>{props.itemData.item.itemName}</Text>
     
-                            {props.itemData.Qty > 0? 
+                            {props.itemData.item.Qty > 0? 
                                 <Text>In stock</Text>:<Text>Out of stock</Text>
                             }
     
-                            <Text>Price: $ {parseFloat(props.itemData.itemPrice).toFixed(2)}</Text>
-                            <Text onPress = {()=> removeItem()}>Remove</Text>
+                            <Text>Price: $ {parseFloat(props.itemData.item.itemPrice).toFixed(2)}</Text>
+                            <Text onPress = {()=> removeItem()}>Remove</Text> 
+                            {/* Something broke with the Remove button, will come back to it later*/}
                         </View>
     
                         <View style={{justifyContent: "flex-end"}}>
-                            <Text>{`Qty: ${props.itemData.orderQty}`}</Text>
+                            <Text>{`Qty: ${props.itemData.itemQtyCart}`}</Text>
                         </View>
                     </View>
                     
                     <View style={styles.subTotal}>
-                        <Text>{`Sub Total: $${parseFloat((props.itemData.itemPrice) * props.itemData.orderQty).toFixed(2)}`}</Text>
+                        {/* <Text>{`Sub Total: $${parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2)}`}</Text> */}
+                        <Text>{`Sub Total: $${props.itemData.item.Qty > 0? parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2): 0}`}</Text>
                     </View>
                 </View>
             :
@@ -108,6 +112,4 @@ const styles = StyleSheet.create({
         margin: 5,
         marginHorizontal:10,
     },
-
-    
 })
