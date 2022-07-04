@@ -5,11 +5,12 @@ import AuthContext from '../contexts/AuthContext';
 import { Feather } from "@expo/vector-icons";
 
 export default function AccountDetails({navigation}) {
-    let {setAuth, userData, setDBCartArray} = useContext(AuthContext);
+    let {setAuth, userData, setUserData, setDBCartArray} = useContext(AuthContext);
 
     async function logout(){
         setAuth(false);
         setDBCartArray([]);
+        setUserData({});
         SecureStore.deleteItemAsync('access');
         SecureStore.deleteItemAsync('refresh');
     }

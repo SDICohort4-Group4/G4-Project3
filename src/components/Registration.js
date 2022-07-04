@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, TextInput, Image, ScrollView, Modal } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, ScrollView, Modal, Animated, Easing } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from '../contexts/AuthContext';
 import { useContext, useEffect, useState } from "react";
 import {registerUser} from "../Api/Auth";
 let icon = require('../../assets/shopin-no-tagline.png')
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Registration({navigation}) {
 
@@ -44,7 +45,6 @@ export default function Registration({navigation}) {
         setDisplayText("Registering ...");
         let response = await registerUser(user, pass);
 
-
         if (response.status === 200) {
             // Register success
             setDisplayText("Registered!");
@@ -62,7 +62,25 @@ export default function Registration({navigation}) {
     }
 
     function LoadModal() {
-      
+        let spinValue = new Animated.Value(0);
+        // setting up the animation
+        Animated.loop(
+            Animated.timing(
+                spinValue, {
+                    toValue: 1,
+                    duration: 1000,
+                    easing: Easing.linear,
+                    useNativeDriver: true
+                }
+            )
+        ).start();
+
+        // interpolate for rotation values
+        const spin = spinValue.interpolate({
+            inputRange: [0,1],
+            outputRange: ['0deg', '360deg']
+        });
+
         return(
             <Modal 
             animationType='fade'
@@ -70,6 +88,12 @@ export default function Registration({navigation}) {
             visible={loading}>
                 <View style={styles.modalView}>
                     <View style={styles.iconContainer}> 
+                        {displayText == "Registering ..."?
+                        <Animated.View style={{transform: [{rotate: spin}]}}>
+                            <MaterialCommunityIcons name="loading" size={50} color="white" />
+                        </Animated.View>:
+                        null
+                        }
                         <Text style={{fontSize: 16, color:'white', fontWeight: 'bold'}}>{displayText}</Text>
                     </View>
                 </View>

@@ -1,6 +1,8 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import StartScreen from "./src/navigation/start";
-import {DataProvider} from "./src/contexts/AuthContext"
+import {DataProvider} from "./src/contexts/AuthContext";
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
 
 export default function App() {
   return (
