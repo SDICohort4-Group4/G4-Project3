@@ -27,7 +27,7 @@ export async function getCart(props){
             props.getCartData(result.data.data)
         }
     } catch (error) {
-        if(error == "[AxiosError: Request failed with status code 404]"){
+        if(error.response.status == 404){
             console.log("Cart is empty")
         }
     }

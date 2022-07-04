@@ -83,7 +83,7 @@ export default function ItemDetails({route, navigation}) {
 
         setDBCartArray(cartArray)
         // console.log(dbCartArray)
-        console.log(cartArray)
+        // console.log(cartArray)
     
         return(Alert.alert(
             "Added to cart.",

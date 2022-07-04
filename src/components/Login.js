@@ -6,6 +6,8 @@ import {getAuth, getUserInfo} from "../Api/Auth";
 let icon = require('../../assets/shopin-no-tagline.png');
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import jwt_decode from 'jwt-decode'
+
 import {getCart} from "../Api/getData";
 
 export default function Login({navigation}) {
@@ -46,16 +48,20 @@ export default function Login({navigation}) {
         setLoading(false);
     }
 
-    function cartData(){
-        console.log("userID: ", userData.userID)
-        const dataType = `/cart/${userData.userID}`
+    async function cartData(){
+        let accessToken = await SecureStore.getItemAsync('access')
+        let decode = jwt_decode(accessToken)
+        // console.log("AccessToken:",accessToken);
+        // console.log("Decode: ",decode);
+        // console.log("userID: ", userData.userID)
+        const dataType = `/cart/${decode.id}`
         const cartData = getCart({dataType, getCartData})
     }
 
     function getCartData(data){
         let cartArray = [...data]
         setDBCartArray(cartArray);
-        console.log("cartArray: ",cartArray);
+        // console.log("cartArray: ",cartArray);
         // console.log("dbCartArray: ",dbCartArray);
         // console.log("Login.js getCart function")
     }
