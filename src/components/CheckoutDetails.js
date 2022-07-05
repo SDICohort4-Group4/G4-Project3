@@ -14,27 +14,23 @@ const windowWidth = Dimensions.get("window").width;
 
 export function CheckoutDetails(navigation){
     const {dbCartArray, setDBCartArray, checkoutArray} = useContext(AuthContext);
-
-    let filteredData;
     
-    function checkoutFilter(){
-        try {
-            filteredData = [...checkoutArray].filter(item => item.item.Qty > 0)
-        } catch (error) {
-            filteredData = [...dbCartArray].filter(item => item.item.Qty > 0)
-            console.log('Cannot setCheckoutArray in time')
-        }
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [checkoutData, setCheckoutData] = useState([]);
 
-        return(
-            <>
-                {filteredData.map((data, index)=>(
-                    <DisplayCheckoutItems itemData = {data} navigation = {navigation} key = {index}/>
-                ))}
-            </>
-        )
-    }
+    
+    useEffect(() => {
+        let filteredData = [...checkoutArray].filter(index => index.item.Qty > 0 && index.item.Qty >= index.itemQtyCart)
+        setCheckoutData(filteredData);
+        setTotalPrice(TotalPayablePrice([...filteredData]));
+    }, [checkoutArray, dbCartArray])
 
-    let TotalPayablePrice = (itemData) =>{
+    // function checkoutFilter(){
+    //     let filteredData = [...checkoutArray].filter(item => item.item.Qty > 0)
+    //     return filteredData
+    // }
+
+    function TotalPayablePrice(itemData){
         let totalSummaryPrice = 0
         let itemSummaryPrice = null
 
@@ -56,9 +52,6 @@ export function CheckoutDetails(navigation){
         return totalSummaryPrice;
     }
 
-    useEffect(() => {
-    },[dbCartArray, checkoutArray])
-
     return(
         <View >
             <View style = {styles.ccContainer}>
@@ -74,7 +67,7 @@ export function CheckoutDetails(navigation){
                     <TextInput maxLength = {3} placeholder = "123" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "123"/>
                 </View>
                 <View style = {styles.paymentContainer}>
-                    <Text style = {styles.totalPayable}>Total Price: ${TotalPayablePrice(checkoutArray == undefined? dbCartArray : checkoutArray).toFixed(2)}</Text>
+                    <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
                 </View>
                 <Text style = {styles.payButton}>Pay</Text>
             </View>
@@ -82,8 +75,9 @@ export function CheckoutDetails(navigation){
                 <View >
                     <View style = {{flex: 1}}>
                         <View style = {styles.card}>
-
-                            {checkoutFilter()}
+                            {checkoutData?.map((data, index)=>(
+                                <DisplayCheckoutItems itemData = {data} navigation = {navigation} key = {index}/>
+                            ))}
                         </View>
                         {/* <Text onPress={() => {getCartData(); getCheckoutData()}}>Print</Text> */}
                         {/* {getFilteredData} */}
@@ -93,7 +87,6 @@ export function CheckoutDetails(navigation){
                 </View>
             </ScrollView>
         </View>
-
     )
 }
 

@@ -14,10 +14,7 @@ export default function DisplayCartItem(props){
 
     let {userData, dbCartArray, setDBCartArray, checkoutArray, setCheckoutArray} = useContext(AuthContext)
     
-    let [removedItem, setRemovedItem] = useState(false);
-
     async function removeItem(){
-        setRemovedItem(true);
         let cartArray = [...dbCartArray]
         for(let i = 0; i < cartArray.length; i++){
             // console.log(cartArray[i])
@@ -25,12 +22,11 @@ export default function DisplayCartItem(props){
                 cartArray[i] = {}
                 cartArray.splice(i,1)
                 // console.log(cartArray)
-
             }
         }
         setDBCartArray(cartArray);
-        setCheckoutArray(cartArray);
-        axios.put(`https://sdic4-g4-project2.herokuapp.com/cart/delete/${userData.userID}/${props.itemData.itemID}`)
+        // setCheckoutArray(cartArray);
+        await axios.put(`https://sdic4-g4-project2.herokuapp.com/cart/delete/${userData.userID}/${props.itemData.itemID}`)
         // setItemData({})
         // console.log(itemData)
     }

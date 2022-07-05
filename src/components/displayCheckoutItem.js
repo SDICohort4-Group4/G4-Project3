@@ -9,11 +9,10 @@ export default function displayCheckoutItems(props){
         <Card style = {styles.cardContainer}>
             <View style = {styles.itemContainer}>
                 <View style = {styles.itemInfoContainer}>
-                    <Text numberOfLines={3} style={{fontWeight: "bold"}}>{props.itemData.item.itemName}</Text>
+                    <Text numberOfLines = {3} style = {{fontWeight: "bold"}}>{props.itemData.item.itemName}</Text>
                     <Text>Price: $ {parseFloat(props.itemData.item.itemPrice).toFixed(2)}</Text>
                 </View>
-
-                <View style={{justifyContent: "flex-end"}}>
+                <View style = {{justifyContent: "flex-end"}}>
                     <Text>{`Qty: ${props.itemData.itemQtyCart}`}</Text>
                 </View>
             </View>

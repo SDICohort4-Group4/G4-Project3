@@ -39,7 +39,7 @@ export default function ItemDetails({route, navigation}) {
         return orderQty;
     }
 
-    function addToCart(itemName, orderQty, itemData){
+    async function addToCart(itemName, orderQty, itemData){
         
         if(orderQty <= 0) {
             return
@@ -59,7 +59,7 @@ export default function ItemDetails({route, navigation}) {
                     cartArray[i].itemQtyCart = cartArray[i].itemQtyCart + orderQty;
                 }
                 payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: cartArray[i].itemQtyCart}
-                axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+                await axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
                 break;
             }
         }
@@ -78,7 +78,7 @@ export default function ItemDetails({route, navigation}) {
             })
             // updateCartItem(userData.userID, itemData.itemID, orderQty)
             let payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: orderQty}
-            axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+            await axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
         }
 
         setDBCartArray(cartArray)

@@ -4,7 +4,7 @@ import DisplaySalePrice from "./displaySalePrice";
 import { Card, Button } from "react-native-paper";
 
 import AuthContext from '../contexts/AuthContext';
-import { useState, useEffect, useContext } from 'react';
+import {useContext } from 'react';
 
 import axios from "axios";
 
