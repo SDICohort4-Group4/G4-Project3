@@ -4,12 +4,19 @@ import DisplayCartItem from '../components/displayCartItem.js'
 import AuthContext from '../contexts/AuthContext';
 import { useFocusEffect } from '@react-navigation/native';
 
+import * as SecureStore from 'expo-secure-store';
+import jwt_decode from 'jwt-decode'
+import axios from 'axios'
+
 export function CartDetails({navigation}){
 
-    let {auth, setAuth} = useContext(AuthContext);
-    let {dbCartArray, setDBCartArray} = useContext(AuthContext)
+    const {auth} = useContext(AuthContext);
+    const {dbCartArray, setDBCartArray, checkoutArray, setCheckoutArray} = useContext(AuthContext)
 
     const [totalPrice, setTotalPrice] = useState(0)
+    const [filteredData, setFilteredData] = useState();
+
+    const [grayOut, setGrayOut] = useState(false)
 
     // function checkoutList(){
     //     let checkoutArray = [...dbCartArray].filter(item => item.itemID != undefined)
@@ -26,7 +33,7 @@ export function CartDetails({navigation}){
     // )))
     
     // useEffect(() => {
-    // }, [dbCartArray, filterData])
+    // }, [dbCartArray, checkoutArray])
 
     let TotalPayablePrice = (itemData) =>{
         let totalSummaryPrice = 0
@@ -55,10 +62,31 @@ export function CartDetails({navigation}){
         console.log(dbCartArray, new Date)
     }
 
+    // useEffect(() => {
+    //     setDBCartArray(dbCartArray)
+    // },[dbCartArray, checkoutArray])
+
     useFocusEffect(()=>{
         // redirect to login if no auth
         if (!auth) navigation.navigate('Account',{screen: 'Login'});
     })
+
+    async function getFilteredData(){
+        let accessToken = await SecureStore.getItemAsync('access')
+        let decode = jwt_decode(accessToken)
+        
+        try {
+            let cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
+            let filteredData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0 && (index.item.Qty >= index.itemQtyCart))
+            setCheckoutArray(filteredData)
+        } catch (error) {
+            
+        }
+        // let cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
+        // let filteredData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0 && (index.item.Qty >= index.itemQtyCart))
+        // setCheckoutArray(filteredData)
+        // console.log(checkoutArray, new Date)
+    }
 
     return(
         <ScrollView contentContainerStyle={{flexGrow: 1}} style={{backgroundColor: '#fffaed'}}>
@@ -71,13 +99,14 @@ export function CartDetails({navigation}){
                         ))}
                         <View style={styles.paymentContainer}>
                             <Text style = {styles.totalPayable}>Total Price: ${TotalPayablePrice(dbCartArray).toFixed(2)}</Text>
-                            <Text style = {styles.checkoutButton} onPress = {() => {printValue()}}>Checkout</Text> 
+                            {/* <Text style = {styles.checkoutButton} onPress = {() => {printValue(); navigation.navigate('Cart', {screen: 'checkoutItems'})}}>Checkout</Text>  */}
+                                <Text style = {styles.checkoutButton} onPress = {() => {navigation.navigate('Cart', {screen: 'checkoutItems'}); getFilteredData()}}>Checkout</Text> 
                         </View>
                     </View>
                 :   
                     <View style={styles.emptyCon}>
                         <Text>The Cart is currently empty ...</Text>
-                        <Text style = {styles.ShoppingButton } onPress = {()=> navigation.navigate('Home',{screen: 'browse'})}>Let's go Shopin</Text>
+                        <Text style = {styles.ShoppingButton } onPress = {() => navigation.navigate('Home', {screen: 'browse'})}>Let's go Shopin</Text>
                     </View>
                 }
             </View>

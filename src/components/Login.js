@@ -10,6 +10,8 @@ import jwt_decode from 'jwt-decode'
 
 import {getCart} from "../Api/getData";
 
+import axios from 'axios'
+
 export default function Login({navigation}) {
 
     // to be set after getting
@@ -20,8 +22,11 @@ export default function Login({navigation}) {
     const [userPass, setUserPass] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const {userData, dbCartArray, setDBCartArray} = useContext(AuthContext)
+    const {userData, dbCartArray, setDBCartArray, checkoutArray, setCheckoutArray} = useContext(AuthContext)
     
+    useEffect(() => {
+    }, [dbCartArray, checkoutArray])
+
     async function handleLogin(user, pass) {
         setLoading(true);
         let response = await getAuth(user, pass);
@@ -39,6 +44,7 @@ export default function Login({navigation}) {
             }
             setAuth(true);
             cartData();
+            setCheckoutArray();
             // console.log(cartData);
             return;
         }
@@ -54,8 +60,22 @@ export default function Login({navigation}) {
         // console.log("AccessToken:",accessToken);
         // console.log("Decode: ",decode);
         // console.log("userID: ", userData.userID)
-        const dataType = `/cart/${decode.id}`
-        const cartData = getCart({dataType, getCartData})
+        const dataType = `/cart/${decode.id}`;
+        getCart({dataType, getCartData});
+
+        try {
+            let cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
+            let filteredData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0 && (index.item.Qty >= index.itemQtyCart))
+            setCheckoutArray(filteredData)
+        } catch (error) {
+            if(error.response.status == 404){
+                console.log('Login.js function cartData: Cart is empty')
+            }
+            if(error.response.status != 404){
+                console.log('Login.js function cartData:', error)
+            }
+        }
+
     }
 
     function getCartData(data){
@@ -73,7 +93,7 @@ export default function Login({navigation}) {
             Animated.timing(
                 spinValue, {
                     toValue: 1,
-                    duration: 3000,
+                    duration: 1000,
                     easing: Easing.linear,
                     useNativeDriver: true
                 }
