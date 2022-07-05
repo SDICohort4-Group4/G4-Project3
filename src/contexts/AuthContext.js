@@ -22,6 +22,8 @@ const [dbCartArray, setDBCartArray] = useState(
     ]
 );
 
+const [checkoutArray, setCheckoutArray] = useState();
+
 //create function to check auth
 let checkAuth = async() =>{
     try{
@@ -50,7 +52,7 @@ useEffect(()=>{
 
     return(
         // functions and stats to be passed as value
-        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, dbCartArray, setDBCartArray}}>
+        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, dbCartArray, setDBCartArray, checkoutArray, setCheckoutArray}}>
             {children}
         </LoginContext.Provider>
     )

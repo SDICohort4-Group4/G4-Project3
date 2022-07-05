@@ -12,23 +12,24 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function DisplayCartItem(props){
 
-    let {userData, dbCartArray, setDBCartArray} = useContext(AuthContext)
+    let {userData, dbCartArray, setDBCartArray, checkoutArray, setCheckoutArray} = useContext(AuthContext)
     
     let [removedItem, setRemovedItem] = useState(false);
 
-    function removeItem(){
+    async function removeItem(){
         setRemovedItem(true);
         let cartArray = [...dbCartArray]
         for(let i = 0; i < cartArray.length; i++){
             // console.log(cartArray[i])
             if(cartArray[i].itemID == props.itemData.itemID){
                 cartArray[i] = {}
-                // cartArray.splice(i,1)
+                cartArray.splice(i,1)
                 // console.log(cartArray)
-                setDBCartArray(cartArray);
+
             }
         }
-
+        setDBCartArray(cartArray);
+        setCheckoutArray(cartArray);
         axios.put(`https://sdic4-g4-project2.herokuapp.com/cart/delete/${userData.userID}/${props.itemData.itemID}`)
         // setItemData({})
         // console.log(itemData)
@@ -36,7 +37,7 @@ export default function DisplayCartItem(props){
 
     return(
         <Card style = {styles.cardContainer}>
-            {removedItem === false?
+            {/* {removedItem === false? */}
                 <View >
                     <View style = {styles.itemContainer}>
     
@@ -64,14 +65,11 @@ export default function DisplayCartItem(props){
                         <Text>{`Sub Total: $${props.itemData.item.Qty > 0? parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2): 0}`}</Text>
                     </View>
                 </View>
-            :
+            {/* :
                 <View>
                     <Text>Item was removed</Text>
                 </View>
-                
-            }
-
-
+            } */}
         </Card>
     )
 }
