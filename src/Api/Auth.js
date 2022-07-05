@@ -111,3 +111,21 @@ export async function updateUser(userData){
         return {status: err.response.status};
     }
 }
+
+export async function getCatList(){
+    try {
+        const response = await APIAuth.get('/item/category-list')
+        return {status: response.status, data: response.data};
+    } catch (err) {
+        return {status: err.response.status};
+    }
+}
+
+export async function getCat1Items(category){
+    try {
+        const response = await APIAuth.get(`/item/category1/${category}`)
+        return {status: response.status, data: response.data};
+    } catch (err) {
+        return {status: err.response.status};
+    }
+}

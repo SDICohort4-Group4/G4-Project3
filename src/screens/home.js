@@ -2,13 +2,14 @@ import { StyleSheet, ScrollView, RefreshControl, ActivityIndicator, View, Image,
 import {useCallback, useEffect, useState} from "react";
 import {getData as GetData} from "../Api/getData";
 import DisplayItem from "../components/displayItem.js";
-import SearchBar from "../components/searchBar.js"
-import CartIcon from "../../assets/cart-icon-gray.png"
+import SearchBar from "../components/searchBar.js";
+import CartIcon from "../../assets/cart-icon-gray.png";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PriceSortButton from "../components/priceSortButton";
 import ItemDetails from '../components/ItemDetails';
-import {CartDetails} from '../components/CartDetails.js'
+import {CartDetails} from '../components/CartDetails.js';
+import HomeMain from '../components/HomeMain';
 
 
 const ShopStack = createNativeStackNavigator();
@@ -104,11 +105,16 @@ export function HomeScreen() {
                                     headerStyle:{height:60, backgroundColor: "#D1920D"},
                                     headerTitleStyle: {color: 'white'},
                                     }}>
+
+                <ShopStack.Screen name = 'homeMain' component = {HomeMain}
+                 options={{headerShown: false}}/>
+
                 <ShopStack.Screen 
                 name = 'browse' 
                 component = {BrowseScreen}                     
                 options = {{
                     title: "Let's go Shopin"}} />
+                    
                 <ShopStack.Screen name = 'itemDetails' component = {ItemDetails}/>
                 {/* <ShopStack.Screen name = 'cartDetails' component = {CartDetails} /> */}
             </ShopStack.Navigator>  
