@@ -1,20 +1,25 @@
 import {Text, View, FlatList, Image, StyleSheet, Dimensions, Animated, ScrollView, TextInput} from "react-native";
-import React,{useRef, useState, useEffect} from 'react';
+import React,{useRef, useState, useEffect, useContext} from 'react';
 import SelectorBar from './SelectorBar';
 import {getCatList} from '../Api/Auth';
 import RanCatDisplay from './RanCatDisplay';
+import AuthContext from '../contexts/AuthContext';
+import {getData as GetData} from "../Api/getData";
 
 let windowWidth = Dimensions.get("screen").width;
 
 export default function HomeMain({navigation}) {
+    let {catList, setCatList, setFullList} = useContext(AuthContext);
 
-    let [catList, setCatList] = useState([]);
-    let [searchText, setSearchText] = useState();
+    // used to prevent unnesssary rerendering of components when setting state to text
+    let textInput;
 
     useEffect(()=>{
         (async function() {
             let response = await getCatList();
             setCatList(response.data.data.cat1);
+            let responseFull = await GetData();
+            setFullList(responseFull.data);
         })();
     }, [])
 
@@ -60,13 +65,17 @@ export default function HomeMain({navigation}) {
 
     //handle enter pressed to link to search page
     function handleSearch() {
-        navigation.navigate('browse', {searchText: searchText});
+        navigation.navigate('browse', {searchText: textInput});
     }
 
+    //call back for selector bar
+    function selectorFn(item) {
+        navigation.navigate('browse', {searchCat: item});
+    }
 
     return(
         <View style={{backgroundColor: "#fffaed", flex: 1}}>
-            <TextInput placeholder="Search" style={styles.seachBar} onChangeText={(text)=>setSearchText(text)} onSubmitEditing={handleSearch}/>
+            <TextInput placeholder="Search" style={styles.searchBar} onChangeText={(text)=> textInput = text} onSubmitEditing={handleSearch}/>
             <ScrollView contentContainerStyle={styles.container} > 
                 <View style={styles.flatListCon}>
                     <Animated.FlatList 
@@ -86,7 +95,7 @@ export default function HomeMain({navigation}) {
                     </View>
                 </View>
 
-                <SelectorBar list={catList} navigation={navigation}/>
+                <SelectorBar list={catList} navigation={navigation} callBackFn={selectorFn}/>
                 <RanCatDisplay list={catList} navigation={navigation}/>
             </ScrollView>
         </View>
@@ -99,7 +108,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fffaed',
     },
 
-    seachBar:{
+    searchBar:{
         width: "90%",
         alignSelf: "center",
         margin: 20,

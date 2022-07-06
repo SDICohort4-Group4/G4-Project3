@@ -1,16 +1,25 @@
 import { View, Text, StyleSheet, FlatList, Image,TouchableOpacity} from "react-native";
 import { useState, useEffect } from "react";
 import {getCat1Items} from '../Api/Auth';
+import noImage from '../../assets/photo-soon.jpg';
 
 export default function FlatListCat({catergory, navigation}) {
 
     // useEffect to get list of all item in category 
     let [catItems, setCatItems] = useState([]);
 
+    // function to get n random item in list of category
+    function getMultiRan(list, num) {
+        const shuffled = [...list].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, num);
+    }
+
     useEffect(()=>{
         (async function() {
             let response = await getCat1Items(catergory);
-            setCatItems((response.data.data).slice(0,5));
+            let random5 = getMultiRan(response.data.data, 5)
+
+            setCatItems(random5);
         })();
     }, [catergory])
 
@@ -24,7 +33,7 @@ export default function FlatListCat({catergory, navigation}) {
         return(
             <TouchableOpacity style={{flex: 1, justifyContent: "center"}} onPress={handlePress}>
                 <View style={styles.subCon}>
-                    <Image style={styles.subConImage} source={{uri: item?.itemPic1}}/>
+                    <Image style={styles.subConImage} source={item?.itemPic1?{uri: item?.itemPic1}: noImage} />
                     <Text style={styles.subConText} numberOfLines={1}>{item?.itemName}</Text>
                     <Text style={[styles.subConText,{textAlign: "center"}]}>${item?.itemPrice}</Text>
                 </View>
