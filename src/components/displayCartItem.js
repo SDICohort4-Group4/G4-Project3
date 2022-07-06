@@ -51,8 +51,6 @@ export default function DisplayCartItem(props){
                             }
     
                             <Text>Price: $ {parseFloat(props.itemData.item.itemPrice).toFixed(2)}</Text>
-                            <Text onPress = {()=> removeItem()}>Remove</Text> 
-                            {/* Something broke with the Remove button, will come back to it later*/}
                         </View>
     
                         <View style={{justifyContent: "flex-end"}}>
@@ -61,6 +59,7 @@ export default function DisplayCartItem(props){
                     </View>
                     
                     <View style={styles.subTotal}>
+                        <Text style={styles.removeBtn} onPress = {()=> removeItem()}>Remove</Text> 
                         {/* <Text>{`Sub Total: $${parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2)}`}</Text> */}
                         <Text>{`Sub Total: $${props.itemData.item.Qty > 0? parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2): 0}`}</Text>
                     </View>
@@ -106,8 +105,15 @@ const styles = StyleSheet.create({
 
     subTotal:{
         flexDirection: 'row',
-        justifyContent:'flex-end',
+        justifyContent:'space-between',
         margin: 5,
         marginHorizontal:10,
+    },
+
+    removeBtn:{
+        backgroundColor:'white',
+        paddingHorizontal: 10,
+        borderRadius: 3,
+        elevation: 2,
     },
 })
