@@ -15,25 +15,16 @@ LogBox.ignoreLogs(["new NativeEventEmitter"]);
 
 export default function App() {
   return (
+    <DataProvider>
     <StripeProvider
       publishableKey="pk_test_51LIAztC2VmHakyazuShGaaWj7GHzkJC1TuPteGJMg3r4uxUdXaa1TIu2vcw7q4kIYPCeZWuITUJxF0ngR65mAjS300GyCVSIAt">
-      <DataProvider>
-        <View style={styles.container}>
-          <StartScreen/>
-        </View>
-      </DataProvider>
+      <View style={styles.container}>
+        <StartScreen/>
+      </View>    
     </StripeProvider>
+    </DataProvider>
   );
 }
-
-
-// <DataProvider>
-//  <View style={styles.container}>
-//    <StartScreen/>
-//  </View>
-// </DataProvider> 
-
-
 
 const styles = StyleSheet.create({
   container: {
