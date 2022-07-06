@@ -1,10 +1,11 @@
-import { StyleSheet, View, Text, ScrollView, RefreshControl, ActivityIndicator, TextInput } from "react-native";
+import { StyleSheet, View, Text, ScrollView, RefreshControl, ActivityIndicator, TextInput, TouchableOpacity } from "react-native";
 import {useCallback, useEffect, useState, useContext} from "react";
 import {getData as GetData} from "../Api/getData";
 import DisplayItem from "../components/displayItem.js";
 import PriceSortButton from "../components/priceSortButton";
 import AuthContext from '../contexts/AuthContext';
 import SelectorBar from "./SelectorBar";
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 export default function SearchScreen({route, navigation}) {
@@ -85,7 +86,10 @@ export default function SearchScreen({route, navigation}) {
                 <SelectorBar list={catList} navigation={navigation} callBackFn={selectorFn}/>
                 {catergory?<View style={styles.selectedCatCon}>
                     <Text style={styles.selectedHeader}>Applied filters: </Text>
-                    <Text onPress={handleRemoveCat} style={styles.selectedCatText}>{catergory}</Text>
+                    <TouchableOpacity onPress={handleRemoveCat} style={styles.selCatCon}>
+                        <Text>{catergory}</Text>
+                        <MaterialIcons style={styles.cancelIcon} name="close" size={14} />
+                    </TouchableOpacity>
                 </View>: null}
             </View>
             <PriceSortButton priceSortASC={priceSortASC} setpriceSortASC={setpriceSortASC} priceSort={priceSort}/>
@@ -147,17 +151,6 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
 
-    selectedCatText:{
-        paddingHorizontal: 10,
-        minWidth: 50,
-        backgroundColor: '#fcf1d9',
-        marginHorizontal: 5,
-        borderRadius: 5,
-        textAlign: "center",
-        textAlignVertical: "center",
-        padding: 3,
-    },
-
     selectedHeader:{
         height: '100%',
         minWidth: 100,
@@ -168,4 +161,22 @@ const styles = StyleSheet.create({
         padding: 5,
     },
 
+    selCatCon:{
+        paddingHorizontal: 10,
+        minWidth: 50,
+        backgroundColor: '#fcf1d9',
+        marginHorizontal: 5,
+        borderRadius: 5,
+        padding: 3,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    cancelIcon:{
+        borderWidth: 1,
+        textAlign: "center",
+        textAlignVertical: "center",
+        marginLeft: 5,
+    },
 })
