@@ -1,25 +1,13 @@
 import { View, Text,StyleSheet, TouchableOpacity } from 'react-native';
-import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 export default function PriceSortButton({priceSortASC, setpriceSortASC, priceSort}){
     return(
-        <View >
-            <TouchableOpacity style = {styles.container} onPress = {() => {setpriceSortASC(!priceSortASC);priceSort()}}>
-                <Text 
-                    style = {priceSortASC? 
-                        styles.sortASC
-                    :
-                        styles.sortDESC
-                    }
-                >
-                Price
-                </Text>
-                {priceSortASC?
-                    <AntDesign style = {styles.upArrow} name = "up" size = {20} color = "blue"/>
-                :
-                    <AntDesign style = {styles.downArrow} name = "down" size = {20} color = "black"/>
-                }
+        <View style={styles.container}>
+            <TouchableOpacity style = {styles.toggleContainer} onPress = {() => {setpriceSortASC(!priceSortASC);priceSort()}}>
+                <Text>Price</Text>
+                <MaterialCommunityIcons style={styles.icon} name={priceSortASC?"sort-descending": "sort-ascending"} size={20} color="black"/>
             </TouchableOpacity>
         </View>
     )
@@ -27,8 +15,17 @@ export default function PriceSortButton({priceSortASC, setpriceSortASC, priceSor
 
 const styles = StyleSheet.create({
     container:{
+        width: '90%',
+        marginTop: 10,
+        marginBottom: 5,
+        alignItems: 'flex-end'
+    },
+    toggleContainer:{
         flexDirection:"row",
-        
+        padding: 5,
+        paddingHorizontal: 10,
+        backgroundColor: 'white',
+        elevation: 5,
     },
     sortASC:{
         fontSize:15,
@@ -40,10 +37,7 @@ const styles = StyleSheet.create({
         fontWeight:"bold",
         color:"black",
     },
-    upArrow:{
-        top: 1,
-    },
-    downArrow:{
-        top: 1,
+    icon:{
     }
+
 })
