@@ -16,10 +16,10 @@ export default function HomeMain({navigation}) {
 
     useEffect(()=>{
         (async function() {
-            let response = await getCatList();
             let responseFull = await GetData();
-            setCatList(response.data.data.cat1);
             setFullList(responseFull.data);
+            let response = await getCatList();
+            setCatList(response.data.data.cat1);
         })();
     }, [])
 
