@@ -90,18 +90,22 @@ export function CheckoutDetails({navigation}){
                 <View style = {styles.paymentContainer}>
                     <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
                 </View>
-                <Text 
-                style = {styles.payButton} 
-                onPress = {() => {
-                    PaymentGateway({
-                        navigation, 
-                        userData: userData, 
-                        checkoutData: checkoutData, 
-                        setDBCartArray: setDBCartArray, 
-                        setCheckoutArray: setCheckoutArray,
-                    })
-                    // buyHistoryArray(checkoutData)
-                    }}>Pay</Text>
+                {checkoutArray.length > 0?
+                    <Text 
+                        style = {styles.payButton} 
+                        onPress = {() => {
+                            PaymentGateway({
+                                navigation, 
+                                userData: userData, 
+                                checkoutData: checkoutData, 
+                                setDBCartArray: setDBCartArray, 
+                                setCheckoutArray: setCheckoutArray,
+                            })
+                        }}>Pay
+                    </Text>
+                :   
+                    <Text style = {styles.payButton} onPress = {() => {navigation.navigate('cartItems')}}>No items available for checkout</Text>}
+                    
             </View>
             <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {styles.checkoutContainer}>
                 <View >
