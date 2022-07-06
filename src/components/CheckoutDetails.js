@@ -120,7 +120,7 @@ export function CheckoutDetails({navigation}){
             :   
                 <View style = {styles.emptyCon}>
                     <Text>No items available for checkout</Text>
-                    <Text style = {styles.payButton} onPress = {() => {navigation.navigate('cartItems')}}>Go back to Cart page</Text>
+                    <Text style = {styles.ShoppingButton} onPress = {() => {navigation.navigate('cartItems')}}>Go back to Cart</Text>
                 </View>
             }
         </View>
@@ -181,5 +181,15 @@ const styles = StyleSheet.create({
     },
     checkoutContainer: {
         height: windowHeight * 0.60
-    }
+    },
+    ShoppingButton:{
+        fontSize: 18,
+        textAlign: "center",
+        alignSelf: "center",
+        borderRadius: 5,
+        padding: 10,
+        backgroundColor: "#FFD700",
+        margin: 10,
+    },
+
 })
