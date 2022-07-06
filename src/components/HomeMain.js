@@ -17,8 +17,8 @@ export default function HomeMain({navigation}) {
     useEffect(()=>{
         (async function() {
             let response = await getCatList();
-            setCatList(response.data.data.cat1);
             let responseFull = await GetData();
+            setCatList(response.data.data.cat1);
             setFullList(responseFull.data);
         })();
     }, [])
