@@ -74,50 +74,55 @@ export function CheckoutDetails({navigation}){
     }
 
     return(
-        <View >
-            <View style = {styles.ccContainer}>
-                <Text style = {styles.ccNumber}>Credit Card Details: </Text>
-                <View style = {styles.ccNoContainer}>
-                    <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "1234"/>
-                    <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "5678"/>
-                    <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "9999"/>
-                    <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "0000"/>
-                </View>
-                <Text style = {styles.ccNumber}>CVV:</Text>
-                <View style = {styles.ccNoContainer}>
-                    <TextInput maxLength = {3} placeholder = "123" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "123"/>
-                </View>
-                <View style = {styles.paymentContainer}>
-                    <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
-                </View>
-                {checkoutArray.length > 0?
-                    <Text 
-                        style = {styles.payButton} 
-                        onPress = {() => {
-                            PaymentGateway({
-                                navigation, 
-                                userData: userData, 
-                                checkoutData: checkoutData, 
-                                setDBCartArray: setDBCartArray, 
-                                setCheckoutArray: setCheckoutArray,
-                            })
-                        }}>Pay
-                    </Text>
-                :   
-                    <Text style = {styles.payButton} onPress = {() => {navigation.navigate('cartItems')}}>No items available for checkout</Text>}
-                    
-            </View>
-            <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {styles.checkoutContainer}>
-                <View >
-                    <View style = {{flex: 1}}>
-                        <View style = {styles.card}>
-                            {checkoutData?.map((data, index)=>(
-                                <DisplayCheckoutItems itemData = {data} navigation = {navigation} key = {index}/>
-                            ))}
-                        </View>
+        <View style = {{flex: 1}}>
+            {checkoutArray.length > 0 ? 
+                <View>            
+                    <View style = {styles.ccContainer}>
+                    <Text style = {styles.ccNumber}>Credit Card Details: </Text>
+                    <View style = {styles.ccNoContainer}>
+                        <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "1234"/>
+                        <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "5678"/>
+                        <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "9999"/>
+                        <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "0000"/>
                     </View>
+                    <Text style = {styles.ccNumber}>CVV:</Text>
+                    <View style = {styles.ccNoContainer}>
+                        <TextInput maxLength = {3} placeholder = "123" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "123"/>
+                    </View>
+                    <View style = {styles.paymentContainer}>
+                        <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
+                    </View>
+                        <Text 
+                            style = {styles.payButton} 
+                            onPress = {() => {
+                                PaymentGateway({
+                                    navigation, 
+                                    userData: userData, 
+                                    checkoutData: checkoutData, 
+                                    setDBCartArray: setDBCartArray, 
+                                    setCheckoutArray: setCheckoutArray,
+                                })
+                            }}>Pay
+                        </Text>
+                    </View>
+                    <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {styles.checkoutContainer}>
+                        <View >
+                            <View style = {{flex: 1}}>
+                                <View style = {styles.card}>
+                                    {checkoutData?.map((data, index)=>(
+                                        <DisplayCheckoutItems itemData = {data} navigation = {navigation} key = {index}/>
+                                    ))}
+                                </View>
+                            </View>
+                        </View>
+                    </ScrollView>
                 </View>
-            </ScrollView>
+            :   
+                <View style = {styles.emptyCon}>
+                    <Text>No items available for checkout</Text>
+                    <Text style = {styles.payButton} onPress = {() => {navigation.navigate('cartItems')}}>Go back to Cart page</Text>
+                </View>
+            }
         </View>
     )
 }

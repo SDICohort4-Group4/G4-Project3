@@ -38,21 +38,26 @@ export default function DisplayCartItem(props){
         <Card style = {styles.cardContainer}>
             <View >
                 <View style = {styles.itemContainer}>
-                    <Image style = {styles.image1} source = {props.itemData.item.itemPic1?{uri:(props.itemData.item.itemPic1)}: noImage}></Image>
+
+                    <Image style={styles.image1} source={props.itemData.item.itemPic1?{uri:(props.itemData.item.itemPic1)}: noImage}></Image>
+
                     <View style = {styles.itemInfoContainer}>
                         <Text numberOfLines={1} style={{fontWeight: "bold"}}>{props.itemData.item.itemName}</Text>
+
                         {props.itemData.item.Qty > 0? 
                             <Text>In stock</Text>:<Text>Out of stock</Text>
                         }
+
                         <Text>Price: $ {parseFloat(props.itemData.item.itemPrice).toFixed(2)}</Text>
-                        <Text style = {styles.removeButton} onPress = {()=> removeItem()}>Remove</Text> 
                     </View>
-                    <View style = {{justifyContent: "flex-end"}}>
+
+                    <View style={{justifyContent: "flex-end"}}>
                         <Text>{`Qty: ${props.itemData.itemQtyCart}`}</Text>
                     </View>
                 </View>
                 
                 <View style={styles.subTotal}>
+                    <Text style={styles.removeBtn} onPress = {()=> removeItem()}>Remove</Text> 
                     {/* <Text>{`Sub Total: $${parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2)}`}</Text> */}
                     <Text>{`Sub Total: $${props.itemData.item.Qty > 0? parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2): 0}`}</Text>
                 </View>
@@ -95,8 +100,15 @@ const styles = StyleSheet.create({
     },
     subTotal:{
         flexDirection: 'row',
-        justifyContent:'flex-end',
+        justifyContent:'space-between',
         margin: 5,
         marginHorizontal:10,
+    },
+
+    removeBtn:{
+        backgroundColor:'white',
+        paddingHorizontal: 10,
+        borderRadius: 3,
+        elevation: 2,
     },
 })

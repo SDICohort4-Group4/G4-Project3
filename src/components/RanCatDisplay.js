@@ -1,10 +1,9 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import {getCatItem} from '../Api/Auth';
 import FlatListCat from './FlatListCat'
 
 export default function RanCatDisplay({list, navigation}) {
 
-    // function to get 3 random item in list of category
+    // function to get n random item in list of category
     function getMultiRan(list, num) {
         const shuffled = [...list].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, num);
