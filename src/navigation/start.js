@@ -7,9 +7,6 @@ import AccountScreen from "../screens/account.js";
 
 import CartIcon from "../../assets/cart-icon-gray.png"
 import Icon from "../../assets/icon.png"
-import { SimpleLineIcons } from '@expo/vector-icons'; 
-
-import { EvilIcons } from '@expo/vector-icons'; 
 import CartScreen from "../screens/cart.js"
 
 import { MaterialIcons } from '@expo/vector-icons';
@@ -45,7 +42,7 @@ export default function StartScreen() {
                                 // />
                                 <View style = {styles.cartIconContainer}>
                                     {/* <SimpleLineIcons name="bag" size={20} color="black" /> */}
-                                    <MaterialIcons name="storefront" size={24} color="black" />
+                                    <MaterialIcons name="store" size={24} color="#333333" />
                                 </View>
                             )
                         }
@@ -60,7 +57,7 @@ export default function StartScreen() {
                         tabBarIcon : () => {
                             return (
                                 <View style = {styles.cartIconContainer}>
-                                    <EvilIcons name = "user" size = {28} />
+                                    <MaterialIcons name="account-circle" size={24} color="#333333" />
                                 </View>
 
                             )
@@ -74,10 +71,9 @@ export default function StartScreen() {
                         tabBarLabelStyle: {fontSize: 15, fontWeight: "bold", flex: 1, textAlignVertical: "center"},
                         tabBarIcon : () => {
                             return (
-                                <Image
-                                    style = {styles.cartIconContainer}
-                                    source = {CartIcon} 
-                                />
+                                <View style = {styles.cartIconContainer}>
+                                    <MaterialIcons name="shopping-cart" size={24} color="#333333" />
+                                </View>
                             )
                         }
                     }} 

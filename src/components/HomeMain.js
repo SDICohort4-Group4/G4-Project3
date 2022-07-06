@@ -60,7 +60,6 @@ export default function HomeMain({navigation}) {
             })}
             </>
         )
-
     }
 
     //handle enter pressed to link to search page

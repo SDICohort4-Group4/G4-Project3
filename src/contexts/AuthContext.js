@@ -54,7 +54,7 @@ useEffect(()=>{
 
     return(
         // functions and stats to be passed as value
-        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, dbCartArray, setDBCartArray, catList, setCatList, fullList, setFullList}}>
+        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, dbCartArray, setDBCartArray, catList, setCatList, fullList, setFullList, checkoutArray, setCheckoutArray}}>
             {children}
         </LoginContext.Provider>
     )
