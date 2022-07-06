@@ -32,11 +32,11 @@ export default function DisplayItem(props){
                 }
                 payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: cartArray[i].itemQtyCart}
 
-                // try {
-                axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
-                // } catch (error) {
-                //     console.log(`displayItem.js function addToCart, updateCartQty:`, error)
-                // }
+                try {
+                    axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+                } catch (error) {
+                    console.log(`displayItem.js function addToCart, updateCartQty:`, error)
+                }
                 break;
             }
         }

@@ -59,11 +59,11 @@ export default function ItemDetails({route, navigation}) {
                     cartArray[i].itemQtyCart = cartArray[i].itemQtyCart + orderQty;
                 }
                 payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: cartArray[i].itemQtyCart}
-                // try {
-                axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
-                // } catch (error) {
-                //     console.log(`ItemDetails.js function addToCart, updateCartQty:`, error)
-                // }
+                try {
+                    axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+                } catch (error) {
+                    console.log(`ItemDetails.js function addToCart, updateCartQty:`, error)
+                }
                 break;
             }
         }

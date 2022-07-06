@@ -7,25 +7,48 @@ import jwt_decode from 'jwt-decode';
 import {getCart} from "../Api/getData";
 
 import DisplayCheckoutItems from './displayCheckoutItem';
+import PaymentGateway from  './paymentGateway'
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
-export function CheckoutDetails(navigation){
-    const {dbCartArray, setDBCartArray, checkoutArray} = useContext(AuthContext);
+export function CheckoutDetails({navigation}){
+    const {userData, dbCartArray, setDBCartArray, checkoutArray, setCheckoutArray} = useContext(AuthContext);
     
     const [totalPrice, setTotalPrice] = useState(0);
     const [checkoutData, setCheckoutData] = useState([]);
+    // const [buyHistoryData, setBuyHistoryData] = useState([])
     
     useEffect(() => {
-        let filteredData = [...checkoutArray].filter(index => index.item.Qty > 0 && index.item.Qty >= index.itemQtyCart)
-        setCheckoutData(filteredData);
-        setTotalPrice(TotalPayablePrice([...filteredData]));
+        if(checkoutArray != undefined){
+            let filteredData = [...checkoutArray].filter(index => index.item.Qty > 0 && index.item.Qty >= index.itemQtyCart)
+            setCheckoutData(filteredData);
+            // console.log(filteredData);
+            setTotalPrice(TotalPayablePrice([...filteredData]));
+            // buyHistoryArray(filteredData)
+        }
     }, [checkoutArray])
 
     // function checkoutFilter(){
     //     let filteredData = [...checkoutArray].filter(item => item.item.Qty > 0)
     //     return filteredData
+    // }
+    // function buyHistoryArray(itemData){
+    //     let spreadData = [...itemData]
+    //     let filteredHistoryArray = [];
+    //     for(let i = 0; i < spreadData.length; i++){
+    //         filteredHistoryArray.push({
+    //             userID: spreadData[i].userID, 
+    //             itemID: spreadData[i].itemID, 
+    //             itemSKU: spreadData[i].item.SKU,
+    //             itemName: spreadData[i].item.itemName, 
+    //             buyQty: spreadData[i].itemQtyCart, 
+    //             buyPrice: spreadData[i].item.itemPrice
+    //         });
+    //     }
+    //     // console.log(filteredHistoryArray, new Date)
+    //     setBuyHistoryData(filteredHistoryArray);
+    //     return filteredHistoryArray
     // }
 
     function TotalPayablePrice(itemData){
@@ -67,7 +90,18 @@ export function CheckoutDetails(navigation){
                 <View style = {styles.paymentContainer}>
                     <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
                 </View>
-                <Text style = {styles.payButton}>Pay</Text>
+                <Text 
+                style = {styles.payButton} 
+                onPress = {() => {
+                    PaymentGateway({
+                        navigation, 
+                        userData: userData, 
+                        checkoutData: checkoutData, 
+                        setDBCartArray: setDBCartArray, 
+                        setCheckoutArray: setCheckoutArray,
+                    })
+                    // buyHistoryArray(checkoutData)
+                    }}>Pay</Text>
             </View>
             <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {styles.checkoutContainer}>
                 <View >

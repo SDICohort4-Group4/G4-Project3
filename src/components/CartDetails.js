@@ -16,11 +16,19 @@ export function CartDetails({navigation}){
     const [cartData, setCartData] = useState([]);
 
     useEffect(() => {
-        setCartData([...dbCartArray]);
-        setTotalPrice(TotalPayablePrice([...dbCartArray]))
+        if(dbCartArray != undefined){
+            setCartData([...dbCartArray]);
+            setTotalPrice(TotalPayablePrice([...dbCartArray]))
+        }
     },[dbCartArray])
 
     let checkoutData;
+
+    // useEffect(() => {
+    //     if(checkoutData != undefined){
+    //         setCheckoutArray([...checkoutData])
+    //     }
+    // },[checkoutData])
 
     // function printValue(){
     //     console.log(dbCartArray, new Date)
@@ -32,14 +40,13 @@ export function CartDetails({navigation}){
     })
 
     async function getFilteredData(){
-        let accessToken = await SecureStore.getItemAsync('access')
-        let decode = jwt_decode(accessToken)
-        let cartArray
-
         try {
+            let accessToken = await SecureStore.getItemAsync('access')
+            let decode = jwt_decode(accessToken)
+            let cartArray
             cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
             checkoutData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0 && (index.item.Qty >= index.itemQtyCart))
-            setCheckoutArray(checkoutData)
+            setCheckoutArray([...checkoutData])
         } catch (error) {
             console.log(`CartDetail.js function getFilteredData, getCheckoutArrayData:`, error)
         }
