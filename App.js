@@ -16,7 +16,8 @@ LogBox.ignoreLogs(["new NativeEventEmitter"]);
 export default function App() {
   return (
     <DataProvider>
-      <StripeProvider>
+      <StripeProvider
+          publishableKey="pk_test_51LIAztC2VmHakyazuShGaaWj7GHzkJC1TuPteGJMg3r4uxUdXaa1TIu2vcw7q4kIYPCeZWuITUJxF0ngR65mAjS300GyCVSIAt">
       <StatusBar backgroundColor={'#00000080'}/>
       <View style={styles.container}>
         <StartScreen/>
