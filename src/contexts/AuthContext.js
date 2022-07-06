@@ -24,6 +24,8 @@ const [dbCartArray, setDBCartArray] = useState(
     ]
 );
 
+const [checkoutArray, setCheckoutArray] = useState();
+
 //create function to check auth
 let checkAuth = async() =>{
     try{

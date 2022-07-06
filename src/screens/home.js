@@ -8,22 +8,30 @@ const ShopStack = createNativeStackNavigator();
 
 export function HomeScreen() {
     return(
-            <ShopStack.Navigator screenOptions={{
-                                    animation: "slide_from_right",
-                                    headerStyle:{height:60, backgroundColor: "#D1920D"},
-                                    headerTitleStyle: {color: 'white'},
-                                    }}>
 
-                <ShopStack.Screen name = 'homeMain' component = {HomeMain}
-                 options={{headerShown: false}}/>
-
+            <ShopStack.Navigator 
+                screenOptions = {{
+                    animation: "slide_from_right",
+                    headerStyle: {height:60, backgroundColor: "#D1920D"},
+                    headerTitleStyle: {color: 'white'},
+                }}>
+                
                 <ShopStack.Screen 
-                name = 'browse' 
-                component = {SearchScreen}                     
-                options = {{
-                    title: "Let's go Shopin"}} />
-                    
-                <ShopStack.Screen name = 'itemDetails' component = {ItemDetails}/>
+                    name = 'homeMain' 
+                    component = {HomeMain}
+                    options={{headerShown: false}}/>
+                
+                <ShopStack.Screen 
+                    name = 'browse' 
+                    component = {SearchScreen}                     
+                    options = {{title: "Let's go Shopin"}} 
+                />
+                <ShopStack.Screen 
+                    name = 'itemDetails' 
+                    component = {ItemDetails}
+                    options = {{title: "Item Details"}}
+                />
+
                 {/* <ShopStack.Screen name = 'cartDetails' component = {CartDetails} /> */}
             </ShopStack.Navigator>  
     )
