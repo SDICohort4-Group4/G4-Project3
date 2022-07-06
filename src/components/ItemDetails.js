@@ -181,68 +181,23 @@ export default function ItemDetails({route, navigation}) {
                         <Text>{route.params.itemData.itemDescription}</Text>
                     </View>
                 </View>
-                
-                {/* <View style = {styles.container}>
-
-                    <View style = {styles.imageCon}>
-                        {route.params.itemData.itemPic1? 
-                            <Image style = {styles.image} source = {{uri: route.params.itemData.itemPic1}}></Image>
-                        :
-                            <Image style = {styles.image} source = {noImage}></Image>
-                        }
-                    </View>
-                    <View style = {styles.buttonsCon}>
-                        {route.params.itemData.Qty > 0 ?
-                        <Text>
-                            <Button
-                                style = {styles.orderQtyButtons}
-                                onPress = {() => {
-                                    decrementOrderQty();
-                                }}>-
-                            </Button> 
-                            <Button 
-                                keyboardType = "numeric"
-                                style = {styles.orderQtyField}>                        
-                                {orderQty}                    
-                            </Button>  
-                            <Button 
-                                style = {styles.orderQtyButtons}
-                                onPress = {() => {
-                                    incrementOrderQty();
-                                }}>+
-                            </Button>
-                            {auth === true? 
-                                <Button 
-                                    onPress = {() => {
-                                        addToCart(route.params.itemData.itemName, orderQty, route.params.itemData)
-                                    }}>
-                                    Add to Cart
-                                </Button>       
-                            :
-                                <Button>Please Login</Button>}
-                        
-                        </Text>: <Text style = {styles.orderQtyButtons}>Please check back soon!</Text>}
-                    </View>
-                
-                    <View style = {styles.infoCon}>
-                    <Table 
-                        borderStyle = {{ borderWidth: 0.2, borderColor: 'black' }}>
-                        <Rows data = {data.tableData} textStyle = {styles.rowTableText} />
-                    </Table>
-                    </View> 
-                </View> */}
             </ScrollView>
             <View style={styles.bottomBar}>
-                <View style={styles.counterCon}>
-                    <MaterialIcons onPress={decrementOrderQty} name="remove" size={25} color="#333333" />
-                    <Text style={styles.counter}>{orderQty}</Text>
-                    <MaterialIcons onPress={incrementOrderQty} name="add" size={25} color="#333333" />
-                </View>
-                <View style={styles.addBtnCon}>
-                    {auth?
-                    <Text onPress={() => {addToCart(route.params.itemData.itemName, orderQty, route.params.itemData)}} style={styles.addBtn}>Add</Text>:
-                    <Text style={styles.addBtn} onPress={()=>{navigation.navigate('Account',{screen: 'Login'})}}>Login</Text>}
-                </View>
+                {route.params.itemData.Qty?
+                <>
+                    <View style={styles.counterCon}>
+                        <MaterialIcons onPress={decrementOrderQty} name="remove" size={25} color="#333333" />
+                        <Text style={styles.counter}>{orderQty}</Text>
+                        <MaterialIcons onPress={incrementOrderQty} name="add" size={25} color="#333333" />
+                    </View>
+                    <View style={styles.addBtnCon}>
+                        {auth?
+                        <Text onPress={() => {addToCart(route.params.itemData.itemName, orderQty, route.params.itemData)}} style={styles.addBtn}>Add</Text>:
+                        <Text style={styles.addBtn} onPress={()=>{navigation.navigate('Account',{screen: 'Login'})}}>Login</Text>}
+                    </View>
+                </>:
+                <Text style={styles.OOSText}> Item out of stock, please check back again.</Text>
+                }
             </View>
         </>
     )
@@ -367,5 +322,12 @@ const styles = StyleSheet.create({
     addBtnCon:{
         justifyContent: 'center',
         alignItems: 'flex-start',
+    },
+
+    OOSText:{
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        textAlignVertical: 'center',
     },
   });
