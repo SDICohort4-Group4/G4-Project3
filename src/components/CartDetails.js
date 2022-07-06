@@ -1,14 +1,11 @@
 import { View, ScrollView, Text, StyleSheet, Dimensions } from 'react-native';
-import { useState, useContext, useCallback, useEffect } from 'react';
-import DisplayCartItem from '../components/displayCartItem.js'
+import { useState, useContext, useEffect } from 'react';
 import AuthContext from '../contexts/AuthContext';
+import axios from 'axios'
+import DisplayCartItem from '../components/displayCartItem.js'
 import { useFocusEffect } from '@react-navigation/native';
-
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode'
-import axios from 'axios'
-
-import { CheckoutDetails } from './CheckoutDetails.js';
 
 export function CartDetails({navigation}){
 
@@ -44,9 +41,9 @@ export function CartDetails({navigation}){
             checkoutData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0 && (index.item.Qty >= index.itemQtyCart))
             setCheckoutArray(checkoutData)
         } catch (error) {
-            
+            console.log(`CartDetail.js function getFilteredData, getCheckoutArrayData:`, error)
         }
-        return checkoutData
+        // return checkoutData
     }
 
     function TotalPayablePrice(itemData){
@@ -71,10 +68,10 @@ export function CartDetails({navigation}){
     }
 
     return(
-        <ScrollView contentContainerStyle={{flexGrow: 1}} style={{backgroundColor: '#fffaed'}}>
-            <View style={{flex: 1}}>
+        <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {{backgroundColor: '#fffaed'}}>
+            <View style = {{flex: 1}}>
                 {cartData.length > 0 ? 
-                    <View style={styles.card}>
+                    <View style = {styles.card}>
                         {cartData.map((data, index)=>(
                             <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
                         ))}
@@ -102,7 +99,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         elevation: 20,
     },
-
     checkoutButton:{
         fontSize: 20,
         textAlign: "center",

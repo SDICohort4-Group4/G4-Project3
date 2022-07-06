@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View, TextInput, Image, ScrollView, Dimensions, Alert } from 'react-native';
 import { useContext, useEffect, useState } from "react";
+import AuthContext from '../contexts/AuthContext';
+import axios from "axios";
 import noImage from "../../assets/photo-soon.jpg";
 import { DataTable, Button } from 'react-native-paper';
 import { Table, Row, Rows } from 'react-native-table-component'
 
+// import {updateCartData} from "../Api/updateCartData.js";
 // import addToCart from '../components/addToCart.js'
-import AuthContext from '../contexts/AuthContext';
-
-import {updateCartData} from "../Api/updateCartData.js";
-import axios from "axios";
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -18,8 +17,8 @@ export default function ItemDetails({route, navigation}) {
     // console.log(route.params.itemData);
 
     const [orderQty, setOrderQty] = useState(1);
-    let {auth, userData} = useContext(AuthContext);
-    let {dbCartArray, setDBCartArray} = useContext(AuthContext)
+    const {auth, userData} = useContext(AuthContext);
+    const {dbCartArray, setDBCartArray} = useContext(AuthContext)
 
     function incrementOrderQty(){
         if(orderQty >= route.params.itemData.Qty){
@@ -39,7 +38,7 @@ export default function ItemDetails({route, navigation}) {
         return orderQty;
     }
 
-    async function addToCart(itemName, orderQty, itemData){
+    function addToCart(itemName, orderQty, itemData){
         
         if(orderQty <= 0) {
             return
@@ -48,6 +47,7 @@ export default function ItemDetails({route, navigation}) {
         let cartArray = [...dbCartArray];
         let exists = false;
 
+        //Update Qty in cartArray & cart DB if itemID already exists in cartArray
         for(let i = 0; i < cartArray.length; i++){
             if(cartArray[i].itemID == itemData.itemID){
                 exists = true;
@@ -59,11 +59,16 @@ export default function ItemDetails({route, navigation}) {
                     cartArray[i].itemQtyCart = cartArray[i].itemQtyCart + orderQty;
                 }
                 payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: cartArray[i].itemQtyCart}
-                await axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+                // try {
+                axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+                // } catch (error) {
+                //     console.log(`ItemDetails.js function addToCart, updateCartQty:`, error)
+                // }
                 break;
             }
         }
         
+        //Push new item to cartArray & cart DB if itemID doesn't already exist cartArray
         if(exists == false){
             cartArray.push({
                 item:{ 
@@ -78,7 +83,11 @@ export default function ItemDetails({route, navigation}) {
             })
             // updateCartItem(userData.userID, itemData.itemID, orderQty)
             let payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: orderQty}
-            await axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+            try {
+                axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
+            } catch (error) {
+                console.log(`ItemDetails.js function addToCart, pushNewToCart;`, error)
+            }
         }
 
         setDBCartArray(cartArray)
@@ -93,18 +102,6 @@ export default function ItemDetails({route, navigation}) {
             {cancelable: true}
         ))
     }
-
-    // function updateCartItem(userID, itemID, itemQtyCart){
-    //     const dataType = `/cart/save`
-    //     const payload = {
-    //         userID: userID, 
-    //         itemID: itemID, 
-    //         itemQtyCart: itemQtyCart
-    //     }
-    //     console.log(dataType)
-    //     console.log(payload)
-    //     updateCartData(dataType, payload)
-    // }
 
     const tableData = {
         tableData: [

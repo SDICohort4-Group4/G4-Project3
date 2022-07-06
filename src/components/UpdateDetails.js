@@ -16,7 +16,7 @@ export default function UpdateDetails({navigation}) {
                 
         if (response.status === 200) {
             setUserData(response.data.data);
-
+            console.log(response.data.data)
         } else if(response.status === 401) {
             setAuth(false)
         }

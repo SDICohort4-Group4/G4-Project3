@@ -1,13 +1,12 @@
 import { View, ScrollView, Text, StyleSheet, TextInput, Dimensions } from 'react-native';
 import { useState, useContext, useCallback, useEffect } from 'react';
 import AuthContext from '../contexts/AuthContext';
+import axios from 'axios'
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode';
 import {getCart} from "../Api/getData";
 
 import DisplayCheckoutItems from './displayCheckoutItem';
-
-import axios from 'axios'
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -17,13 +16,12 @@ export function CheckoutDetails(navigation){
     
     const [totalPrice, setTotalPrice] = useState(0);
     const [checkoutData, setCheckoutData] = useState([]);
-
     
     useEffect(() => {
         let filteredData = [...checkoutArray].filter(index => index.item.Qty > 0 && index.item.Qty >= index.itemQtyCart)
         setCheckoutData(filteredData);
         setTotalPrice(TotalPayablePrice([...filteredData]));
-    }, [checkoutArray, dbCartArray])
+    }, [checkoutArray])
 
     // function checkoutFilter(){
     //     let filteredData = [...checkoutArray].filter(item => item.item.Qty > 0)
@@ -79,10 +77,6 @@ export function CheckoutDetails(navigation){
                                 <DisplayCheckoutItems itemData = {data} navigation = {navigation} key = {index}/>
                             ))}
                         </View>
-                        {/* <Text onPress={() => {getCartData(); getCheckoutData()}}>Print</Text> */}
-                        {/* {getFilteredData} */}
-                        {/* <Text onPress={() => {getFilteredData(); console.log(checkoutData, new Date)}}>Print</Text> */}
-
                     </View>
                 </View>
             </ScrollView>
@@ -108,11 +102,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5
     },
     card:{
-        marginTop: 5,
+        marginVertical: 5,
         alignSelf: 'center',
         width: '95%',
         backgroundColor: 'white',
         elevation: 5,
+
     },
     payButton:{
         fontSize: 20,
@@ -142,8 +137,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     checkoutContainer: {
-        outlineWidth: 1,
-        outlineColor: "red",
         height: windowHeight * 0.60
     }
 })
