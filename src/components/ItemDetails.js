@@ -1,14 +1,13 @@
-import { StyleSheet, Text, View, TextInput, Image, ScrollView, Dimensions, Alert } from 'react-native';
-import { useContext, useEffect, useState } from "react";
+import { StyleSheet, Text, View, TextInput, Image, ScrollView, Dimensions, Alert, Animated } from 'react-native';
+import React,{ useContext, useEffect, useState } from "react";
 import noImage from "../../assets/photo-soon.jpg";
-import { DataTable, Button } from 'react-native-paper';
-import { Table, Row, Rows } from 'react-native-table-component'
 
 // import addToCart from '../components/addToCart.js'
 import AuthContext from '../contexts/AuthContext';
 
 import {updateCartData} from "../Api/updateCartData.js";
 import axios from "axios";
+import { MaterialIcons } from '@expo/vector-icons';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -20,6 +19,11 @@ export default function ItemDetails({route, navigation}) {
     const [orderQty, setOrderQty] = useState(1);
     let {auth, userData} = useContext(AuthContext);
     let {dbCartArray, setDBCartArray} = useContext(AuthContext)
+
+    let imageList = [];
+    // push image url into img list if they are not empty
+    if(route.params.itemData.itemPic1) imageList.push(route.params.itemData.itemPic1);
+    if(route.params.itemData.itemPic2) imageList.push(route.params.itemData.itemPic2);
 
     function incrementOrderQty(){
         if(orderQty >= route.params.itemData.Qty){
@@ -93,158 +97,275 @@ export default function ItemDetails({route, navigation}) {
             {cancelable: true}
         ))
     }
-
-    // function updateCartItem(userID, itemID, itemQtyCart){
-    //     const dataType = `/cart/save`
-    //     const payload = {
-    //         userID: userID, 
-    //         itemID: itemID, 
-    //         itemQtyCart: itemQtyCart
-    //     }
-    //     console.log(dataType)
-    //     console.log(payload)
-    //     updateCartData(dataType, payload)
-    // }
-
-    const tableData = {
-        tableData: [
-            ['Item : ', route.params.itemData.itemName],
-            ['Description : ', route.params.itemData.itemDescription],
-            ['Price : ', `$${parseFloat(route.params.itemData.itemPrice).toFixed(2)}`],
-            // ['SKU : ', route.params.itemData.SKU],
-            ['Brand :', route.params.itemData.brand],
-            ['Stock : ', route.params.itemData.Qty],
-            ['Category :', `${route.params.itemData.itemCategory1}, ${route.params.itemData.itemCategory2}`]
-
-        ]
-    };
-
-    const [data, setData] = useState(tableData);
     
-    return(
-        <ScrollView>
-            <View style = {styles.container}>
+    const scrollX = React.useRef(new Animated.Value(0)).current;
 
-                <View style = {styles.imageCon}>
-                    {route.params.itemData.itemPic1? 
-                        <Image style = {styles.image} source = {{uri: route.params.itemData.itemPic1}}></Image>
-                    :
-                        <Image style = {styles.image} source = {noImage}></Image>
-                    }
+    function renderDot(list) {
+        return(
+            <>
+            {list.map((_,idx) => {
+                const inputRange = [(idx - 1) * windowWidth, idx * windowWidth, (idx + 1)* windowWidth ];
+
+                const dotWidth = scrollX.interpolate({
+                    inputRange,
+                    outputRange: [8,16,8],
+                    extrapolate: 'clamp',
+                });
+
+                const opacity = scrollX.interpolate({
+                    inputRange,
+                    outputRange: [0.3, 1, 0.3],
+                    extrapolate: "clamp",
+                })
+
+                return <Animated.View style={[styles.dot, {width: dotWidth, opacity}]} key={idx.toString()} ></Animated.View>
+            })}
+            </>
+        )
+    }
+
+    function renderFunc({item}) {
+        return (
+            <Image style={styles.flatListImage} source={{uri: item}} />
+        )
+    }
+
+    return(
+        <>
+            <ScrollView style={{backgroundColor: '#fffaed'}}>
+
+                <View style={styles.flatListCon}>
+                    {imageList.length?<>
+                    <Animated.FlatList 
+                    snapToAlignment="start" 
+                    snapToInterval={windowWidth*0.90}
+                    decelerationRate={"fast"} 
+                    pagingEnabled
+                    onScroll={Animated.event(
+                        [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                        {useNativeDriver: false}
+                    )}
+                    horizontal data={imageList} renderItem={renderFunc}
+                    showsHorizontalScrollIndicator={false}/>
+                    
+                    <View style={styles.pagination}>
+                        {renderDot(imageList)}
+                    </View>
+                    </>: <Image style={styles.flatListImage} source={noImage} />}
                 </View>
-                <View style = {styles.buttonsCon}>
-                    {route.params.itemData.Qty > 0 ?
-                    <Text>
-                        <Button
-                            style = {styles.orderQtyButtons}
-                            onPress = {() => {
-                                decrementOrderQty();
-                            }}>-
-                        </Button> 
-                        <Button 
-                            keyboardType = "numeric"
-                            style = {styles.orderQtyField}>                        
-                            {orderQty}                    
-                        </Button>  
-                        <Button 
-                            style = {styles.orderQtyButtons}
-                            onPress = {() => {
-                                incrementOrderQty();
-                            }}>+
-                        </Button>
-                        {auth === true? 
-                            <Button 
-                                onPress = {() => {
-                                    addToCart(route.params.itemData.itemName, orderQty, route.params.itemData)
-                                }}>
-                                Add to Cart
-                            </Button>       
+
+                <View style={styles.card}>
+                    <Text style={styles.header}>{route.params.itemData.itemName}</Text>
+                    <Text style={styles.price}>$ {parseFloat(route.params.itemData.itemPrice).toFixed(2)}</Text>
+
+                    <View style={styles.additionInfo}>
+
+                        <View style={styles.infoRow}>
+                            <Text style={[{...styles.infoText},{flex: 2}]}>Stock:</Text>
+                            <Text style={[{...styles.infoText},{flex: 6}]}>{route.params.itemData.Qty}</Text>
+                        </View>
+
+                        <View style={styles.infoRow}>
+                            <Text style={[{...styles.infoText},{flex: 2}]}>Brand:</Text>
+                            <Text style={[{...styles.infoText},{flex: 6}]}>{route.params.itemData.brand}</Text>
+                        </View>
+
+                        <View style={styles.infoRow}>
+                            <Text style={[{...styles.infoText},{flex: 2}]}>Catergory:</Text>
+                            <Text style={[{...styles.infoText},{flex: 6}]}>{route.params.itemData.itemCategory1}, {route.params.itemData.itemCategory2}</Text>
+                        </View>
+                    </View>
+                    
+                    <Text style={styles.desHeader}>Description: </Text>
+                    <View style={styles.desCon}>
+                        <Text>{route.params.itemData.itemDescription}</Text>
+                    </View>
+                </View>
+                
+                {/* <View style = {styles.container}>
+
+                    <View style = {styles.imageCon}>
+                        {route.params.itemData.itemPic1? 
+                            <Image style = {styles.image} source = {{uri: route.params.itemData.itemPic1}}></Image>
                         :
-                            <Button>Please Login</Button>}
-                     
-                    </Text>: <Text style = {styles.orderQtyButtons}>Please check back soon!</Text>}
+                            <Image style = {styles.image} source = {noImage}></Image>
+                        }
+                    </View>
+                    <View style = {styles.buttonsCon}>
+                        {route.params.itemData.Qty > 0 ?
+                        <Text>
+                            <Button
+                                style = {styles.orderQtyButtons}
+                                onPress = {() => {
+                                    decrementOrderQty();
+                                }}>-
+                            </Button> 
+                            <Button 
+                                keyboardType = "numeric"
+                                style = {styles.orderQtyField}>                        
+                                {orderQty}                    
+                            </Button>  
+                            <Button 
+                                style = {styles.orderQtyButtons}
+                                onPress = {() => {
+                                    incrementOrderQty();
+                                }}>+
+                            </Button>
+                            {auth === true? 
+                                <Button 
+                                    onPress = {() => {
+                                        addToCart(route.params.itemData.itemName, orderQty, route.params.itemData)
+                                    }}>
+                                    Add to Cart
+                                </Button>       
+                            :
+                                <Button>Please Login</Button>}
+                        
+                        </Text>: <Text style = {styles.orderQtyButtons}>Please check back soon!</Text>}
+                    </View>
+                
+                    <View style = {styles.infoCon}>
+                    <Table 
+                        borderStyle = {{ borderWidth: 0.2, borderColor: 'black' }}>
+                        <Rows data = {data.tableData} textStyle = {styles.rowTableText} />
+                    </Table>
+                    </View> 
+                </View> */}
+            </ScrollView>
+            <View style={styles.bottomBar}>
+                <View style={styles.counterCon}>
+                    <MaterialIcons onPress={decrementOrderQty} name="remove" size={25} color="#333333" />
+                    <Text style={styles.counter}>{orderQty}</Text>
+                    <MaterialIcons onPress={incrementOrderQty} name="add" size={25} color="#333333" />
                 </View>
-            
-                <View style = {styles.infoCon}>
-                <Table 
-                    borderStyle = {{ borderWidth: 0.2, borderColor: 'black' }}>
-                    <Rows data = {data.tableData} textStyle = {styles.rowTableText} />
-                </Table>
-                </View> 
+                <View style={styles.addBtnCon}>
+                    {auth?
+                    <Text onPress={() => {addToCart(route.params.itemData.itemName, orderQty, route.params.itemData)}} style={styles.addBtn}>Add</Text>:
+                    <Text style={styles.addBtn} onPress={()=>{navigation.navigate('Account',{screen: 'Login'})}}>Login</Text>}
+                </View>
             </View>
-        </ScrollView>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems:'center',
-        justifyContent: 'flex-start',
-        width: '100%',
-        height: '100%', 
-        backgroundColor: '#fffaed',
-        
-    },
 
-    icon: {
-        padding: 20,
+    flatListCon:{
+        marginTop: 20,
+        width: windowWidth * 0.9,
+        height: windowWidth * 0.9 * 3/4,
+        alignSelf: "center",
+        borderRadius: 5,
+        overflow: "hidden",
+        elevation: 5,
         backgroundColor: 'white',
-        marginHorizontal: 10,
-        borderRadius: 100,
-        elevation: 3,
-    },
-    
-    imageCon:{
-        // flex: 5,
-        height: windowHeight*0.4,
-        width: '100%',
-        backgroundColor: "white",
     },
 
-    image:{
-        width: '100%',
-        height: '100%',
+    flatListImage: {
+        width: windowWidth * 0.9,
+        height: windowWidth * 0.9 * 3/4,
     },
 
-    infoCon: {
-        flex: 0,
-        borderWidth: 1,
-        width: '100%',
+    dot:{
+        width: 8,
+        height: 8,
+        borderRadius: 8,
+        backgroundColor: '#333',
+        marginHorizontal: 3,
     },
-    nameCon: {
-        flex: 1,
-    },
-    valueCon: {
-        flex: 3,
-    },
-    qtyCon: {
-        flex: 1
-    },
-    buttonsCon:{
-        flex: 1
-    },
-    orderQtyButtons:{
-        fontSize: 20,
-    },
-    orderQtyField: {
-        fontSize: 20,
-    },
-    userDetails: {
-        width: '90%',
+
+    pagination:{
+        position: 'absolute',
         flexDirection: 'row',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
-        margin: 20,
-        paddingVertical: 10,
-        elevation: 10,
+        bottom: 10,
+        alignSelf: "center"
     },
-    // head: { height: 44, backgroundColor: 'darkblue' },
-    // headText: { fontSize: 20, fontWeight: 'bold' , textAlign: 'center', color: 'white' },
-    rowTableText: { 
-        margin: 6, 
-        fontSize: 16, 
-        fontWeight: 'bold' 
+
+    card:{
+        width: '90%',
+        alignSelf: 'center',
+        backgroundColor: 'white',
+        padding: 10,
+        elevation: 5,
+        marginVertical: 15,
+        borderRadius: 5,
+    },
+
+    header:{
+        fontSize: 18,
+        fontWeight: 'bold', 
+
+    },
+
+    price:{
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: 'green',
+        marginTop: 5,
+    },
+
+    additionInfo:{
+        backgroundColor: 'rgba(52, 52, 52, 0.05)',
+        padding: 10,
+        marginTop: 5,
+        borderRadius: 5,
+    },
+
+    infoRow:{
+        flexDirection:'row',
+        justifyContent: 'flex-start',
+    },
+
+    desHeader:{
+        marginTop: 10,
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+
+    desCon:{
+        backgroundColor: 'rgba(52, 52, 52, 0.05)',
+        padding: 10,
+        marginTop: 5,
+        borderRadius: 5,
+    },
+
+    bottomBar:{
+        height: 55,
+        backgroundColor: '#f1e9cb',
+        borderTopWidth: 0.5,
+        borderColor: "#edd9ad",
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    },
+
+    counter:{
+        fontSize: 20,
+        backgroundColor: 'white',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        width: 50,
+        padding: 2,
+        borderRadius: 2,
+    },
+
+    counterCon: {
+        flexDirection: 'row',
+        padding: 5,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        width: 150,
+    },
+    addBtn:{
+        fontSize: 20,
+        backgroundColor: '#fcf5cf',
+        padding: 5,
+        paddingHorizontal: 25,
+        borderRadius: 5,
+        elevation: 2,
+    },
+
+    addBtnCon:{
+        justifyContent: 'center',
+        alignItems: 'flex-start',
     },
   });
