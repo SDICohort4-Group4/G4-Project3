@@ -2,16 +2,12 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import {getCatList} from '../Api/Auth'
 
-export default function SelectorBar({list, navigation}){
+export default function SelectorBar({list, navigation, callBackFn}){
 
     function renderItem({item}) {
-        function handleClick() {
-            // link to search page
-            navigation.navigate('browse', {searchText: item});
-        }
 
         return(
-            <Text onPress={handleClick} style={styles.catText}>{item}</Text>
+            <Text onPress={()=>callBackFn(item)} style={styles.catText}>{item}</Text>
         )
     }
 
@@ -35,7 +31,7 @@ const styles = StyleSheet.create({
         height: 35,
         backgroundColor: 'white',
         borderRadius: 5,
-        marginTop: 10,
+        marginTop: 5,
         padding: 5,
         elevation: 3,
     },

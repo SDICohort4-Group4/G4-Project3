@@ -6,15 +6,15 @@ const API = axios.create({
 
 export async function getData(props){
     
-    const response = await API.get(props.dataType);
+    const response = await API.get('/item');
 
-    if (response.status === 200){
-        const result = response.data.data
-        props.getItemData(result);
-        // console.log("GetData function:\n",result);
+    try {
+        const response = await API.get('/item');
+        return {status: response.status, data: response.data.data};
+    } catch (err) {
+        return {status: err.response.status};
     }
-    
-   
+
 }
 
 export async function getCart(props){
