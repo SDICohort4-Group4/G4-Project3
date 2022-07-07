@@ -1,19 +1,18 @@
 import { StyleSheet, Text, View, Image, Alert, Dimensions} from 'react-native';
-import noImage from '../../assets/photo-soon.jpg';
-import { Card, Button } from 'react-native-paper';
 import { useState, useContext } from 'react'
 import AuthContext from '../contexts/AuthContext';
+import { Card, Button } from 'react-native-paper';
+
 
 export default function displayCheckoutItems(props){
     return(
         <Card style = {styles.cardContainer}>
             <View style = {styles.itemContainer}>
                 <View style = {styles.itemInfoContainer}>
-                    <Text numberOfLines={3} style={{fontWeight: "bold"}}>{props.itemData.item.itemName}</Text>
+                    <Text numberOfLines = {3} style = {{fontWeight: "bold"}}>{props.itemData.item.itemName}</Text>
                     <Text>Price: $ {parseFloat(props.itemData.item.itemPrice).toFixed(2)}</Text>
                 </View>
-
-                <View style={{justifyContent: "flex-end"}}>
+                <View style = {{justifyContent: "flex-end"}}>
                     <Text>{`Qty: ${props.itemData.itemQtyCart}`}</Text>
                 </View>
             </View>

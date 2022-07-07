@@ -16,10 +16,10 @@ export default function HomeMain({navigation}) {
 
     useEffect(()=>{
         (async function() {
-            let response = await getCatList();
-            setCatList(response.data.data.cat1);
             let responseFull = await GetData();
             setFullList(responseFull.data);
+            let response = await getCatList();
+            setCatList(response.data.data.cat1);
         })();
     }, [])
 
@@ -60,7 +60,6 @@ export default function HomeMain({navigation}) {
             })}
             </>
         )
-
     }
 
     //handle enter pressed to link to search page

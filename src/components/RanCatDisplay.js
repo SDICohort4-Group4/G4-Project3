@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import {getCatItem} from '../Api/Auth';
 import FlatListCat from './FlatListCat'
 
 export default function RanCatDisplay({list, navigation}) {
