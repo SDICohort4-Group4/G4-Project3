@@ -5,18 +5,27 @@ import { Card, Button } from 'react-native-paper';
 
 
 export default function displayHistoryItems(props){
+    function yyyymmdd(date){
+        let removedTime = date.slice(0,10)
+        return removedTime;
+    }
+
+    function timeOnly(date){
+        let removedDate = date.slice(11,16)
+        return removedDate;
+    }
+    // console.log(props.itemData.createdAt)
     return(
         <Card style = {styles.cardContainer}>
             <View style = {styles.itemContainer}>
                 <View style = {styles.itemInfoContainer}>
-                    {/* <Text numberOfLines = {3} style = {{fontWeight: "bold"}}>{props.itemData.itemName}</Text>
-                    <Text>Price: $ {parseFloat(props.itemData.buyPrice).toFixed(2)}</Text> */}
-                    <Text>ItemName</Text>
-                    <Text>buyPrice</Text>
+                    <Text numberOfLines = {3} style = {{fontWeight: "bold"}}>{props.itemData.itemName}</Text>
+                    <Text>Price: $ {parseFloat(props.itemData.buyPrice).toFixed(2)}</Text>
+                    <Text>Bought on: {yyyymmdd(props.itemData.createdAt)}, {timeOnly(props.itemData.createdAt)}</Text>
                 </View>
                 <View style = {{justifyContent: "flex-end"}}>
-                    {/* <Text>{`Qty: ${props.itemData.buyQty}`}</Text> */}
-                    <Text>buyQty</Text>
+                    <Text>{`Qty: ${props.itemData.buyQty}`}</Text>
+
                 </View>
             </View>
         </Card>
@@ -28,7 +37,6 @@ const styles = StyleSheet.create({
         padding: 10,
         flexDirection:"row",
         alignSelf: 'center',
-        borderBottomWidth: 1,
         width: '100%',
     },
     itemInfoContainer:{
@@ -39,16 +47,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     cardContainer: {
-        margin: 3,
+        margin: 0.5,
         backgroundColor: "rgba(52, 52, 52, 0.10)",
         width: '95%',
         alignSelf: 'center',
-    },
-
-    subTotal:{
-        flexDirection: 'row',
-        justifyContent:'flex-end',
-        margin: 5,
-        marginHorizontal:10,
-    },
+    }
 })

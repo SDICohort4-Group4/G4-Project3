@@ -6,7 +6,7 @@ import { Feather } from "@expo/vector-icons";
 import axios from 'axios';
 
 export default function AccountDetails({navigation}) {
-    let {setAuth, userData, setUserData, setDBCartArray, setCheckoutArray} = useContext(AuthContext);
+    let {setAuth, userData, setUserData, setDBCartArray, setCheckoutArray, historyArray, setHistoryArray} = useContext(AuthContext);
     const [historyData, setHistoryData] = useState([]);
     const [transactionData, setTransactionData] = useState([])
 
@@ -21,17 +21,15 @@ export default function AccountDetails({navigation}) {
 
     async function getBuyHistory(){
         try {
-            let historyArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/buyhistory/${userData.userID}`)
-            setHistoryData([historyArray])
+            let transactionArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/buyhistory/${userData.userID}`)
+            setHistoryData([...transactionArray.data.data])
         } catch (error) {
             console.log('AccountDetail.js function getBuyHistory :', error)
         }
-        console.log(userData.userID)
-
     }
 
     useEffect(() => {
-        setTransactionData([...historyData])
+        setHistoryArray([...historyData])
     },[historyData])
 
     function DisplayDetails() {
@@ -88,7 +86,7 @@ export default function AccountDetails({navigation}) {
                 <Feather name="chevron-right" size={24} color="black" />
             </View>
             <View style={styles.menuItemCon}>
-                <Text onPress={()=> {getBuyHistory(); navigation.navigate('BuyHistory', {transactData: transactionData})}} style={styles.menuItemText}>View Transaction History</Text>
+                <Text onPress={()=> {getBuyHistory(); navigation.navigate('BuyHistory')}} style={styles.menuItemText}>View Transaction History</Text>
                 <Feather name="chevron-right" size={24} color="black" />
             </View>
 

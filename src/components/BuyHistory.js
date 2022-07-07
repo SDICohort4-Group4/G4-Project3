@@ -9,56 +9,47 @@ import DisplayBuyHistory from "../components/displayBuyHistory"
 
 export default function BuyHistory(navigation, transactData){
 
-    const {userData} = useContext(AuthContext);
-    const [transactionData, setTransactionData] = useState([0,0,0,0]);
+    const {userData, historyArray, setHistoryArray} = useContext(AuthContext);
+    const [transactionData, setTransactionData] = useState([]);
     const [truefalse, setTrueFalse] = useState(false)
+    const [historyData, setHistoryData] = useState([]);
 
-    // useFocusEffect(() => {
-    //     setTransactionData([0,0,0,0,0,0,0])
-    // })
-    function printValue(){
-        console.log('transactData: ',transactData, new Date)
-        // console.log('navigation',navigation.route.params.transactData[0].data)
-        if(navigation.route.params.transactData[0] != undefined){
-            console.log('navigation',navigation.route.params.transactData[0].data.data)
+    // function printValue(){
+    //     console.log('historyArray: ', historyArray)
+    // }
+
+    async function getBuyHistory(){
+        console.log('Refresh')
+        try {
+            let transactionArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/buyhistory/${userData.userID}`)
+            setHistoryData([...transactionArray.data.data])
+        } catch (error) {
+            console.log('BuyHistory.js function getBuyHistory :', error)
         }
-
-    }
-    function Refresh(){
-        setTransactionData([0,0,0,0,0,0,0,0,0,0])
     }
 
-    function Refresh2(){
-        setTransactionData([0])
-    }
-
-    function switchStates(){
-        setTrueFalse(!truefalse)
-        console.log(!truefalse)
-    }
-
+    useEffect(() => {
+        if(historyArray != undefined){
+            setTransactionData([...historyArray])
+        }
+    },[historyArray])
 
     return(
         <ScrollView>
             {transactionData.length > 0 ? 
                 <View style = {styles.card}>
-                    {/* {transactionData.map((data, index)=>(
-                        <DisplayBuyHistory itemData = {data} key = {index}/>
+                    {transactionData.map((data, index)=>(
+                        <DisplayBuyHistory itemData = {data} navigation = {navigation} key = {index}/>
                     ))}
-                    <Pressable onPress = {() => {Refresh2()}}>
+                    <Pressable onPress = {() => {getBuyHistory()}}>
                         <Text style = {styles.ShoppingButton } >Refresh</Text>
-                    </Pressable> */}
-                    <Pressable onPress = {() => {switchStates(); printValue()}}>
-                        <Text style = {styles.ShoppingButton }>Refresh</Text>
-
                     </Pressable>
-                    {truefalse == true? <Text>True</Text>:<Text>False</Text>}
                 </View>
             :
                 <View>
                     <View style = {styles.emptyCon}>
                         <Text>There have been no past transactions</Text>
-                        <Pressable onPress = {() => {Refresh()}}>
+                        <Pressable onPress = {() => {}}>
                             <Text style = {styles.ShoppingButton } >Refresh</Text>
                         </Pressable>
                     </View>
