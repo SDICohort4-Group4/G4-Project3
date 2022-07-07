@@ -1,13 +1,8 @@
 import { View, ScrollView, Text, StyleSheet, TextInput, Dimensions } from 'react-native';
 import { useState, useContext, useCallback, useEffect } from 'react';
 import AuthContext from '../contexts/AuthContext';
-import axios from 'axios'
-import * as SecureStore from 'expo-secure-store';
-import jwt_decode from 'jwt-decode';
-import {getCart} from "../Api/getData";
 
 import DisplayCheckoutItems from './displayCheckoutItem';
-import PaymentGateway from  './paymentGateway'
 import PaymentScreen from './PaymentScreenStripe';
 
 const windowHeight = Dimensions.get("window").height;
@@ -18,7 +13,6 @@ export function CheckoutDetails({navigation}){
     
     const [totalPrice, setTotalPrice] = useState(0);
     const [checkoutData, setCheckoutData] = useState([]);
-    // const [buyHistoryData, setBuyHistoryData] = useState([])
     
     useEffect(() => {
         if(checkoutArray != undefined){
@@ -26,32 +20,10 @@ export function CheckoutDetails({navigation}){
             setCheckoutData(filteredData);
             // console.log(filteredData);
             setTotalPrice(TotalPayablePrice([...filteredData]));
-            // buyHistoryArray(filteredData)
         }
     }, [checkoutArray])
 
-    // function checkoutFilter(){
-    //     let filteredData = [...checkoutArray].filter(item => item.item.Qty > 0)
-    //     return filteredData
-    // }
-    // function buyHistoryArray(itemData){
-    //     let spreadData = [...itemData]
-    //     let filteredHistoryArray = [];
-    //     for(let i = 0; i < spreadData.length; i++){
-    //         filteredHistoryArray.push({
-    //             userID: spreadData[i].userID, 
-    //             itemID: spreadData[i].itemID, 
-    //             itemSKU: spreadData[i].item.SKU,
-    //             itemName: spreadData[i].item.itemName, 
-    //             buyQty: spreadData[i].itemQtyCart, 
-    //             buyPrice: spreadData[i].item.itemPrice
-    //         });
-    //     }
-    //     // console.log(filteredHistoryArray, new Date)
-    //     setBuyHistoryData(filteredHistoryArray);
-    //     return filteredHistoryArray
-    // }
-
+   
     function TotalPayablePrice(itemData){
         let totalSummaryPrice = 0
         let itemSummaryPrice = null
@@ -79,35 +51,16 @@ export function CheckoutDetails({navigation}){
             {checkoutArray.length > 0 ? 
                 <View>            
                     <View style = {styles.ccContainer}>
-                    {/* <Text style = {styles.ccNumber}>Credit Card Details: </Text>
-                    <View style = {styles.ccNoContainer}>
-                        <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "1234"/>
-                        <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "5678"/>
-                        <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "9999"/>
-                        <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "0000"/>
-                    </View>
-                    <Text style = {styles.ccNumber}>CVV:</Text>
-                    <View style = {styles.ccNoContainer}>
-                        <TextInput maxLength = {3} placeholder = "123" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "123"/>
-                    </View> */}
-                    
-                    <PaymentScreen userData={userData} totalPrice={totalPrice}/>
-                    <View style = {styles.paymentContainer}>
-                        <Text style = {styles.totalPayableLabel}>Total Payable:</Text>
-                        <Text style = {styles.totalPayablePrice}>${totalPrice.toFixed(2)}</Text>
-                    </View>
-                        {/* <Text 
-                            style = {styles.payButton} 
-                            onPress = {() => {
-                                PaymentGateway({
-                                    navigation, 
-                                    userData: userData, 
-                                    checkoutData: checkoutData, 
-                                    setDBCartArray: setDBCartArray, 
-                                    setCheckoutArray: setCheckoutArray,
-                                })
-                            }}>Pay
-                        </Text> */}
+                        <PaymentScreen navigation={navigation} 
+                                        userData={userData} 
+                                        totalPrice={totalPrice}
+                                        checkoutData={checkoutData} 
+                                        setDBCartArray={setDBCartArray} 
+                                        setCheckoutArray={setCheckoutArray}/>
+                        <View style = {styles.paymentContainer}>
+                            <Text style = {styles.totalPayableLabel}>Total Payable:</Text>
+                            <Text style = {styles.totalPayablePrice}>${totalPrice.toFixed(2)}</Text>
+                        </View>
                     </View>
                     <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {styles.checkoutContainer}>
                         <View >
@@ -154,20 +107,7 @@ const styles = StyleSheet.create({
         width: '95%',
         backgroundColor: 'white',
         elevation: 5,
-
     },
-    // payButton:{
-    //     fontSize: 20,
-    //     textAlign: "center",
-    //     alignSelf: "center",
-    //     borderWidth: 0.02,
-    //     borderRadius: 5,
-    //     padding: 5,
-    //     paddingHorizontal: 10,
-    //     backgroundColor: "#FFD700",
-    //     height: 40,
-    //     marginHorizontal: 10,
-    // },
     totalPayableLabel: {
         fontSize: 20,
         flex: 1,
@@ -182,7 +122,6 @@ const styles = StyleSheet.create({
     paymentContainer:{
         flexDirection: 'row',
         marginVertical: 20,
-   
     },
     emptyCon:{
         flex: 1,
