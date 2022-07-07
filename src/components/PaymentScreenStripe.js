@@ -10,21 +10,24 @@ const API = axios.create({
 
 export default function PaymentScreen(props) {
   const { confirmPayment, loading } = useConfirmPayment();
-  const [ card, setCard ] = useState(false);
-
+  const [card, setCard] = useState(false)
+  
   const handlePayPress = async () => {
-
-      if (card?.complete==false) {
-          return;
+     
+      if (card?.complete===false || card===false){
+        return;
       }
       
-      const amountPayable={amountPayable:props.totalPrice};
-      console.log("Payment Screen:",props);
-      console.log("Amount",amountPayable, typeof props.totalPrice);
-      
-      const response = await API.post("/stripepayment/",amountPayable);
-      const {clientSecret} = response.data.data;
-    
+      const amountPayable={amountPayable: props.totalPrice*100};
+      let clientSecret;
+      try {
+          const response = await API.post("/stripepayment/",amountPayable);
+          clientSecret = response.data.data.clientSecret;
+        } catch (error) {
+            console.log("Payment Screen:", error);
+            return;
+      } 
+     
       const {paymentIntent, error} = await confirmPayment(clientSecret, {
           type: "Card",
           billingDetails: {
