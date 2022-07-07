@@ -1,36 +1,36 @@
-import { View, Button } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 import { CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 import axios from 'axios';
+
 
 const API = axios.create({
     baseURL:"https://sdic4-g4-project2.herokuapp.com/",
 });
 
-export default function PaymentScreen() {
+export default function PaymentScreen(props) {
   const { confirmPayment, loading } = useConfirmPayment();
-  const [ card, setCard ] = useState("");
-
-  // test data
-  const amountPayable={amountPayable:100};
-  const billingDetails = {
-    email: "tg@yahoo.com",
-    name: "tg",
-  };
+  const [ card, setCard ] = useState(false);
 
   const handlePayPress = async () => {
 
       if (card?.complete==false) {
           return;
       }
-
+      
+      const amountPayable={amountPayable:props.totalPrice};
+      console.log("Payment Screen:",props);
+      console.log("Amount",amountPayable, typeof props.totalPrice);
+      
       const response = await API.post("/stripepayment/",amountPayable);
       const {clientSecret} = response.data.data;
     
       const {paymentIntent, error} = await confirmPayment(clientSecret, {
           type: "Card",
-          billingDetails: billingDetails,
-    
+          billingDetails: {
+            email: props.userData.userEmail,
+            name: props.userData.userName
+          }
       });
 
       if (error) {
@@ -59,7 +59,7 @@ export default function PaymentScreen() {
             alignSelf:"center",
             width: '95%',
             height: 50,
-            marginTop: 30,
+            marginTop: 10,
             
         }}
         onCardChange={(cardDetails) => {
@@ -67,7 +67,41 @@ export default function PaymentScreen() {
         }}
               
       />
-      <Button onPress={handlePayPress} title="Pay" disabled={loading} />
+      <View>{!loading? 
+        <Text style={styles.payButton} onPress={handlePayPress}>Confirm Payment</Text>
+      : 
+        <Text style={styles.paymentProgress}>Payment in Progress</Text>
+      }
+      </View>
+      
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  payButton:{
+    fontSize: 20,
+    textAlign: "center",
+    alignSelf: "center",
+    borderWidth: 0.02,
+    borderRadius: 5,
+    padding: 5,
+    paddingHorizontal: 10,
+    backgroundColor: "#FFD700",
+    height: 40,
+    marginTop:10,
+    
+},
+  paymentProgress:{
+    fontSize: 20,
+    textAlign: "center",
+    alignSelf: "center",
+    borderWidth: 0.02,
+    borderRadius: 5,
+    padding: 5,
+    paddingHorizontal: 10,
+    backgroundColor: "gray",
+    height: 40,
+    marginTop:10,
+  }
+})

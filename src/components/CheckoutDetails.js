@@ -8,6 +8,7 @@ import {getCart} from "../Api/getData";
 
 import DisplayCheckoutItems from './displayCheckoutItem';
 import PaymentGateway from  './paymentGateway'
+import PaymentScreen from './PaymentScreenStripe';
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -78,7 +79,7 @@ export function CheckoutDetails({navigation}){
             {checkoutArray.length > 0 ? 
                 <View>            
                     <View style = {styles.ccContainer}>
-                    <Text style = {styles.ccNumber}>Credit Card Details: </Text>
+                    {/* <Text style = {styles.ccNumber}>Credit Card Details: </Text>
                     <View style = {styles.ccNoContainer}>
                         <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "1234"/>
                         <TextInput maxLength = {4} placeholder = "1234" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "5678"/>
@@ -88,11 +89,14 @@ export function CheckoutDetails({navigation}){
                     <Text style = {styles.ccNumber}>CVV:</Text>
                     <View style = {styles.ccNoContainer}>
                         <TextInput maxLength = {3} placeholder = "123" keyboardType = "numeric" style = {styles.ccInput} editable = {false} value = "123"/>
-                    </View>
+                    </View> */}
+                    
+                    <PaymentScreen userData={userData} totalPrice={totalPrice}/>
                     <View style = {styles.paymentContainer}>
-                        <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
+                        <Text style = {styles.totalPayableLabel}>Total Payable:</Text>
+                        <Text style = {styles.totalPayablePrice}>${totalPrice.toFixed(2)}</Text>
                     </View>
-                        <Text 
+                        {/* <Text 
                             style = {styles.payButton} 
                             onPress = {() => {
                                 PaymentGateway({
@@ -103,7 +107,7 @@ export function CheckoutDetails({navigation}){
                                     setCheckoutArray: setCheckoutArray,
                                 })
                             }}>Pay
-                        </Text>
+                        </Text> */}
                     </View>
                     <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {styles.checkoutContainer}>
                         <View >
@@ -152,27 +156,33 @@ const styles = StyleSheet.create({
         elevation: 5,
 
     },
-    payButton:{
+    // payButton:{
+    //     fontSize: 20,
+    //     textAlign: "center",
+    //     alignSelf: "center",
+    //     borderWidth: 0.02,
+    //     borderRadius: 5,
+    //     padding: 5,
+    //     paddingHorizontal: 10,
+    //     backgroundColor: "#FFD700",
+    //     height: 40,
+    //     marginHorizontal: 10,
+    // },
+    totalPayableLabel: {
         fontSize: 20,
-        textAlign: "center",
-        alignSelf: "center",
-        borderWidth: 0.02,
-        borderRadius: 5,
-        padding: 5,
-        paddingHorizontal: 10,
-        backgroundColor: "#FFD700",
-        height: 40,
-        marginHorizontal: 10,
+        flex: 1,
+        textAlign: 'right',
     },
-    totalPayable: {
-        fontSize: 16,
+    totalPayablePrice: {
+        fontSize: 20,
         flex: 1,
         textAlign: 'center',
+       
     },
     paymentContainer:{
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginVertical: 5,
+        marginVertical: 20,
+   
     },
     emptyCon:{
         flex: 1,
