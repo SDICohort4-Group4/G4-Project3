@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import {useContext} from "react";
+import {useContext, useState, useEffect} from "react";
 import AuthContext from '../contexts/AuthContext';
 import { Feather } from "@expo/vector-icons";
+import axios from 'axios';
 
 export default function AccountDetails({navigation}) {
     let {setAuth, userData, setUserData, setDBCartArray, setCheckoutArray} = useContext(AuthContext);
+    const [historyData, setHistoryData] = useState([]);
+    const [transactionData, setTransactionData] = useState([])
 
     async function logout(){
         setAuth(false);
@@ -15,6 +18,21 @@ export default function AccountDetails({navigation}) {
         SecureStore.deleteItemAsync('access');
         SecureStore.deleteItemAsync('refresh');
     }
+
+    async function getBuyHistory(){
+        try {
+            let historyArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/buyhistory/${userData.userID}`)
+            setHistoryData([historyArray])
+        } catch (error) {
+            console.log('AccountDetail.js function getBuyHistory :', error)
+        }
+        console.log(userData.userID)
+
+    }
+
+    useEffect(() => {
+        setTransactionData([...historyData])
+    },[historyData])
 
     function DisplayDetails() {
         return(
@@ -67,6 +85,10 @@ export default function AccountDetails({navigation}) {
 
             <View style={styles.menuItemCon}>
                 <Text onPress={()=> navigation.navigate('UpdateDetails')} style={styles.menuItemText}>Update Details</Text>
+                <Feather name="chevron-right" size={24} color="black" />
+            </View>
+            <View style={styles.menuItemCon}>
+                <Text onPress={()=> {getBuyHistory(); navigation.navigate('BuyHistory', {transactData: transactionData})}} style={styles.menuItemText}>View Transaction History</Text>
                 <Feather name="chevron-right" size={24} color="black" />
             </View>
 
