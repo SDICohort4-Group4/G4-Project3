@@ -70,7 +70,7 @@ export async function getAuth(user, pass){
     let loginData = {"email": user,
                     "pwd": pass}
     try {
-        const response = await APIAuth.post('/user/login', loginData);
+        const response = await API.post('/user/login', loginData);
         return {
             status: response.status,
             accessToken: response.headers["x-access-token"],
