@@ -16,6 +16,8 @@ export default function AccountDetails({navigation}) {
         setCheckoutArray([]);
         setUserData({});
         setHistoryArray([]);
+        navigation.navigate('homeMain')
+        navigation.navigate('Account', {screen: 'Login'})
         SecureStore.deleteItemAsync('access');
         SecureStore.deleteItemAsync('refresh');
     }

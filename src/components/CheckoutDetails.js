@@ -4,6 +4,7 @@ import AuthContext from '../contexts/AuthContext';
 
 import DisplayCheckoutItems from './displayCheckoutItem';
 import PaymentScreen from './PaymentScreenStripe';
+import { StackActions, useFocusEffect } from '@react-navigation/native';
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -23,6 +24,14 @@ export function CheckoutDetails({navigation}){
         }
     }, [checkoutArray])
 
+    // on blur pop till first page
+    useFocusEffect(
+        useCallback( ()=>{
+            return ()=>{
+                if (navigation.getState().index == 1) navigation.popToTop();
+            };
+        },[navigation])
+    )
    
     function TotalPayablePrice(itemData){
         let totalSummaryPrice = 0
@@ -44,6 +53,10 @@ export function CheckoutDetails({navigation}){
         })
         
         return totalSummaryPrice;
+    }
+
+    function returnPage(){
+        setTimeout(() => {navigation.pop(1)},5000)
     }
 
     return(
@@ -76,6 +89,12 @@ export function CheckoutDetails({navigation}){
                 </View>
             :   
                 <View style = {styles.emptyCon}>
+                    {/* {setTimeout(() => {console.log("No items available for checkout"), 5000})} */}
+                    {/* <Text>{setTimeout(() => {console.log("No items available")},5000)}</Text>
+                    <Text>{setTimeout(() => {navigation.navigate('cartItems')},5000)}</Text> */}
+                    {returnPage()}
+                    {/* {console.log("No items available for checkout")} */}
+                    {/* {(function(){navigation.navigate('cartItems')})()} */}
                     <Text>No items available for checkout</Text>
                     <Text style = {styles.ShoppingButton} onPress = {() => {navigation.navigate('cartItems')}}>Go back to Cart</Text>
                 </View>
