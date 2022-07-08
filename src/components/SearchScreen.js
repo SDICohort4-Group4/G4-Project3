@@ -21,8 +21,8 @@ export default function SearchScreen({route, navigation}) {
     useEffect(()=>{
         (async function() {
             setFilterData([...fullList]);
-            setCategory(route.params.searchCat);
-            setSearchText(route.params.searchText);
+            if (route.params?.searchCat) setCategory(route.params?.searchCat);
+            if (route.params?.searchText) setSearchText(route.params?.searchText);
         })();
     },[]);
 
