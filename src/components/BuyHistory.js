@@ -19,7 +19,7 @@ export default function BuyHistory(navigation){
     // }
 
     async function getBuyHistory(){
-        console.log('Refresh')
+        // console.log('Refresh')
         try {
             let transactionArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/buyhistory/${userData.userID}`)
             setHistoryData([...transactionArray.data.data])
@@ -52,17 +52,17 @@ export default function BuyHistory(navigation){
                     {transactionData.map((data, index)=>(
                         <DisplayBuyHistory itemData = {data} navigation = {navigation} key = {index}/>
                     ))}
-                    <Pressable onPress = {() => {getBuyHistory();Refresh()}}>
+                    {/* <Pressable onPress = {() => {getBuyHistory();Refresh()}}>
                         <Text style = {styles.ShoppingButton } >Refresh</Text>
-                    </Pressable>
+                    </Pressable> */}
                 </View>
             :
                 <View>
                     <View style = {styles.emptyCon}>
                         <Text>There have been no past transactions</Text>
-                        <Pressable onPress = {() => {}}>
+                        {/* <Pressable onPress = {() => {}}>
                             <Text style = {styles.ShoppingButton } >Refresh</Text>
-                        </Pressable>
+                        </Pressable> */}
                     </View>
                 </View>
             }

@@ -13,8 +13,9 @@ export default function AccountDetails({navigation}) {
     async function logout(){
         setAuth(false);
         setDBCartArray([]);
-        setCheckoutArray([])
+        setCheckoutArray([]);
         setUserData({});
+        setHistoryArray([]);
         SecureStore.deleteItemAsync('access');
         SecureStore.deleteItemAsync('refresh');
     }
