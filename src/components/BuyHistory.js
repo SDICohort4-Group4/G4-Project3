@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, Image, Alert, Pressable} from 'react-native';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import AuthContext from '../contexts/AuthContext';
 import axios from "axios";
 import { Card } from "react-native-paper";
@@ -7,7 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import DisplayBuyHistory from "../components/displayBuyHistory"
 
-export default function BuyHistory(navigation){
+export default function BuyHistory({navigation}){
 
     const {userData, historyArray, setHistoryArray} = useContext(AuthContext);
     const [transactionData, setTransactionData] = useState([]);
@@ -17,6 +17,15 @@ export default function BuyHistory(navigation){
     // function printValue(){
     //     console.log('historyArray: ', historyArray)
     // }
+
+    // on blur pop till first page
+    useFocusEffect(
+        useCallback( ()=>{
+            return ()=>{
+                if (navigation.getState().index == 1) navigation.popToTop();
+            };
+        },[navigation])
+    )
 
     async function getBuyHistory(){
         // console.log('Refresh')

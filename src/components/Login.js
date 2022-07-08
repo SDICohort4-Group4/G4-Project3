@@ -55,22 +55,11 @@ export default function Login({navigation}) {
     }
 
     async function cartData(){
-        // try {
-        //     let accessToken = await SecureStore.getItemAsync('access')
-        //     let decode = jwt_decode(accessToken)
-        //     const dataType = `/cart/${decode.id}`;
-        //     getCart({dataType, getCartData});
-        // } catch (error) {
-        //     console.log(`Login.js function CartData getCart:`, error)
-        // }
         let accessToken = await SecureStore.getItemAsync('access')
         let decode = jwt_decode(accessToken)
         const dataType = `/cart/${decode.id}`;
         getCart({dataType, getCartData});
 
-        // console.log("AccessToken:",accessToken);
-        // console.log("Decode: ",decode);
-        // console.log("userID: ", userData.userID)
         try {
             let cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
             let filteredData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0 && (index.item.Qty >= index.itemQtyCart))
@@ -83,16 +72,11 @@ export default function Login({navigation}) {
                 console.log('Login.js function cartData:', error)
             }
         }
-        
-
     }
 
     function getCartData(data){
         let cartArray = [...data]
         setDBCartArray(cartArray);
-        // console.log("cartArray: ",cartArray);
-        // console.log("dbCartArray: ",dbCartArray);
-        // console.log("Login.js getCart function")
     }
 
     function LoadModal() {
@@ -137,7 +121,6 @@ export default function Login({navigation}) {
     useEffect(()=>{
         setErrMsg('')
     },[userMail, userPass]);
-
 
     return(
         <View style={styles.container}>
