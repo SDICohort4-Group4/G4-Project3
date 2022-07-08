@@ -85,7 +85,13 @@ function buyHistoryArray(itemData,paymentIntent){
           itemSKU: spreadData[i].item.SKU,
           itemName: spreadData[i].item.itemName, 
           buyQty: spreadData[i].itemQtyCart, 
-          buyPrice: spreadData[i].item.itemPrice
+          buyPrice: spreadData[i].item.itemPrice,
+          stripeID: paymentIntent.id,
+          currency: paymentIntent.currency,
+          stripeAmount: paymentIntent.amount,
+          stripePaymentMethodID: paymentIntent.paymentMethodId,
+          stripeClientSecret: paymentIntent.clientSecret
+
       });
   }
   // console.log(filteredHistoryArray, new Date)
