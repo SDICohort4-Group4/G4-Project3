@@ -48,7 +48,7 @@ export function CheckoutDetails({navigation}){
 
     return(
         <View style = {{flex: 1}}>
-            {checkoutArray.length > 0 ? 
+            {checkoutArray?.length > 0 ? 
                 <View>            
                     <View style = {styles.ccContainer}>
                         <PaymentScreen navigation={navigation} 

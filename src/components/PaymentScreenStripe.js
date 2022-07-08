@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, Modal, Animated, Easing } from "react-native";
 import { useState } from "react";
 import { CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 import axios from 'axios';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const API = axios.create({
@@ -46,8 +47,8 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
       } else if (paymentIntent) {
           // on successful payment call paymentSuccess function to clear cart and save history to db
           // then navigate back to cart Items page
-          console.log("Successfully Paid:\n", paymentIntent);
-          paymentSuccess();
+          // console.log("Successfully Paid:\n", paymentIntent);
+          paymentSuccess(paymentIntent);
           // clear cart contents in app
           setDBCartArray([])
           setCheckoutArray([])
@@ -55,8 +56,8 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
       }
   };
 
-  async function paymentSuccess(){
-    let buyHistoryData = buyHistoryArray(checkoutData);
+  async function paymentSuccess(paymentIntent){
+    let buyHistoryData = buyHistoryArray(checkoutData,paymentIntent);
     let payload = [...buyHistoryData];
     try {
         await API.put(`/cart/delete/${userData.userID}`);
@@ -73,7 +74,8 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
     
   } 
 
-function buyHistoryArray(itemData){
+function buyHistoryArray(itemData,paymentIntent){
+  console.log("Payment Intent->buyhistory array",paymentIntent);
   let spreadData = [...itemData]
   let filteredHistoryArray = [];
   for(let i = 0; i < spreadData.length; i++){
@@ -88,6 +90,43 @@ function buyHistoryArray(itemData){
   }
   // console.log(filteredHistoryArray, new Date)
   return filteredHistoryArray
+}
+
+function LoadModal() {
+  let spinValue = new Animated.Value(0);
+  // setting up the animation
+  Animated.loop(
+      Animated.timing(
+          spinValue, {
+              toValue: 1,
+              duration: 1000,
+              easing: Easing.linear,
+              useNativeDriver: true
+          }
+      )
+  ).start();
+
+  // interpolate for rotation values
+  const spin = spinValue.interpolate({
+      inputRange: [0,1],
+      outputRange: ['0deg', '360deg']
+  });
+
+  return(
+      <Modal 
+      animationType='fade'
+      transparent={true}
+      visible={loading}>
+          <View style={styles.modalView}>
+              <View style={styles.iconContainer}>
+                  <Animated.View style={{transform: [{rotate: spin}]}}>
+                      <MaterialCommunityIcons name="loading" size={50} color="white" />
+                  </Animated.View>    
+                  <Text style={{fontSize: 16, color:'white', fontWeight: 'bold'}}>Payment in progress</Text>
+              </View>
+          </View>
+      </Modal>
+  )
 }
   
   return (
@@ -116,13 +155,17 @@ function buyHistoryArray(itemData){
         }}
               
       />
-      <View>{!loading? 
-        <Text style={styles.payButton} onPress={handlePayPress}>Confirm Payment</Text>
+      <View>
+          {!loading? 
+          <Text style={styles.payButton} onPress={handlePayPress}>Confirm Payment</Text>
       : 
-        <Text style={styles.paymentProgress}>Payment in Progress</Text>
-      }
+          <>
+          <LoadModal/>
+          <Text style={styles.paymentProgress}>Payment in Progress</Text>
+          
+          </>
+          }
       </View>
-      
     </View>
   );
 }
@@ -152,5 +195,19 @@ const styles = StyleSheet.create({
     backgroundColor: "gray",
     height: 40,
     marginTop:10,
-  }
+  },
+  modalView:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+},
+
+iconContainer:{
+    backgroundColor: '#00000060',
+    width: 120,
+    height: 120,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
 })
