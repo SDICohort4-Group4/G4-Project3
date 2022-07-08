@@ -55,9 +55,9 @@ export function CheckoutDetails({navigation}){
         return totalSummaryPrice;
     }
 
-    function returnPage(){
-        setTimeout(() => {navigation.pop(1)},5000)
-    }
+    // function returnPage(){
+    //     setTimeout(() => {navigation.pop(1)},5000)
+    // }
 
     return(
         <View style = {{flex: 1}}>
@@ -89,12 +89,7 @@ export function CheckoutDetails({navigation}){
                 </View>
             :   
                 <View style = {styles.emptyCon}>
-                    {/* {setTimeout(() => {console.log("No items available for checkout"), 5000})} */}
-                    {/* <Text>{setTimeout(() => {console.log("No items available")},5000)}</Text>
-                    <Text>{setTimeout(() => {navigation.navigate('cartItems')},5000)}</Text> */}
-                    {returnPage()}
-                    {/* {console.log("No items available for checkout")} */}
-                    {/* {(function(){navigation.navigate('cartItems')})()} */}
+                    {/* {returnPage()} */}
                     <Text>No items available for checkout</Text>
                     <Text style = {styles.ShoppingButton} onPress = {() => {navigation.navigate('cartItems')}}>Go back to Cart</Text>
                 </View>
