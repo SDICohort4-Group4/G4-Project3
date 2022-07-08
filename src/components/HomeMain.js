@@ -25,8 +25,8 @@ export default function HomeMain({navigation}) {
 
     // should find a way to do this without manually chaning the banner list, maybe an api call
     let bannerList = [
-        'https://www.elegantthemes.com/blog/wp-content/uploads/2017/04/divi-images-featured.jpg',
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/16x9_by_Pengo.svg/1280px-16x9_by_Pengo.svg.png'
+        'https://res.cloudinary.com/tgweesdi4/image/upload/v1657251553/Shopin_Ad_uzuph3.png',
+        'https://res.cloudinary.com/tgweesdi4/image/upload/v1657251551/Skills_Union_Thank_You_Mini-Poster_yorfrf.png'
     ];
 
     function renderFunc({item}) {
