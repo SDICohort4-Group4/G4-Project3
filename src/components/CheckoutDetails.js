@@ -4,6 +4,7 @@ import AuthContext from '../contexts/AuthContext';
 
 import DisplayCheckoutItems from './displayCheckoutItem';
 import PaymentScreen from './PaymentScreenStripe';
+import { StackActions, useFocusEffect } from '@react-navigation/native';
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -23,6 +24,13 @@ export function CheckoutDetails({navigation}){
         }
     }, [checkoutArray])
 
+    // on blur pop till first page
+    useFocusEffect(
+        useCallback( ()=>{
+            return ()=>{
+                if (navigation.getState().index == 1) navigation.popToTop();
+            };
+        },[navigation]))
    
     function TotalPayablePrice(itemData){
         let totalSummaryPrice = 0
