@@ -7,7 +7,7 @@ import Login from '../components/Login.js';
 import Registration from '../components/Registration.js'
 import AccountDetails from '../components/AccountDetails';
 import UpdateDetails from '../components/UpdateDetails';
-
+import BuyHistory from '../components/BuyHistory';
 
 
 const AccountStack = createNativeStackNavigator();
@@ -35,6 +35,7 @@ function DetailStack() {
                                         }}>
                 <AccountDetailStack.Screen name='AccountDetails' component={AccountDetails} options={{title: 'Account Details'}}/>
                 <AccountDetailStack.Screen name='UpdateDetails' component={UpdateDetails} options={{title: 'Update Details'}}/>
+                <AccountDetailStack.Screen name='BuyHistory' component={BuyHistory} options={{title: 'Transaction History'}}/>
             </AccountDetailStack.Navigator>
     )
 }

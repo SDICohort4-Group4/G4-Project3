@@ -10,19 +10,8 @@ const[userData, setUserData] = useState({});
 let [catList, setCatList] = useState([]);
 let [fullList, setFullList] = useState([]);
 
-const [dbCartArray, setDBCartArray] = useState(
-    [
-        // {itemName: 'Square', itemPrice: 1.70, orderQty: 30, Qty: 100}, 
-        // {itemName: 'Circle', itemPrice: 100, Qty: 50}, 
-        // {itemName: 'Triangle', itemPrice: 7, orderQty: 10}, 
-        // {itemName: 'Non-euclidean space', orderQty: 3, Qty: 20},
-        // {itemName: 'Pentagon', itemPrice: 2.50, orderQty: 20, Qty: 100},
-        // {itemName: 'Oreo McFlurry', itemPrice: 4, orderQty: 20, Qty: 300},
-        // {itemName: 'Happy Meal', itemPrice: 3.5, orderQty: 50, Qty: 2500},
-        // {itemName: '20pc McNuggets', itemPrice: 13.70, orderQty: 2, Qty: 50},
-        // {itemName: 'Dbl Filet-O-Fish Extra Value Meal', itemPrice: 9, orderQty: 5, Qty: 5},
-    ]
-);
+const [dbCartArray, setDBCartArray] = useState([]);
+const [historyArray, setHistoryArray] = useState([])
 
 const [checkoutArray, setCheckoutArray] = useState();
 
@@ -54,7 +43,7 @@ useEffect(()=>{
 
     return(
         // functions and stats to be passed as value
-        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, dbCartArray, setDBCartArray, catList, setCatList, fullList, setFullList, checkoutArray, setCheckoutArray}}>
+        <LoginContext.Provider value={{ auth, setAuth, userData, setUserData, dbCartArray, setDBCartArray, catList, setCatList, fullList, setFullList, checkoutArray, setCheckoutArray, historyArray, setHistoryArray}}>
             {children}
         </LoginContext.Provider>
     )
