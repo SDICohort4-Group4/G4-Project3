@@ -1,15 +1,21 @@
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import FlatListCat from './FlatListCat'
 
 export default function RanCatDisplay({list, navigation}) {
+
+    let [randomThree, setRandomThree] = useState([]);
+
+    useEffect(()=>{
+        let random = getMultiRan(list, 3)
+        setRandomThree(random);
+    },[list])
 
     // function to get n random item in list of category
     function getMultiRan(list, num) {
         const shuffled = [...list].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, num);
     }
-
-    let randomThree = getMultiRan(list, 3);
 
     // could probably make the code below shorter with a loop
     return(

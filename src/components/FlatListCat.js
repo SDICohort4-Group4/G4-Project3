@@ -21,6 +21,7 @@ export default function FlatListCat({catergory, navigation}) {
 
             setCatItems(random5);
         })();
+
     }, [catergory])
 
     function renderFunc({item}){
