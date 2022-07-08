@@ -27,7 +27,11 @@ export default function AccountDetails({navigation}) {
             let transactionArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/buyhistory/${userData.userID}`)
             setHistoryData([...transactionArray.data.data])
         } catch (error) {
-            console.log('AccountDetail.js function getBuyHistory :', error)
+            if(error.response.status == 404){
+                console.log('AccountDetails.js function getBuyHistory : There have been no past transactions')
+            } else {
+                console.log('AccountDetail.js function getBuyHistory :', error)
+            }
         }
     }
 
