@@ -7,7 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import DisplayBuyHistory from "../components/displayBuyHistory"
 
-export default function BuyHistory(navigation, transactData){
+export default function BuyHistory(navigation){
 
     const {userData, historyArray, setHistoryArray} = useContext(AuthContext);
     const [transactionData, setTransactionData] = useState([]);
@@ -23,6 +23,7 @@ export default function BuyHistory(navigation, transactData){
         try {
             let transactionArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/buyhistory/${userData.userID}`)
             setHistoryData([...transactionArray.data.data])
+            // console.log([...transactionArray.data.data])
         } catch (error) {
             console.log('BuyHistory.js function getBuyHistory :', error)
         }
@@ -34,6 +35,16 @@ export default function BuyHistory(navigation, transactData){
         }
     },[historyArray])
 
+    function Refresh(){
+        setTransactionData([]);
+        setTimeout(() => {console.log(transactionData,new Date)}, 1000)
+        // // console.log(transactionData)
+        //     if(historyArray != undefined){
+        //         setTimeout(() => {setTransactionData([...historyArray])}, 30000)
+        //     }
+        //     // setTimeout(() => {console.log(transactionData)}, 500)
+    }
+
     return(
         <ScrollView>
             {transactionData.length > 0 ? 
@@ -41,7 +52,7 @@ export default function BuyHistory(navigation, transactData){
                     {transactionData.map((data, index)=>(
                         <DisplayBuyHistory itemData = {data} navigation = {navigation} key = {index}/>
                     ))}
-                    <Pressable onPress = {() => {getBuyHistory()}}>
+                    <Pressable onPress = {() => {getBuyHistory();Refresh()}}>
                         <Text style = {styles.ShoppingButton } >Refresh</Text>
                     </Pressable>
                 </View>
