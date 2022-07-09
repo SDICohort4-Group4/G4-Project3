@@ -7,6 +7,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode'
 
+import AddCalcItemFinalPrice from '../components/addCalcItemFinalPrice'
+
 export function CartDetails({navigation}){
 
     const {auth} = useContext(AuthContext);
@@ -17,8 +19,9 @@ export function CartDetails({navigation}){
 
     useEffect(() => {
         if(dbCartArray != undefined){
-            setCartData([...dbCartArray]);
-            setTotalPrice(TotalPayablePrice([...dbCartArray]))
+            let withItemFinalPrice = AddCalcItemFinalPrice([...dbCartArray])
+            setCartData([...withItemFinalPrice]);
+            setTotalPrice(TotalPayablePrice([...withItemFinalPrice]))
         }
     },[dbCartArray])
 
@@ -56,7 +59,7 @@ export function CartDetails({navigation}){
                 if(data.item.Qty <= 0){
 
                 } else {
-                    itemSummaryPrice = data.itemQtyCart * data.item.itemPrice;
+                    itemSummaryPrice = data.itemQtyCart * data.itemFinalPrice;
                     totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
                 }
             }

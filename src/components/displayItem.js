@@ -12,7 +12,7 @@ export default function DisplayItem(props){
 
     const {auth, userData, dbCartArray, setDBCartArray} = useContext(AuthContext);
 
-    function addToCart(itemName, orderQty, itemData){
+    function addToCart(orderQty, itemData){
         
         if(orderQty <= 0) {
             return
@@ -33,11 +33,10 @@ export default function DisplayItem(props){
                     cartArray[i].itemQtyCart = cartArray[i].itemQtyCart + orderQty;
                 }
                 payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: cartArray[i].itemQtyCart}
-
                 try {
                     axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
                 } catch (error) {
-                    console.log(`displayItem.js function addToCart, updateCartQty:`, error)
+                    console.log(`ItemDetails.js function addToCart, updateCartQty:`, error)
                 }
                 break;
             }
@@ -49,8 +48,11 @@ export default function DisplayItem(props){
                 item:{ 
                     itemName: itemData.itemName, 
                     itemPrice: itemData.itemPrice, 
-                    Qty: itemData.Qty, itemPic1: 
-                    itemData.itemPic1
+                    Qty: itemData.Qty, 
+                    itemPic1: itemData.itemPic1,
+                    onSale: itemData.onSale,
+                    itemDiscount: itemData.itemDiscount,
+                    itemSalePrice: itemData.itemSalePrice,
                 }, 
                 itemQtyCart: orderQty, 
                 itemID: itemData.itemID,
@@ -61,7 +63,7 @@ export default function DisplayItem(props){
             try {
                 axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
             } catch (error) {
-                console.log(`displayItem.js function addToCart, pushNewToCart;`, error)
+                console.log(`ItemDetails.js function addToCart, pushNewToCart;`, error)
             }
         }
 
@@ -70,9 +72,8 @@ export default function DisplayItem(props){
         // console.log(cartArray)
     
         return(Alert.alert(
-            "Added to cart.",
-            `Amount : ${orderQty}x ${itemName}
-            \nPrice: $${(orderQty * itemData.itemPrice).toFixed(2)}`,
+            "Added to cart",
+            `Amount : ${orderQty}x ${itemData.itemName}`,// Price: $${(orderQty * itemData.itemPrice).toFixed(2)}
             [{text: "Accept"}],
             {cancelable: true}
         ))
@@ -88,7 +89,7 @@ export default function DisplayItem(props){
             props.itemData.Qty > 0 ? 
                 (auth?
                     {text: "Add to Cart", 
-                        onPress: () => addToCart(props.itemData.itemName, 1, props.itemData),
+                        onPress: () => addToCart(1, props.itemData),
                     }
                 :   
                     {text: "Please login"})
@@ -111,8 +112,12 @@ export default function DisplayItem(props){
                     
                         {props.itemData.onSale==="NONE"? 
                             <Text style = {styles.itemText2}>Price: ${parseFloat(props.itemData.itemPrice).toFixed(2)}{"\n"}</Text>: 
-                            <DisplaySalePrice itemPrice={props.itemData.itemPrice} salePrice={props.itemData.itemSalePrice} 
-                                onSale={props.itemData.onSale} itemDiscount={props.itemData.itemDiscount} />
+                            <DisplaySalePrice 
+                                itemPrice={props.itemData.itemPrice} 
+                                salePrice={props.itemData.itemSalePrice} 
+                                onSale={props.itemData.onSale} 
+                                itemDiscount={props.itemData.itemDiscount} 
+                            />
                         }
    
                         <View style={styles.btmRow}>

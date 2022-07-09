@@ -39,7 +39,7 @@ export default function ItemDetails({route, navigation}) {
         return orderQty;
     }
 
-    function addToCart(itemName, orderQty, itemData){
+    function addToCart(orderQty, itemData){
         
         if(orderQty <= 0) {
             return
@@ -75,8 +75,11 @@ export default function ItemDetails({route, navigation}) {
                 item:{ 
                     itemName: itemData.itemName, 
                     itemPrice: itemData.itemPrice, 
-                    Qty: itemData.Qty, itemPic1: 
-                    itemData.itemPic1
+                    Qty: itemData.Qty, 
+                    itemPic1: itemData.itemPic1,
+                    onSale: itemData.onSale,
+                    itemDiscount: itemData.itemDiscount,
+                    itemSalePrice: itemData.itemSalePrice,
                 }, 
                 itemQtyCart: orderQty, 
                 itemID: itemData.itemID,
@@ -96,9 +99,8 @@ export default function ItemDetails({route, navigation}) {
         // console.log(cartArray)
     
         return(Alert.alert(
-            "Added to cart.",
-            `Amount : ${orderQty}x ${itemName}
-            \nPrice: $${(orderQty * itemData.itemPrice).toFixed(2)}`,
+            "Added to cart",
+            `Amount : ${orderQty}x ${itemData.itemName}`,// Price: $${(orderQty * itemData.itemPrice).toFixed(2)}
             [{text: "Accept"}],
             {cancelable: true}
         ))
@@ -198,7 +200,7 @@ export default function ItemDetails({route, navigation}) {
                     </View>
                     <View style={styles.addBtnCon}>
                         {auth?
-                        <Text onPress={() => {addToCart(route.params.itemData.itemName, orderQty, route.params.itemData)}} style={styles.addBtn}>Add</Text>:
+                        <Text onPress={() => {addToCart(orderQty, route.params.itemData)}} style={styles.addBtn}>Add</Text>:
                         <Text style={styles.addBtn} onPress={()=>{navigation.navigate('Account',{screen: 'Login'})}}>Login</Text>}
                     </View>
                 </>:

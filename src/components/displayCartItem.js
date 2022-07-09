@@ -47,8 +47,21 @@ export default function DisplayCartItem(props){
                         {props.itemData.item.Qty > 0? 
                             <Text>In stock</Text>:<Text>Out of stock</Text>
                         }
+                        
+                        {props.itemData.item.onSale === "NONE"?
+                            <View style = {styles.priceContainer}>
+                                <Text >Price:</Text>
+                                <Text style = {{...styles.priceAmount}}>${parseFloat(props.itemData.itemFinalPrice).toFixed(2)}</Text>
+                            </View>
+                        :   
+                            <View style = {styles.priceContainer}>
+                                <Text>Price:</Text>
+                                <Text style = {{...styles.strikeThrough, ...styles.priceAmount}}>${parseFloat(props.itemData.item.itemPrice).toFixed(2)}</Text>
+                                <Text>${parseFloat(props.itemData.itemFinalPrice).toFixed(2)}</Text>
+                            </View>
 
-                        <Text>Price: $ {parseFloat(props.itemData.item.itemPrice).toFixed(2)}</Text>
+                        }
+                        
                     </View>
 
                     <View style={{justifyContent: "flex-end"}}>
@@ -59,7 +72,7 @@ export default function DisplayCartItem(props){
                 <View style={styles.subTotal}>
                     <Text style={styles.removeBtn} onPress = {()=> removeItem()}>Remove</Text> 
                     {/* <Text>{`Sub Total: $${parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2)}`}</Text> */}
-                    <Text>{`Sub Total: $${props.itemData.item.Qty > 0? parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2): 0}`}</Text>
+                    <Text>{`Sub Total: $${props.itemData.item.Qty > 0? parseFloat((props.itemData.itemFinalPrice) * props.itemData.itemQtyCart).toFixed(2): 0}`}</Text>
                 </View>
             </View>
         </Card>
@@ -111,4 +124,15 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         elevation: 2,
     },
+    strikeThrough: {
+        textDecorationLine: 'line-through', 
+        textDecorationStyle: 'solid',
+    },
+    priceContainer: {
+        flexDirection: "row",
+        flexWrap: 'wrap'
+    },
+    priceAmount: {
+        marginHorizontal: 4
+    }
 })

@@ -10,14 +10,14 @@ export default function displayCheckoutItems(props){
             <View style = {styles.itemContainer}>
                 <View style = {styles.itemInfoContainer}>
                     <Text numberOfLines = {3} style = {{fontWeight: "bold"}}>{props.itemData.item.itemName}</Text>
-                    <Text>Price: $ {parseFloat(props.itemData.item.itemPrice).toFixed(2)}</Text>
+                    <Text>Price: $ {parseFloat(props.itemData.itemFinalPrice).toFixed(2)}</Text>
                 </View>
                 <View style = {{justifyContent: "flex-end"}}>
                     <Text>{`Qty: ${props.itemData.itemQtyCart}`}</Text>
                 </View>
             </View>
             <View style = {styles.subTotal}>
-                <Text>{`Sub Total: $${props.itemData.item.Qty > 0? parseFloat((props.itemData.item.itemPrice) * props.itemData.itemQtyCart).toFixed(2): 0}`}</Text>
+                <Text>{`Sub Total: $${props.itemData.item.Qty > 0? parseFloat((props.itemData.itemFinalPrice) * props.itemData.itemQtyCart).toFixed(2): 0}`}</Text>
             </View>
         </Card>
     )

@@ -6,6 +6,8 @@ import DisplayCheckoutItems from './displayCheckoutItem';
 import PaymentScreen from './PaymentScreenStripe';
 import { StackActions, useFocusEffect } from '@react-navigation/native';
 
+import AddCalcItemFinalPrice from '../components/addCalcItemFinalPrice'
+
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
@@ -18,9 +20,10 @@ export function CheckoutDetails({navigation}){
     useEffect(() => {
         if(checkoutArray != undefined){
             let filteredData = [...checkoutArray].filter(index => index.item.Qty > 0 && index.item.Qty >= index.itemQtyCart)
-            setCheckoutData(filteredData);
+            let withItemFinalPrice = AddCalcItemFinalPrice([...filteredData])
+            setCheckoutData(withItemFinalPrice);
             // console.log(filteredData);
-            setTotalPrice(TotalPayablePrice([...filteredData]));
+            setTotalPrice(TotalPayablePrice([...withItemFinalPrice]));
         }
     }, [checkoutArray])
 
@@ -32,10 +35,23 @@ export function CheckoutDetails({navigation}){
             };
         },[navigation])
     )
+
+    // function addCalcItemFinalPrice(itemData){
+    //     for(let i = 0; i < itemData.length; i++){
+    //         if(itemData[i].item.onSale === "NONE"){
+    //             itemData[i]['itemFinalPrice'] = itemData[i].item.itemPrice;
+    //         } else if(itemData[i].item.onSale === "PERCENTAGE"){
+    //             itemData[i]['itemFinalPrice'] = itemData[i].item.itemPrice * (1 - (itemData[i].item.itemDiscount/100))
+    //         } else if(itemData[i].item.onSale === "DOLLAR"){
+    //             itemData[i]['itemFinalPrice'] = itemData[i].item.itemSalePrice
+    //         }
+    //     }
+    //     return itemData;
+    // }
    
     function TotalPayablePrice(itemData){
-        let totalSummaryPrice = 0
-        let itemSummaryPrice = null
+        let totalSummaryPrice = 0;
+        let itemSummaryPrice = null;
 
         let spreadData = [...itemData]
         spreadData.forEach((data) => {
@@ -44,7 +60,7 @@ export function CheckoutDetails({navigation}){
                     itemSummaryPrice = itemSummaryPrice;
                     totalSummaryPrice = totalSummaryPrice;
                 } else {
-                    itemSummaryPrice = data.itemQtyCart * data.item.itemPrice;
+                    itemSummaryPrice = data.itemQtyCart * data.itemFinalPrice;
                     totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
                 }
             }
