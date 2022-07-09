@@ -36,7 +36,14 @@ export default function FlatListCat({catergory, navigation}) {
                 <View style={styles.subCon}>
                     <Image style={styles.subConImage} source={item?.itemPic1?{uri: item?.itemPic1}: noImage} />
                     <Text style={styles.subConText} numberOfLines={1}>{item?.itemName}</Text>
-                    <Text style={[styles.subConText,{textAlign: "center"}]}>${item?.itemPrice}</Text>
+                    {item.onSale === "PERCENTAGE"?
+                        <Text style = {styles.price}>$ {parseFloat(item.itemPrice * (1 - (item.itemDiscount/100))).toFixed(2)}</Text>
+                    :
+                        item.onSale === "DOLLAR"?
+                            <Text style = {styles.price}>$ {parseFloat(item.itemSalePrice).toFixed(2)}</Text>
+                        :
+                            <Text style = {styles.price}>$ {parseFloat(item.itemPrice).toFixed(2)}</Text>}
+                    {/* <Text style={[styles.subConText,{textAlign: "center"}]}>${item?.itemPrice}</Text> */}
                 </View>
             </TouchableOpacity>
         )
@@ -51,10 +58,13 @@ export default function FlatListCat({catergory, navigation}) {
 }
 
 const styles = StyleSheet.create({
+    price: {
+        textAlign: "center",
+        width: 80,
+    },
     container:{
         flex: 1
     },
-
     subCon:{
         height: 140,
         width: 120,
