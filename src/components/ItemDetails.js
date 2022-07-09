@@ -99,7 +99,7 @@ export default function ItemDetails({route, navigation}) {
         // console.log(cartArray)
     
         return(Alert.alert(
-            "Added to cart",
+            "Added to cart.",
             `Amount : ${orderQty}x ${itemData.itemName}`,// Price: $${(orderQty * itemData.itemPrice).toFixed(2)}
             [{text: "Accept"}],
             {cancelable: true}
@@ -138,6 +138,10 @@ export default function ItemDetails({route, navigation}) {
         )
     }
 
+    function printValue(){
+        console.log(route.params.itemData)
+    }
+
     return(
         <>
             <ScrollView style={{backgroundColor: '#fffaed'}}>
@@ -164,7 +168,13 @@ export default function ItemDetails({route, navigation}) {
 
                 <View style={styles.card}>
                     <Text style={styles.header}>{route.params.itemData.itemName}</Text>
-                    <Text style={styles.price}>$ {parseFloat(route.params.itemData.itemPrice).toFixed(2)}</Text>
+                    {route.params.itemData.onSale === "PERCENTAGE"?
+                        <Text style = {styles.price}>$ {parseFloat(route.params.itemData.itemPrice * (1 - (route.params.itemData.itemDiscount/100))).toFixed(2)}</Text>
+                    :
+                        route.params.itemData.onSale === "DOLLAR"?
+                            <Text style={styles.price}>$ {parseFloat(route.params.itemData.itemSalePrice).toFixed(2)}</Text>
+                        :
+                            <Text style={styles.price}>$ {parseFloat(route.params.itemData.itemPrice).toFixed(2)}</Text>}
 
                     <View style={styles.additionInfo}>
 
