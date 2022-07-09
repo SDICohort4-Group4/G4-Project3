@@ -25,11 +25,11 @@ export default function BuyHistory({navigation}){
 
     useEffect(() => {
         if(historyArray != undefined){
-            let historyArrayInSeconds = [...historyArray.slice(0,10)]
-            if(historyArrayInSeconds.length > 0){
-                historyArrayInSeconds.forEach((index) => index['createdAtInSeconds'] = new Date(index.createdAt).getTime())
-                historyArrayInSeconds.sort((a,b) => {return b.createdAtInSeconds - a.createdAtInSeconds})
-            }
+            let historyArrayInSeconds = [...historyArray.slice(0,50)]
+            // if(historyArrayInSeconds.length > 0){
+            //     historyArrayInSeconds.forEach((index) => index['createdAtInSeconds'] = new Date(index.createdAt).getTime())
+            //     historyArrayInSeconds.sort((a,b) => {return b.createdAtInSeconds - a.createdAtInSeconds})
+            // }
             setTransactionData([...historyArrayInSeconds])
         }
     },[historyArray])
