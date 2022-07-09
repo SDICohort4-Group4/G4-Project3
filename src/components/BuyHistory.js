@@ -1,18 +1,14 @@
-import { StyleSheet, Text, View, ScrollView, Image, Alert, Pressable} from 'react-native';
+import { StyleSheet, Text, View, ScrollView} from 'react-native';
 import { useContext, useEffect, useState, useCallback } from 'react';
 import AuthContext from '../contexts/AuthContext';
-import axios from "axios";
-import { Card } from "react-native-paper";
 import { useFocusEffect } from '@react-navigation/native';
 
 import DisplayBuyHistory from "../components/displayBuyHistory"
 
 export default function BuyHistory({navigation}){
 
-    const {userData, historyArray, setHistoryArray} = useContext(AuthContext);
+    const {historyArray} = useContext(AuthContext);
     const [transactionData, setTransactionData] = useState([]);
-    const [truefalse, setTrueFalse] = useState(false)
-    const [historyData, setHistoryData] = useState([]);
 
     // function printValue(){
     //     console.log('historyArray: ', historyArray)
@@ -27,54 +23,33 @@ export default function BuyHistory({navigation}){
         },[navigation])
     )
 
-    async function getBuyHistory(){
-        // console.log('Refresh')
-        try {
-            let transactionArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/buyhistory/${userData.userID}`)
-            setHistoryData([...transactionArray.data.data])
-            // console.log([...transactionArray.data.data])
-        } catch (error) {
-            console.log('BuyHistory.js function getBuyHistory :', error)
-        }
-    }
-
     useEffect(() => {
         if(historyArray != undefined){
-            setTransactionData([...historyArray])
+            let historyArrayInSeconds = [...historyArray.slice(0,10)]
+            if(historyArrayInSeconds.length > 0){
+                historyArrayInSeconds.forEach((index) => index['createdAtInSeconds'] = new Date(index.createdAt).getTime())
+                historyArrayInSeconds.sort((a,b) => {return b.createdAtInSeconds - a.createdAtInSeconds})
+            }
+            setTransactionData([...historyArrayInSeconds])
         }
     },[historyArray])
 
-    function Refresh(){
-        setTransactionData([]);
-        setTimeout(() => {console.log(transactionData,new Date)}, 1000)
-        // // console.log(transactionData)
-        //     if(historyArray != undefined){
-        //         setTimeout(() => {setTransactionData([...historyArray])}, 30000)
-        //     }
-        //     // setTimeout(() => {console.log(transactionData)}, 500)
-    }
-
     return(
-        <ScrollView>
-            {transactionData.length > 0 ? 
-                <View style = {styles.card}>
-                    {transactionData.map((data, index)=>(
-                        <DisplayBuyHistory itemData = {data} navigation = {navigation} key = {index}/>
-                    ))}
-                    {/* <Pressable onPress = {() => {getBuyHistory();Refresh()}}>
-                        <Text style = {styles.ShoppingButton } >Refresh</Text>
-                    </Pressable> */}
-                </View>
-            :
-                <View>
+        <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {{backgroundColor: '#fffaed'}}>
+            <View style = {{flex: 1}}>
+                {transactionData.length > 0 ? 
+                    <View style = {styles.card}>
+                        {transactionData.map((data, index)=>(
+                            <DisplayBuyHistory itemData = {data} navigation = {navigation} key = {index}/>
+                        ))}
+                    </View>
+                :
                     <View style = {styles.emptyCon}>
                         <Text>There have been no past transactions</Text>
-                        {/* <Pressable onPress = {() => {}}>
-                            <Text style = {styles.ShoppingButton } >Refresh</Text>
-                        </Pressable> */}
+                        <Text style = {styles.ShoppingButton } onPress = {() => navigation.navigate('Home', {screen: 'browse'})}>Let's go Shopin</Text>
                     </View>
-                </View>
-            }
+                }
+            </View>
         </ScrollView>
     )
 }

@@ -24,12 +24,6 @@ export function CartDetails({navigation}){
 
     let checkoutData;
 
-    // useEffect(() => {
-    //     if(checkoutData != undefined){
-    //         setCheckoutArray([...checkoutData])
-    //     }
-    // },[checkoutData])
-
     // function printValue(){
     //     console.log(dbCartArray, new Date)
     // }
@@ -43,8 +37,7 @@ export function CartDetails({navigation}){
         try {
             let accessToken = await SecureStore.getItemAsync('access')
             let decode = jwt_decode(accessToken)
-            let cartArray
-            cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
+            let cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
             checkoutData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0 && (index.item.Qty >= index.itemQtyCart))
             setCheckoutArray([...checkoutData])
         } catch (error) {

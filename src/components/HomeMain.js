@@ -1,5 +1,5 @@
 import {Text, View, FlatList, Image, StyleSheet, Dimensions, Animated, ScrollView, TextInput} from "react-native";
-import React,{useRef, useState, useEffect, useContext} from 'react';
+import React,{useRef, useState, useEffect, useContext, useCallback} from 'react';
 import SelectorBar from './SelectorBar';
 import {getCatList} from '../Api/Auth';
 import RanCatDisplay from './RanCatDisplay';
@@ -11,9 +11,7 @@ let windowWidth = Dimensions.get("screen").width;
 export default function HomeMain({navigation}) {
     let {catList, setCatList, setFullList} = useContext(AuthContext);
 
-    // used to prevent unnesssary rerendering of components when setting state to text
-    let textInput;
-
+    // load data and save to global, on first render
     useEffect(()=>{
         (async function() {
             let responseFull = await GetData();
@@ -21,13 +19,30 @@ export default function HomeMain({navigation}) {
             let response = await getCatList();
             setCatList(response.data.data.cat1);
         })();
-    }, [])
+    }, []);
+
+    // use deperate searchbar component to prevent rerendering of whole component
+    function SearchBar() {
+        let [textInput, setTextInput] = useState("");
+
+        //handle enter pressed to link to search page
+        function handleSearch() {
+            navigation.navigate('browse', {searchText: textInput});
+            setTextInput("");
+        }
+
+        return(
+            <TextInput placeholder="Search" style={styles.searchBar} value={textInput} onChangeText={(text)=> setTextInput(text)} onSubmitEditing={handleSearch}/>
+        )
+    }
 
     // should find a way to do this without manually chaning the banner list, maybe an api call
     let bannerList = [
         'https://res.cloudinary.com/tgweesdi4/image/upload/v1657251553/Shopin_Ad_uzuph3.png',
         'https://res.cloudinary.com/tgweesdi4/image/upload/v1657251551/Skills_Union_Thank_You_Mini-Poster_yorfrf.png'
     ];
+
+    //---------------------------------For flatlist of banners-----------------------------------------------------------
 
     function renderFunc({item}) {
 
@@ -62,19 +77,16 @@ export default function HomeMain({navigation}) {
         )
     }
 
-    //handle enter pressed to link to search page
-    function handleSearch() {
-        navigation.navigate('browse', {searchText: textInput});
-    }
+    //----------------------------------------------------------------------------------------------------------------
 
-    //call back for selector bar
+    //callback for selector bar
     function selectorFn(item) {
         navigation.navigate('browse', {searchCat: item});
     }
 
     return(
         <View style={{backgroundColor: "#fffaed", flex: 1}}>
-            <TextInput placeholder="Search" style={styles.searchBar} onChangeText={(text)=> textInput = text} onSubmitEditing={handleSearch}/>
+            <SearchBar />
             <ScrollView contentContainerStyle={styles.container} > 
                 <View style={styles.flatListCon}>
                     <Animated.FlatList 
