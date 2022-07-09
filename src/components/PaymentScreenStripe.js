@@ -28,7 +28,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
           const response = await API.post("/stripepayment/",amountPayable);
           clientSecret = response.data.data.clientSecret;
         } catch (error) {
-            console.log("Getting Client secret:", error);
+            console.log("Error getting Client secret:", error);
             return;
       } 
       
@@ -75,7 +75,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
   } 
 
 function buyHistoryArray(itemData,paymentIntent){
-  console.log("Payment Intent->buyhistory array",paymentIntent);
+  
   let spreadData = [...itemData]
   let filteredHistoryArray = [];
   for(let i = 0; i < spreadData.length; i++){
