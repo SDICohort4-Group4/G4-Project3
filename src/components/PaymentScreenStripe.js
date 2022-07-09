@@ -20,7 +20,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
       }
       
       // multiply totalprice by 100 as stripe assumes price are in cents and integers only
-      const amountPayable={amountPayable: parseInt(totalPrice*100)};
+      const amountPayable={amountPayable: parseFloat(totalPrice*100)};
       let clientSecret;
       
       // get payment intent from backend server
@@ -57,7 +57,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
   };
 
   async function paymentSuccess(paymentIntent){
-    let buyHistoryData = buyHistoryArray(checkoutData,paymentIntent);
+    let buyHistoryData = buyHistoryArray(checkoutData ,paymentIntent);
     let payload = [...buyHistoryData];
     try {
         await API.put(`/cart/delete/${userData.userID}`);
@@ -79,19 +79,19 @@ function buyHistoryArray(itemData,paymentIntent){
   let spreadData = [...itemData]
   let filteredHistoryArray = [];
   for(let i = 0; i < spreadData.length; i++){
+    // console.log(spreadData[i])
       filteredHistoryArray.push({
           userID: spreadData[i].userID, 
           itemID: spreadData[i].itemID, 
           itemSKU: spreadData[i].item.SKU,
           itemName: spreadData[i].item.itemName, 
           buyQty: spreadData[i].itemQtyCart, 
-          buyPrice: spreadData[i].item.itemPrice,
+          buyPrice: spreadData[i].itemFinalPrice,
           stripeID: paymentIntent.id,
           currency: paymentIntent.currency,
           stripeAmount: paymentIntent.amount,
           stripePaymentMethodID: paymentIntent.paymentMethodId,
           stripeClientSecret: paymentIntent.clientSecret
-
       });
   }
   // console.log(filteredHistoryArray, new Date)
