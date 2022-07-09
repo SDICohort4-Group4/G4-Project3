@@ -37,10 +37,10 @@ export default function FlatListCat({catergory, navigation}) {
                     <Image style={styles.subConImage} source={item?.itemPic1?{uri: item?.itemPic1}: noImage} />
                     <Text style={styles.subConText} numberOfLines={1}>{item?.itemName}</Text>
                     {item.onSale === "PERCENTAGE"?
-                        <Text style = {styles.price}>$ {parseFloat(item.itemPrice * (1 - (item.itemDiscount/100))).toFixed(2)}</Text>
+                        <Text style = {styles.price}>$ {parseFloat(item.itemPrice * (1 - (item.itemDiscount/100))).toFixed(2)}*</Text>
                     :
                         item.onSale === "DOLLAR"?
-                            <Text style = {styles.price}>$ {parseFloat(item.itemSalePrice).toFixed(2)}</Text>
+                            <Text style = {styles.price}>$ {parseFloat(item.itemSalePrice).toFixed(2)}*</Text>
                         :
                             <Text style = {styles.price}>$ {parseFloat(item.itemPrice).toFixed(2)}</Text>}
                     {/* <Text style={[styles.subConText,{textAlign: "center"}]}>${item?.itemPrice}</Text> */}

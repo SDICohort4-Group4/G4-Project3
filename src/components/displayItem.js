@@ -82,7 +82,14 @@ export default function DisplayItem(props){
     function quickAdd() {
         Alert.alert(`${props.itemData.itemName}`,
         `Item: ${props.itemData.itemDescription}
-        \nPrice: $${parseFloat(props.itemData.itemPrice).toFixed(2)}
+        \nPrice: $${props.itemData.onSale === "PERCENTAGE"?
+            parseFloat(props.itemData.itemPrice * (1 - (props.itemData.itemDiscount/100))).toFixed(2)
+        :   
+            props.itemData.onSale === "DOLLAR" ? 
+                parseFloat(props.itemData.itemSalePrice).toFixed(2)
+            :
+                parseFloat(props.itemData.itemPrice).toFixed(2)
+        }
         \nBrand: ${props.itemData.brand}
         \nCategory: ${props.itemData.itemCategory1}, ${props.itemData.itemCategory2}`,
         [
@@ -92,7 +99,8 @@ export default function DisplayItem(props){
                         onPress: () => addToCart(1, props.itemData),
                     }
                 :   
-                    {text: "Please login"})
+                    {text: "Please login",
+                        onPress: () => (props.navigation.navigate('Account',{screen: 'Login'}))})
             :
                 null
         ],

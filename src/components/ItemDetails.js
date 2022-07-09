@@ -168,13 +168,18 @@ export default function ItemDetails({route, navigation}) {
 
                 <View style={styles.card}>
                     <Text style={styles.header}>{route.params.itemData.itemName}</Text>
-                    {route.params.itemData.onSale === "PERCENTAGE"?
-                        <Text style = {styles.price}>$ {parseFloat(route.params.itemData.itemPrice * (1 - (route.params.itemData.itemDiscount/100))).toFixed(2)}</Text>
-                    :
-                        route.params.itemData.onSale === "DOLLAR"?
-                            <Text style={styles.price}>$ {parseFloat(route.params.itemData.itemSalePrice).toFixed(2)}</Text>
+                    <View style = {styles.priceContainer}>
+                        <Text style = {route.params.itemData.onSale === "NONE"? styles.price : {...styles.strikeThrough, ...styles.price}}>${parseFloat(route.params.itemData.itemPrice).toFixed(2)}</Text>
+
+                        {route.params.itemData.onSale === "PERCENTAGE"?
+                            <Text style = {styles.price}>${parseFloat(route.params.itemData.itemPrice * (1 - (route.params.itemData.itemDiscount/100))).toFixed(2)}</Text>
                         :
-                            <Text style={styles.price}>$ {parseFloat(route.params.itemData.itemPrice).toFixed(2)}</Text>}
+                            route.params.itemData.onSale === "DOLLAR"?
+                                <Text style={styles.price}>${parseFloat(route.params.itemData.itemSalePrice).toFixed(2)}</Text>
+                            :
+                                null
+                        }
+                    </View>
 
                     <View style={styles.additionInfo}>
 
@@ -275,6 +280,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'green',
         marginTop: 5,
+        marginRight: 5
     },
 
     additionInfo:{
@@ -347,5 +353,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         textAlignVertical: 'center',
+    },
+    strikeThrough: {
+        textDecorationLine: 'line-through', 
+        textDecorationStyle: 'solid',
+    },
+    priceContainer: {
+        flexDirection: "row",
+        flexWrap: 'wrap'
     },
   });
