@@ -28,7 +28,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
           const response = await API.post("/stripepayment/",amountPayable);
           clientSecret = response.data.data.clientSecret;
         } catch (error) {
-            console.log("Getting Client secret:", error);
+            console.log("Error getting Client secret:", error);
             return;
       } 
       
@@ -75,7 +75,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
   } 
 
 function buyHistoryArray(itemData,paymentIntent){
-  console.log("Payment Intent->buyhistory array",paymentIntent);
+  
   let spreadData = [...itemData]
   let filteredHistoryArray = [];
   for(let i = 0; i < spreadData.length; i++){
@@ -85,7 +85,13 @@ function buyHistoryArray(itemData,paymentIntent){
           itemSKU: spreadData[i].item.SKU,
           itemName: spreadData[i].item.itemName, 
           buyQty: spreadData[i].itemQtyCart, 
-          buyPrice: spreadData[i].item.itemPrice
+          buyPrice: spreadData[i].item.itemPrice,
+          stripeID: paymentIntent.id,
+          currency: paymentIntent.currency,
+          stripeAmount: paymentIntent.amount,
+          stripePaymentMethodID: paymentIntent.paymentMethodId,
+          stripeClientSecret: paymentIntent.clientSecret
+
       });
   }
   // console.log(filteredHistoryArray, new Date)
