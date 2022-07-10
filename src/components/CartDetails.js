@@ -41,7 +41,13 @@ export function CartDetails({navigation}){
             let accessToken = await SecureStore.getItemAsync('access')
             let decode = jwt_decode(accessToken)
             let cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
-            checkoutData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0 && (index.item.Qty >= index.itemQtyCart))
+            checkoutData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0)
+            for(let i = 0; i < checkoutData.length; i++){
+                if(checkoutData[i].itemQtyCart > checkoutData[i].item.Qty){
+                    checkoutData[i].itemQtyCart = checkoutData[i].item.Qty
+                }
+            }
+            // console.log(checkoutData)
             setCheckoutArray([...checkoutData])
         } catch (error) {
             console.log(`CartDetail.js function getFilteredData, getCheckoutArrayData:`, error)
