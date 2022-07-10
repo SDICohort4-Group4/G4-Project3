@@ -5,7 +5,7 @@ import axios from "axios";
 import noImage from "../../assets/photo-soon.jpg";
 import { Card } from "react-native-paper";
 import DisplaySalePrice from "./displaySalePrice";
-import addToCart from './addToCart';
+import addToCart from '../helper/addToCart';
 
 let height = 100;
 

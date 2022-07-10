@@ -6,9 +6,9 @@ import DisplayCheckoutItems from './displayCheckoutItem';
 import PaymentScreen from './PaymentScreenStripe';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
-import AddCalcItemFinalPrice from '../components/addCalcItemFinalPrice';
-import TotalPayablePrice from './totalPayablePrice';
-import countdownTimerLong from './countdownTimerLong';
+import AddCalcItemFinalPrice from '../helper/addCalcItemFinalPrice';
+import TotalPayablePrice from '../helper/totalPayablePrice';
+import countdownTimerLong from '../helper/countdownTimerLong';
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;

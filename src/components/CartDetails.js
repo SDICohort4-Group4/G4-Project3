@@ -7,8 +7,8 @@ import { useFocusEffect, useCallback , useIsFocused} from '@react-navigation/nat
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode'
 
-import AddCalcItemFinalPrice from '../components/addCalcItemFinalPrice'
-import TotalPayablePrice from './totalPayablePrice';
+import AddCalcItemFinalPrice from '../helper/addCalcItemFinalPrice'
+import TotalPayablePrice from '../helper/totalPayablePrice';
 
 export function CartDetails({navigation}){
 
@@ -20,11 +20,20 @@ export function CartDetails({navigation}){
 
     const isFocused = useIsFocused();
 
+    const [showDisclaimer, setShowDisclaimer] = useState(false)
+
     useEffect(() => {
         if(dbCartArray != undefined){
+            setShowDisclaimer(false)
             let withItemFinalPrice = AddCalcItemFinalPrice([...dbCartArray])
             setCartData([...withItemFinalPrice]);
             setTotalPrice(TotalPayablePrice([...withItemFinalPrice]))
+
+            for(let i = 0; i < withItemFinalPrice.length; i++){
+                if(withItemFinalPrice[i].itemQtyCart > withItemFinalPrice[i].item.Qty){
+                    setShowDisclaimer(true)
+                }
+            }
         }
     },[dbCartArray])
 
@@ -40,23 +49,23 @@ export function CartDetails({navigation}){
     //     if (!auth) navigation.navigate('Account',{screen: 'Login'});
     // })
 
-    //This basic useEffect allows me to refresh the cartData states on page focus
+    //This basic useEffect with isFocused allows me to refresh the cartData states on page focus
     useEffect(() => {
         if(isFocused){
             if (!auth) navigation.navigate('Account',{screen: 'Login'});
             if(auth == true){
                 // console.log('useEFfect[isFocused]')
-                getUpdatedData()
+                getUpdatedCartData()
             }
         }
     }, [isFocused])
 
-    async function getUpdatedData(){
+    async function getUpdatedCartData(){
         try {
             let accessToken = await SecureStore.getItemAsync('access')
             let decode = jwt_decode(accessToken)
             cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
-            // console.log([...cartArray.data.data], 'getUpdatedData', new Date)
+            // console.log([...cartArray.data.data], 'getUpdatedCartData', new Date)
             setDBCartArray([...cartArray.data.data])
         } catch (error) {
             if(error.response != undefined){
@@ -72,7 +81,7 @@ export function CartDetails({navigation}){
         }
     }
     
-    async function getFilteredData(){
+    async function getCheckoutData(){
         try {
             let accessToken = await SecureStore.getItemAsync('access')
             let decode = jwt_decode(accessToken)
@@ -86,7 +95,7 @@ export function CartDetails({navigation}){
             // console.log(checkoutData)
             setCheckoutArray([...checkoutData])
         } catch (error) {
-            console.log(`CartDetail.js function getFilteredData, getCheckoutArrayData:`, error)
+            console.log(`CartDetail.js function getCheckoutData, getCheckoutArrayData:`, error)
         }
         // return checkoutData
     }
@@ -102,20 +111,19 @@ export function CartDetails({navigation}){
                         ))}
                         <View style = {styles.paymentContainer}>
                             <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
-                            <Text style = {styles.checkoutButton} onPress = {() => {getFilteredData(); navigation.navigate('Cart', {screen: 'checkoutItems'})}}>Checkout</Text> 
+                            <Text style = {styles.checkoutButton} onPress = {() => {getCheckoutData(); navigation.navigate('Cart', {screen: 'checkoutItems'})}}>Checkout</Text> 
                         </View>
+                        {showDisclaimer === true? <Text style = {styles.disclaimerText}>* Items may not be available for checkout</Text>: null}
                     </View>
                 :   
                     <View style = {styles.emptyCon}>
                         <Text>The Cart is currently empty ...</Text>
                         <Text style = {styles.ShoppingButton } onPress = {() => navigation.navigate('Home', {screen: 'browse'})}>Let's go Shopin</Text>
                     </View>
-                
             :
                 null
             }
             
-                
             </View>
         </ScrollView>
     )
@@ -171,4 +179,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    disclaimerText: {
+        textAlign: 'right',
+        paddingRight: 5,
+        fontSize: 11
+    }
 })
