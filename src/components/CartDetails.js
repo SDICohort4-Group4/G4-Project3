@@ -3,11 +3,12 @@ import { useState, useContext, useEffect } from 'react';
 import AuthContext from '../contexts/AuthContext';
 import axios from 'axios'
 import DisplayCartItem from '../components/displayCartItem.js'
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useCallback , useIsFocused} from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode'
 
 import AddCalcItemFinalPrice from '../components/addCalcItemFinalPrice'
+import TotalPayablePrice from './totalPayablePrice';
 
 export function CartDetails({navigation}){
 
@@ -16,6 +17,8 @@ export function CartDetails({navigation}){
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [cartData, setCartData] = useState([]);
+
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         if(dbCartArray != undefined){
@@ -26,16 +29,49 @@ export function CartDetails({navigation}){
     },[dbCartArray])
 
     let checkoutData;
+    let cartArray;
 
     // function printValue(){
     //     console.log(dbCartArray, new Date)
     // }
 
-    useFocusEffect(()=>{
-        // redirect to login if no auth
-        if (!auth) navigation.navigate('Account',{screen: 'Login'});
-    })
+    // useFocusEffect(()=>{
+    //     // redirect to login if no auth
+    //     if (!auth) navigation.navigate('Account',{screen: 'Login'});
+    // })
 
+    //This basic useEffect allows me to refresh the cartData states on page focus
+    useEffect(() => {
+        if(isFocused){
+            if (!auth) navigation.navigate('Account',{screen: 'Login'});
+            if(auth == true){
+                // console.log('useEFfect[isFocused]')
+                getUpdatedData()
+            }
+        }
+    }, [isFocused])
+
+    async function getUpdatedData(){
+        try {
+            let accessToken = await SecureStore.getItemAsync('access')
+            let decode = jwt_decode(accessToken)
+            cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
+            // console.log([...cartArray.data.data], 'getUpdatedData', new Date)
+            setDBCartArray([...cartArray.data.data])
+        } catch (error) {
+            if(error.response != undefined){
+                if(error.response.status === 404){
+                    console.log('CartDetails.js useEffect[isFocused]  Cart is empty', )
+                }
+                if(error.response.status !== 404) {
+                    console.log('CartDetails.js useEffect[isFocused] if error not 404: ', error)
+                }
+            } else {
+                console.log('CartDetails.js useEffect[isFocused] : ', error)
+            }
+        }
+    }
+    
     async function getFilteredData(){
         try {
             let accessToken = await SecureStore.getItemAsync('access')
@@ -55,31 +91,11 @@ export function CartDetails({navigation}){
         // return checkoutData
     }
 
-    function TotalPayablePrice(itemData){
-        let totalSummaryPrice = 0
-        let itemSummaryPrice = null
-
-        let spreadData = [...itemData]
-        spreadData.forEach((data) => {
-            if(!isNaN(data.itemQtyCart) || !isNaN(data.item) && data.item != undefined){
-                if(data.item.Qty <= 0){
-
-                } else {
-                    itemSummaryPrice = data.itemQtyCart * data.itemFinalPrice;
-                    totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
-                }
-            }
-            // console.log(itemSummaryPrice)
-            // console.log(totalSummaryPrice)
-        })
-        
-        return totalSummaryPrice;
-    }
-
     return(
         <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {{backgroundColor: '#fffaed'}}>
             <View style = {{flex: 1}}>
-                {cartData.length > 0 ? 
+            {auth === true? 
+                cartData.length > 0 ? 
                     <View style = {styles.card}>
                         {cartData.map((data, index)=>(
                             <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
@@ -94,7 +110,12 @@ export function CartDetails({navigation}){
                         <Text>The Cart is currently empty ...</Text>
                         <Text style = {styles.ShoppingButton } onPress = {() => navigation.navigate('Home', {screen: 'browse'})}>Let's go Shopin</Text>
                     </View>
-                }
+                
+            :
+                null
+            }
+            
+                
             </View>
         </ScrollView>
     )

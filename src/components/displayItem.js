@@ -3,8 +3,9 @@ import { useContext, useState } from 'react';
 import AuthContext from '../contexts/AuthContext';
 import axios from "axios";
 import noImage from "../../assets/photo-soon.jpg";
-import DisplaySalePrice from "./displaySalePrice";
 import { Card } from "react-native-paper";
+import DisplaySalePrice from "./displaySalePrice";
+import addToCart from './addToCart';
 
 let height = 100;
 
@@ -12,77 +13,6 @@ export default function DisplayItem(props){
 
     const {auth, userData, dbCartArray, setDBCartArray} = useContext(AuthContext);
     const [addCartModalVisible, setAddCartModalVisible] = useState(false)
-
-    function addToCart(orderQty, itemData){
-        
-        if(orderQty <= 0) {
-            return
-        };
-
-        let cartArray = [...dbCartArray];
-        let exists = false;
-
-        //Update Qty in cartArray & cart DB if itemID already exists in cartArray
-        for(let i = 0; i < cartArray.length; i++){
-            if(cartArray[i].itemID == itemData.itemID){
-                exists = true;
-                let payload = null;
-
-                if(cartArray[i].itemQtyCart + orderQty > itemData.Qty){
-                    cartArray[i].itemQtyCart = itemData.Qty
-                } else {
-                    cartArray[i].itemQtyCart = cartArray[i].itemQtyCart + orderQty;
-                }
-                payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: cartArray[i].itemQtyCart}
-                try {
-                    axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
-                } catch (error) {
-                    console.log(`displayItem.js addToCart, updateCartQty:`, error)
-                }
-                break;
-            }
-        }
-        
-        //Push new item to cartArray & cart DB if itemID doesn't already exist cartArray
-        if(exists == false){
-            cartArray.push({
-                item:{ 
-                    itemName: itemData.itemName, 
-                    itemPrice: itemData.itemPrice, 
-                    Qty: itemData.Qty, 
-                    itemPic1: itemData.itemPic1,
-                    onSale: itemData.onSale,
-                    itemDiscount: itemData.itemDiscount,
-                    itemSalePrice: itemData.itemSalePrice,
-                }, 
-                itemQtyCart: orderQty, 
-                itemID: itemData.itemID,
-                userID: userData.userID,
-            })
-            // updateCartItem(userData.userID, itemData.itemID, orderQty)
-            let payload = {userID: userData.userID, itemID: itemData.itemID, itemQtyCart: orderQty}
-            try {
-                axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
-            } catch (error) {
-                console.log(`displayItem.js addToCart, pushNewToCart;`, error)
-            }
-        }
-
-        setDBCartArray(cartArray)
-        // console.log(dbCartArray)
-        // console.log(cartArray)
-    
-        // return(
-        //     Alert.alert(
-        //         "Added to cart",
-        //         `Amount : ${orderQty}x ${itemData.itemName}`,// Price: $${(orderQty * itemData.itemPrice).toFixed(2)}
-        //         [{text: "Accept"}],
-        //         {cancelable: true}
-        //     )
-        // )
-        setAddCartModalVisible(true);
-        setTimeout(() => {setAddCartModalVisible(false)},500)
-    }
 
     function quickAdd() {
         Alert.alert(`${props.itemData.itemName}`,
@@ -101,7 +31,7 @@ export default function DisplayItem(props){
             props.itemData.Qty > 0 ? 
                 (auth?
                     {text: "Add to Cart", 
-                        onPress: () => addToCart(1, props.itemData),
+                        onPress: () => addToCart(1, props.itemData, dbCartArray, setDBCartArray, setAddCartModalVisible, userData),
                     }
                 :   
                     {text: "Please login",
@@ -121,7 +51,7 @@ export default function DisplayItem(props){
                 <View style = {styles.modalView}>
                     <View style = {styles.iconContainer}>
                         <>
-                            <Text style={{fontSize: 16, color:'white', fontWeight: 'bold'}}>Added to cart</Text>
+                            <Text style={{fontSize: 20, color:'white', fontWeight: 'bold'}}>Added to cart</Text>
                         </>
                     </View>
                 </View>

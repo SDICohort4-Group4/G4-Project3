@@ -4,9 +4,11 @@ import AuthContext from '../contexts/AuthContext';
 
 import DisplayCheckoutItems from './displayCheckoutItem';
 import PaymentScreen from './PaymentScreenStripe';
-import { StackActions, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
-import AddCalcItemFinalPrice from '../components/addCalcItemFinalPrice'
+import AddCalcItemFinalPrice from '../components/addCalcItemFinalPrice';
+import TotalPayablePrice from './totalPayablePrice';
+import countdownTimerLong from './countdownTimerLong';
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -16,6 +18,11 @@ export function CheckoutDetails({navigation}){
     
     const [totalPrice, setTotalPrice] = useState(0);
     const [checkoutData, setCheckoutData] = useState([]);
+
+    const [longTimer, setLongTimer] = useState(60)
+    const [shortTimer, setShortTimer] = useState(15)
+
+    let isFocused = useIsFocused()
     
     useEffect(() => {
         if(checkoutArray != undefined){
@@ -35,32 +42,11 @@ export function CheckoutDetails({navigation}){
             };
         },[navigation])
     )
-   
-    function TotalPayablePrice(itemData){
-        let totalSummaryPrice = 0;
-        let itemSummaryPrice = null;
 
-        let spreadData = [...itemData]
-        spreadData.forEach((data) => {
-            if(!isNaN(data.itemQtyCart) || !isNaN(data.item) && data.item != undefined){
-                if(data.item.Qty <= 0){
-                    itemSummaryPrice = itemSummaryPrice;
-                    totalSummaryPrice = totalSummaryPrice;
-                } else {
-                    itemSummaryPrice = data.itemQtyCart * data.itemFinalPrice;
-                    totalSummaryPrice = totalSummaryPrice + itemSummaryPrice;
-                }
-            }
-            // console.log(itemSummaryPrice)
-            // console.log(totalSummaryPrice)
-        })
-        
-        return totalSummaryPrice;
-    }
-
-    // function returnPage(){
-    //     setTimeout(() => {navigation.pop(1)},5000)
-    // }
+    useEffect(() => {
+        countdownTimerLong(longTimer, navigation, setLongTimer);
+        // shortCountdownTImer(longTimer, navigation, setLongTimer);
+    },[isFocused])
 
     return(
         <View style = {{flex: 1}}>
@@ -77,6 +63,8 @@ export function CheckoutDetails({navigation}){
                             <Text style = {styles.totalPayableLabel}>Total Payable:</Text>
                             <Text style = {styles.totalPayablePrice}>${totalPrice.toFixed(2)}</Text>
                         </View>
+                        <Text style = {styles.countdownTimer}>Timeout in {longTimer} seconds</Text>
+
                     </View>
                     <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {styles.checkoutContainer}>
                         <View >
@@ -95,6 +83,7 @@ export function CheckoutDetails({navigation}){
                     {/* {returnPage()} */}
                     <Text>No items available for checkout</Text>
                     <Text style = {styles.ShoppingButton} onPress = {() => {navigation.navigate('cartItems')}}>Go back to Cart</Text>
+                    <Text style = {styles.countdownTimer}>Return to Cart in {longTimer} seconds</Text>
                 </View>
             }
         </View>
@@ -134,11 +123,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         flex: 1,
         textAlign: 'center',
-       
     },
     paymentContainer:{
         flexDirection: 'row',
-        marginVertical: 20,
+        marginTop: 20,
+        marginBottom: 2,
+        // borderWidth: 1
     },
     emptyCon:{
         flex: 1,
@@ -157,5 +147,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFD700",
         margin: 10,
     },
+    countdownTimer:{
+        color: "grey",
+        textAlign: "center",
+    }
 
 })

@@ -65,7 +65,7 @@ export default function DisplayCartItem(props){
                     </View>
 
                     <View style={{justifyContent: "flex-end"}}>
-                        <Text>{`Qty: ${props.itemData.itemQtyCart}`}</Text>
+                        <Text>{`Qty: ${props.itemData.itemQtyCart}`}{(props.itemData.itemQtyCart > props.itemData.item.Qty)?<Text>*</Text>:null}</Text>
                     </View>
                 </View>
                 
