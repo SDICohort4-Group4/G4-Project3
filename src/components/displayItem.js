@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image, Alert} from 'react-native';
-import { useContext } from 'react';
+import { StyleSheet, Text, View, Image, Alert, Modal} from 'react-native';
+import { useContext, useState } from 'react';
 import AuthContext from '../contexts/AuthContext';
 import axios from "axios";
 import noImage from "../../assets/photo-soon.jpg";
@@ -11,6 +11,7 @@ let height = 100;
 export default function DisplayItem(props){
 
     const {auth, userData, dbCartArray, setDBCartArray} = useContext(AuthContext);
+    const [addCartModalVisible, setAddCartModalVisible] = useState(false)
 
     function addToCart(orderQty, itemData){
         
@@ -36,7 +37,7 @@ export default function DisplayItem(props){
                 try {
                     axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
                 } catch (error) {
-                    console.log(`ItemDetails.js function addToCart, updateCartQty:`, error)
+                    console.log(`displayItem.js addToCart, updateCartQty:`, error)
                 }
                 break;
             }
@@ -63,7 +64,7 @@ export default function DisplayItem(props){
             try {
                 axios.post("https://sdic4-g4-project2.herokuapp.com/cart/save", payload)
             } catch (error) {
-                console.log(`ItemDetails.js function addToCart, pushNewToCart;`, error)
+                console.log(`displayItem.js addToCart, pushNewToCart;`, error)
             }
         }
 
@@ -71,12 +72,16 @@ export default function DisplayItem(props){
         // console.log(dbCartArray)
         // console.log(cartArray)
     
-        return(Alert.alert(
-            "Added to cart",
-            `Amount : ${orderQty}x ${itemData.itemName}`,// Price: $${(orderQty * itemData.itemPrice).toFixed(2)}
-            [{text: "Accept"}],
-            {cancelable: true}
-        ))
+        // return(
+        //     Alert.alert(
+        //         "Added to cart",
+        //         `Amount : ${orderQty}x ${itemData.itemName}`,// Price: $${(orderQty * itemData.itemPrice).toFixed(2)}
+        //         [{text: "Accept"}],
+        //         {cancelable: true}
+        //     )
+        // )
+        setAddCartModalVisible(true);
+        setTimeout(() => {setAddCartModalVisible(false)},500)
     }
 
     function quickAdd() {
@@ -107,10 +112,27 @@ export default function DisplayItem(props){
         {cancelable: true})
     }
 
+    function AddToCartModal(){
+        return(
+            <Modal                
+                visible = {addCartModalVisible}
+                transparent = {true}
+                onRequestClose = {() => setAddCartModalVisible(false)}>
+                <View style = {styles.modalView}>
+                    <View style = {styles.iconContainer}>
+                        <>
+                            <Text style={{fontSize: 16, color:'white', fontWeight: 'bold'}}>Added to cart</Text>
+                        </>
+                    </View>
+                </View>
+            </Modal>
+        )
+    }
 
     return(
         <Card onPress = {()=>props.navigation.navigate('itemDetails', {itemData: props.itemData})}
             style = {styles.cardContainer}>
+            <AddToCartModal/>
             <View>
                 <View style = {styles.itemContainer}>
                 <Image style={styles.image1} source={props.itemData.itemPic1?{uri: props.itemData.itemPic1}: noImage} />
@@ -207,6 +229,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
+    },
+    modalView:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconContainer:{
+        backgroundColor: '#00000060',
+        width: "50%",
+        height: "10%",
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
   
 })

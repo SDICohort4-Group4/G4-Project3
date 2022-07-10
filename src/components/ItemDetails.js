@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Image, ScrollView, Dimensions, Alert, Animated } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, ScrollView, Dimensions, Alert, Animated, Modal } from 'react-native';
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from '../contexts/AuthContext';
 import axios from "axios";
@@ -15,6 +15,7 @@ export default function ItemDetails({route, navigation}) {
     const [orderQty, setOrderQty] = useState(1);
     const {auth, userData} = useContext(AuthContext);
     const {dbCartArray, setDBCartArray} = useContext(AuthContext)
+    const [addCartModalVisible, setAddCartModalVisible] = useState(false)
 
     let imageList = [];
     // push image url into img list if they are not empty
@@ -98,12 +99,16 @@ export default function ItemDetails({route, navigation}) {
         // console.log(dbCartArray)
         // console.log(cartArray)
     
-        return(Alert.alert(
-            "Added to cart.",
-            `Amount : ${orderQty}x ${itemData.itemName}`,// Price: $${(orderQty * itemData.itemPrice).toFixed(2)}
-            [{text: "Accept"}],
-            {cancelable: true}
-        ))
+        // return(
+        //     Alert.alert(
+        //         "Added to cart",
+        //         `Amount : ${orderQty}x ${itemData.itemName}`,// Price: $${(orderQty * itemData.itemPrice).toFixed(2)}
+        //         [{text: "Accept"}],
+        //         {cancelable: true}
+        //     )
+        // )
+        setAddCartModalVisible(true);
+        setTimeout(() => {setAddCartModalVisible(false)},500)
     }
     
     const scrollX = React.useRef(new Animated.Value(0)).current;
@@ -142,10 +147,27 @@ export default function ItemDetails({route, navigation}) {
         console.log(route.params.itemData)
     }
 
+    function AddToCartModal(){
+        return(
+            <Modal                
+                visible = {addCartModalVisible}
+                transparent = {true}
+                onRequestClose = {() => setAddCartModalVisible(false)}>
+                <View style = {styles.modalView}>
+                    <View style = {styles.iconContainer}>
+                        <>
+                            <Text style={{fontSize: 16, color:'white', fontWeight: 'bold'}}>Added to cart</Text>
+                        </>
+                    </View>
+                </View>
+            </Modal>
+        )
+    }
+
     return(
         <>
             <ScrollView style={{backgroundColor: '#fffaed'}}>
-
+            <AddToCartModal/>
                 <View style={styles.flatListCon}>
                     {imageList.length?<>
                     <Animated.FlatList 
@@ -194,7 +216,7 @@ export default function ItemDetails({route, navigation}) {
                         </View>
 
                         <View style={styles.infoRow}>
-                            <Text style={[{...styles.infoText},{flex: 2}]}>Catergory:</Text>
+                            <Text style={[{...styles.infoText},{flex: 2}]}>Category:</Text>
                             <Text style={[{...styles.infoText},{flex: 6}]}>{route.params.itemData.itemCategory1}, {route.params.itemData.itemCategory2}</Text>
                         </View>
                     </View>
@@ -361,5 +383,18 @@ const styles = StyleSheet.create({
     priceContainer: {
         flexDirection: "row",
         flexWrap: 'wrap'
+    },
+    modalView:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconContainer:{
+        backgroundColor: '#00000060',
+        width: "50%",
+        height: "10%",
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
   });
