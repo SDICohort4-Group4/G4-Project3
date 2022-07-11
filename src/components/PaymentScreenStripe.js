@@ -20,7 +20,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
       }
       
       // multiply totalprice by 100 as stripe assumes price are in cents and integers only
-      const amountPayable={amountPayable: parseFloat(totalPrice*100)};
+      const amountPayable={amountPayable: parseInt(totalPrice*100)};
       let clientSecret;
       
       // get payment intent from backend server
@@ -105,7 +105,7 @@ function LoadModal() {
       Animated.timing(
           spinValue, {
               toValue: 1,
-              duration: 1000,
+              duration: 500,
               easing: Easing.linear,
               useNativeDriver: true
           }

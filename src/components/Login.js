@@ -131,8 +131,8 @@ export default function Login({navigation}) {
                 <TextInput style={styles.input} placeholder='Email' onChangeText={text => setUserMail(text)}></TextInput>
 
                 <Text style={styles.label}>Password</Text>
-                <TextInput style={[{...styles.input}, {marginBottom: 10}]} placeholder='Password' secureTextEntry={true} onChangeText={text => setUserPass(text)}></TextInput>
-                <Text style={styles.smolBtn} onPress={()=> console.log("Forgot")}>Forgot Password?</Text>
+                <TextInput style={[{...styles.input}, {marginBottom: 20}]} placeholder='Password' secureTextEntry={true} onChangeText={text => setUserPass(text)}></TextInput>
+                {/* <Text style={styles.smolBtn} onPress={()=> console.log("Forgot")}>Forgot Password?</Text> */}
 
                 <View style={styles.btnContainer}>
                     <Text style={styles.btn} onPress={()=> {handleLogin(userMail,userPass);}}>Login</Text>
