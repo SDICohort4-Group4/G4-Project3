@@ -32,7 +32,8 @@ export default function SearchScreen({route, navigation}) {
             let response = await GetData();
             setFullList(response.data);
             setFilterData([...response.data]);
-            setpriceSortASC(true)
+            setCategory(null);
+            setpriceSortASC(true);
         })();
         setRefreshing(false);
     },[])
