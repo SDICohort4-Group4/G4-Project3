@@ -5,7 +5,7 @@ export default function TotalPayablePrice(itemData){
     let spreadData = [...itemData]
     spreadData.forEach((data) => {
         if(!isNaN(data.itemQtyCart) || !isNaN(data.item) && data.item != undefined){
-            if(data.item.Qty <= 0 && data.itemFinalPrice < 0){
+            if(data.item.Qty <= 0 || data.itemFinalPrice < 0){
 
             } else {
                 itemSummaryPrice = data.itemQtyCart * data.itemFinalPrice;

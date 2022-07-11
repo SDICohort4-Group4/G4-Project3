@@ -4,7 +4,7 @@ import AuthContext from '../contexts/AuthContext';
 import axios from "axios";
 import noImage from "../../assets/photo-soon.jpg";
 import { MaterialIcons } from '@expo/vector-icons';
-import addToCart from './addToCart';
+import addToCart from '../helper/addToCart';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
