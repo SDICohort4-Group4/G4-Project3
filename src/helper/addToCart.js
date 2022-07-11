@@ -57,5 +57,5 @@ export default function addToCart(orderQty, itemData, dbCartArray, setDBCartArra
 
     setDBCartArray(cartArray)
     setAddCartModalVisible(true);
-    setTimeout(() => {setAddCartModalVisible(false)},500)
+    setTimeout(() => {setAddCartModalVisible(false)},800)
 }
