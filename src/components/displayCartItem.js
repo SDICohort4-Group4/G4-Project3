@@ -14,21 +14,22 @@ export default function DisplayCartItem(props){
     let {userData, dbCartArray, setDBCartArray, checkoutArray, setCheckoutArray} = useContext(AuthContext)
     
     async function removeItem(){
-        let cartArray = [...dbCartArray]
-        for(let i = 0; i < cartArray.length; i++){
-            // console.log(cartArray[i])
-            if(cartArray[i].itemID == props.itemData.itemID){
-                cartArray[i] = {}
-                cartArray.splice(i,1)
-                // console.log(cartArray)
-            }
-        }
-        setDBCartArray(cartArray);
         // setCheckoutArray(cartArray);
         try {
             await axios.put(`https://sdic4-g4-project2.herokuapp.com/cart/delete/${userData.userID}/${props.itemData.itemID}`)
+            let cartArray = [...dbCartArray]
+            for(let i = 0; i < cartArray.length; i++){
+                // console.log(cartArray[i])
+                if(cartArray[i].itemID == props.itemData.itemID){
+                    cartArray[i] = {}
+                    cartArray.splice(i,1)
+                    // console.log(cartArray)
+                }
+            }
+            setDBCartArray(cartArray);
         } catch (error) {
             console.log('displayCartItem.js function removeItem, removeItemFromCart: ', error)
+            Alert.alert("Connection Timeout","Could not remove item")
         }
         // setItemData({})
         // console.log(itemData)

@@ -16,6 +16,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
   const handlePayPress = async () => {
       // check that card details are complete
       if (card?.complete===false || card===false){
+        Alert.alert("","Please fill in all your Card details",'',{cancelable: true})
         return;
       }
       
@@ -29,6 +30,7 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
           clientSecret = response.data.data.clientSecret;
         } catch (error) {
             console.log("Error getting Client secret:", error);
+            Alert.alert("Connection Timeout","Please try again later")
             return;
       } 
       
@@ -62,12 +64,14 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
     try {
         await API.put(`/cart/delete/${userData.userID}`);
     } catch (error) {
+        Alert.alert("deleteCart failed")
         console.log('Payment Success->deleteCart: ', error);
     }
 
     try {
         await API.post("/buyhistory/save", payload)
     } catch (error) {
+        Alert.alert('Saving buyHistory failed')
         console.log('Payment Success->saving buyHistory: ', error)
     }
     return     

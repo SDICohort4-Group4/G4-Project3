@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {useContext, useState, useEffect} from "react";
 import AuthContext from '../contexts/AuthContext';
@@ -30,6 +30,7 @@ export default function AccountDetails({navigation}) {
             if(error.response.status == 404){
                 console.log('AccountDetails.js function getBuyHistory : There have been no past transactions')
             } else {
+                Alert.alert("Connection Timeout", "Could not retrive Transaction History")
                 console.log('AccountDetail.js function getBuyHistory :', error)
             }
         }

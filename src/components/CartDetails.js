@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Dimensions, Alert } from 'react-native';
 import { useState, useContext, useEffect } from 'react';
 import AuthContext from '../contexts/AuthContext';
 import axios from 'axios'
@@ -9,6 +9,7 @@ import jwt_decode from 'jwt-decode'
 
 import AddCalcItemFinalPrice from '../helper/addCalcItemFinalPrice'
 import TotalPayablePrice from '../helper/totalPayablePrice';
+import returnToPreviousScreen from '../helper/returnToPreviousScreen'
 
 export function CartDetails({navigation}){
 
@@ -32,12 +33,13 @@ export function CartDetails({navigation}){
             for(let i = 0; i < withItemFinalPrice.length; i++){
                 if(withItemFinalPrice[i].itemQtyCart > withItemFinalPrice[i].item.Qty){
                     setShowDisclaimer(true)
+                    break;
                 }
             }
         }
     },[dbCartArray])
 
-    let checkoutData;
+    let filteredData;
     let cartArray;
 
     // function printValue(){
@@ -74,9 +76,13 @@ export function CartDetails({navigation}){
                 }
                 if(error.response.status !== 404) {
                     console.log('CartDetails.js useEffect[isFocused] if error not 404: ', error)
+                    Alert.alert("Connection Timeout","Could not update the Cart")
+                    setTimeout(() => {returnToPreviousScreen({navigation})},500)
                 }
             } else {
                 console.log('CartDetails.js useEffect[isFocused] : ', error)
+                Alert.alert("Connection Timeout","Could not update the Cart")
+                setTimeout(() => {returnToPreviousScreen({navigation})},500)
             }
         }
     }
@@ -86,18 +92,25 @@ export function CartDetails({navigation}){
             let accessToken = await SecureStore.getItemAsync('access')
             let decode = jwt_decode(accessToken)
             let cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
-            checkoutData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0)
-            for(let i = 0; i < checkoutData.length; i++){
-                if(checkoutData[i].itemQtyCart > checkoutData[i].item.Qty){
-                    checkoutData[i].itemQtyCart = checkoutData[i].item.Qty
+            filteredData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0)
+            //Ensures that Checkout Qty's maximum is set to Available Qty
+            for(let i = 0; i < filteredData.length; i++){
+                if(filteredData[i].itemQtyCart > filteredData[i].item.Qty){
+                    filteredData[i].itemQtyCart = filteredData[i].item.Qty
                 }
             }
-            // console.log(checkoutData)
-            setCheckoutArray([...checkoutData])
+            // console.log(filteredData)
+            setCheckoutArray([...filteredData])
         } catch (error) {
+            Alert.alert("Connection Timeout","Could not get updated Checkout")
+            setTimeout(() => {returnToCart()},1000)
             console.log(`CartDetail.js function getCheckoutData, getCheckoutArrayData:`, error)
         }
-        // return checkoutData
+        // return filteredData
+    }
+
+    function returnToCart(){
+        navigation.navigate('cartItems')
     }
 
     return(
@@ -113,7 +126,7 @@ export function CartDetails({navigation}){
                             <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
                             <Text style = {styles.checkoutButton} onPress = {() => {getCheckoutData(); navigation.navigate('Cart', {screen: 'checkoutItems'})}}>Checkout</Text> 
                         </View>
-                        {showDisclaimer === true? <Text style = {styles.disclaimerText}>* Items may not be available for checkout</Text>: null}
+                        {showDisclaimer === true? <Text style = {styles.disclaimerText}>* Orders may only be partially filled</Text>: null}
                     </View>
                 :   
                     <View style = {styles.emptyCon}>

@@ -26,7 +26,13 @@ export function CheckoutDetails({navigation}){
     
     useEffect(() => {
         if(checkoutArray != undefined){
-            let filteredData = [...checkoutArray].filter(index => index.item.Qty > 0 && index.item.Qty >= index.itemQtyCart)
+            let filteredData = [...checkoutArray].filter(index => index.item.Qty > 0)
+            //Ensures that Checkout Qty's maximum is set to Available Qty
+            for(let i = 0; i < filteredData.length; i++){
+                if(filteredData[i].itemQtyCart > filteredData[i].item.Qty){
+                    filteredData[i].itemQtyCart = filteredData[i].item.Qty
+                }
+            }
             let withItemFinalPrice = AddCalcItemFinalPrice([...filteredData])
             setCheckoutData(withItemFinalPrice);
             // console.log(filteredData);
