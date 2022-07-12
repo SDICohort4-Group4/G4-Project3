@@ -31,7 +31,7 @@ export default function StartScreen() {
                     headerStyle: {height: 60, backgroundColor: "#D1920D"},
                     headerShown: false,
                     headerTitleStyle: {color: "white"},
-                    tabBarStyle: {backgroundColor: "#FFD700"},
+                    tabBarStyle: {backgroundColor: "#FFD700", height: 55},
                 }}>
                 <Tab.Screen 
                     name = "Home" 
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     cartIconContainer:{
         justifyContent: "flex-end",
         flex: 1,
+        paddingTop: 5,
     },
     cartIconBadge: {
         position: 'absolute',
@@ -110,9 +111,10 @@ const styles = StyleSheet.create({
         height: 14,
         borderRadius: 15 / 2,
         right: -5,
-        top: 1,
+        top: 5,
         alignItems: 'center',
         justifyContent: 'center',
+
     },
     cartIconBadgeNumber: {
         alignItems: 'center',
