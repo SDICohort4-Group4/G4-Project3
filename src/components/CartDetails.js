@@ -9,7 +9,8 @@ import jwt_decode from 'jwt-decode'
 
 import AddCalcItemFinalPrice from '../helper/addCalcItemFinalPrice'
 import TotalPayablePrice from '../helper/totalPayablePrice';
-import { returnToPreviousScreen } from '../helper/returnTo.js'
+import { returnToPreviousScreen, returntoCartItems } from '../helper/returnTo.js'
+
 
 export function CartDetails({navigation}){
 
@@ -41,10 +42,6 @@ export function CartDetails({navigation}){
 
     let filteredData;
     let cartArray;
-
-    // function printValue(){
-    //     console.log(dbCartArray, new Date)
-    // }
 
     // useFocusEffect(()=>{
     //     // redirect to login if no auth
@@ -103,14 +100,10 @@ export function CartDetails({navigation}){
             setCheckoutArray([...filteredData])
         } catch (error) {
             Alert.alert("Connection Timeout","Could not get updated Checkout")
-            setTimeout(() => {returnToCart()},1000)
+            setTimeout(() => {returnToCartItems()},1000)
             console.log(`CartDetail.js function getCheckoutData, getCheckoutArrayData:`, error)
         }
         // return filteredData
-    }
-
-    function returnToCart(){
-        navigation.navigate('cartItems')
     }
 
     return(
@@ -136,7 +129,6 @@ export function CartDetails({navigation}){
             :
                 null
             }
-            
             </View>
         </ScrollView>
     )

@@ -20,7 +20,7 @@ export default function displayHistoryItems(props){
             <View style = {styles.itemContainer}>
                 <View style = {styles.itemInfoContainer}>
                     <Text numberOfLines = {3} style = {{fontWeight: "bold"}}>{props.itemData.itemName}</Text>
-                    <Text>Price: $ {parseFloat(props.itemData.buyPrice).toFixed(2)} each</Text>
+                    <Text>Price: ${parseFloat(props.itemData.buyPrice).toFixed(2)} each</Text>
                     <Text>Bought on: {yyyymmdd(props.itemData.createdAt)}, {timeOnly(props.itemData.createdAt)}</Text>
                 </View>
                 <View style = {{justifyContent: "flex-end"}}>

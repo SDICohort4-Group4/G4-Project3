@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     },
     paymentContainer:{
         flexDirection: 'row',
-        marginTop: 20,
+        marginTop: 15,
         marginBottom: 2,
         // borderWidth: 1
     },

@@ -101,7 +101,7 @@ export default function StartScreen() {
 const styles = StyleSheet.create({
     cartIconContainer:{
         width: windowWidth * 0.1,
-        height: windowHeight * 0.03,
+        height: windowHeight * 0.033,
         // top:3,
         justifyContent: "center",
         // alignSelf: "center",
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     },
     cartIconBadge: {
         position: 'absolute',
-        backgroundColor: "rgba(255, 0, 0, 0.7)",
+        backgroundColor: "rgba(255, 0, 0, 0.9)",
         width: 14,
         height: 14,
         borderRadius: 15 / 2,

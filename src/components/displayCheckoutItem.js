@@ -10,7 +10,7 @@ export default function displayCheckoutItems(props){
             <View style = {styles.itemContainer}>
                 <View style = {styles.itemInfoContainer}>
                     <Text numberOfLines = {3} style = {{fontWeight: "bold"}}>{props.itemData.item.itemName}</Text>
-                    <Text>Price: $ {parseFloat(props.itemData.itemFinalPrice).toFixed(2)}</Text>
+                    <Text>Price: ${parseFloat(props.itemData.itemFinalPrice).toFixed(2)}</Text>
                 </View>
                 <View style = {{justifyContent: "flex-end"}}>
                     <Text>{`Qty: ${props.itemData.itemQtyCart}`}</Text>
