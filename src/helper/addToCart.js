@@ -66,6 +66,6 @@ export default async function addToCart(orderQty, itemData, dbCartArray, setDBCa
     function ifNoErr(){
         setDBCartArray(cartArray)
         setAddCartModalVisible(true);
-        setTimeout(() => {setAddCartModalVisible(false)},500)
+        setTimeout(() => {setAddCartModalVisible(false)},700)
     }
 }
