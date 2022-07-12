@@ -11,12 +11,18 @@ import CartScreen from "../screens/cart.js"
 
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { useContext } from 'react';
+import AuthContext from '../contexts/AuthContext';
+
 const Tab = createBottomTabNavigator();
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 export default function StartScreen() {
+
+    const {auth, dbCartArray, setDBCartArray, checkoutArray, setCheckoutArray} = useContext(AuthContext);
+
     return (
         <>
         <NavigationContainer>
@@ -71,8 +77,16 @@ export default function StartScreen() {
                         tabBarLabelStyle: {fontSize: 15, fontWeight: "bold", flex: 1, textAlignVertical: "center"},
                         tabBarIcon : () => {
                             return (
-                                <View style = {styles.cartIconContainer}>
+                                <View style = {{...styles.cartIconContainer}}>
                                     <MaterialIcons name="shopping-cart" size={24} color="#333333" />
+                                    {auth === true && dbCartArray.length > 0? 
+                                        <View style = {styles.cartIconBadge}>
+                                            <Text style = {styles.cartIconBadgeNumber}>
+                                                {dbCartArray.length <= 99 ? dbCartArray.length: "99+"}</Text>
+                                        </View>
+                                    :
+                                        null}
+
                                 </View>
                             )
                         }
@@ -93,6 +107,25 @@ const styles = StyleSheet.create({
         // alignSelf: "center",
         alignItems: "center",
         top: 5,
+    },
+    cartIconBadge: {
+        position: 'absolute',
+        backgroundColor: "rgba(255, 0, 0, 0.7)",
+        width: 14,
+        height: 14,
+        borderRadius: 15 / 2,
+        right: 0,
+        top: -5,
+        // right: 10,
+        // top: +10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cartIconBadgeNumber: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: "#FFFFFF",
+        fontSize: 8,
     }
 })
   
