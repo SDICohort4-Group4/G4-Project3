@@ -122,11 +122,11 @@ export function CartDetails({navigation}){
                         {cartData.map((data, index)=>(
                             <DisplayCartItem itemData = {data} navigation = {navigation} key = {index}/>
                         ))}
+                        {showDisclaimer === true? <Text style = {styles.disclaimerText}>* Orders may only be partially filled</Text>: null}
                         <View style = {styles.paymentContainer}>
                             <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
                             <Text style = {styles.checkoutButton} onPress = {() => {getCheckoutData(); navigation.navigate('Cart', {screen: 'checkoutItems'})}}>Checkout</Text> 
                         </View>
-                        {showDisclaimer === true? <Text style = {styles.disclaimerText}>* Orders may only be partially filled</Text>: null}
                     </View>
                 :   
                     <View style = {styles.emptyCon}>
@@ -184,7 +184,8 @@ const styles = StyleSheet.create({
     paymentContainer:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 10,
+        marginTop: 5,
+        marginBottom: 10,
     },
 
     emptyCon:{
@@ -194,7 +195,9 @@ const styles = StyleSheet.create({
     },
     disclaimerText: {
         textAlign: 'right',
-        paddingRight: 5,
-        fontSize: 11
+        marginHorizontal: 10,
+        textAlignVertical: 'center',
+        fontSize: 11,
+        marginTop: 5,
     }
 })

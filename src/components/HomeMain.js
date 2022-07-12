@@ -1,4 +1,4 @@
-import {Text, View, FlatList, Image, StyleSheet, Dimensions, Animated, ScrollView, TextInput} from "react-native";
+import {Text, View, FlatList, Image, StyleSheet, Dimensions, Animated, ScrollView, TextInput, RefreshControl} from "react-native";
 import React,{useRef, useState, useEffect, useContext, useCallback} from 'react';
 import SelectorBar from './SelectorBar';
 import {getCatList} from '../Api/Auth';
@@ -10,7 +10,7 @@ let windowWidth = Dimensions.get("screen").width;
 
 export default function HomeMain({navigation}) {
     let {catList, setCatList, setFullList} = useContext(AuthContext);
-
+    const [refreshing, setRefreshing] = useState(false);
     // load data and save to global, on first render
     useEffect(()=>{
         (async function() {
@@ -20,6 +20,17 @@ export default function HomeMain({navigation}) {
             setCatList(response.data.data.cat1);
         })();
     }, []);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        (async function() {
+            let responseFull = await GetData();
+            setFullList(responseFull.data);
+            let response = await getCatList();
+            setCatList(response.data.data.cat1);
+        })();
+        setRefreshing(false);
+    },[])
 
     // use deperate searchbar component to prevent rerendering of whole component
     function SearchBar() {
@@ -87,7 +98,8 @@ export default function HomeMain({navigation}) {
     return(
         <View style={{backgroundColor: "#fffaed", flex: 1}}>
             <SearchBar />
-            <ScrollView contentContainerStyle={styles.container} > 
+            <ScrollView contentContainerStyle={styles.container}
+            refreshControl = {<RefreshControl refreshing = {refreshing} onRefresh = {onRefresh}/>} > 
                 <View style={styles.flatListCon}>
                     <Animated.FlatList 
                     snapToAlignment="start" 
