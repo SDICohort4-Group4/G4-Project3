@@ -82,8 +82,8 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
       }
       setTimeout(() => {setPaySuccessModalVisible(true)}, 100)
       // setTimeout(() => {setPaySuccessModalVisible(false)}, 900)
-      setTimeout(() => {returnToHome({navigation})}, 900)
-      setTimeout(() => {setDBCartArray([]);setCheckoutArray([])}, 900)
+      setTimeout(() => {returnToHome({navigation})}, 1500)
+      setTimeout(() => {setDBCartArray([]);setCheckoutArray([])}, 1500)
     } catch (error) {
       console.log('PaymentScreenStripe.js :', error)
     }

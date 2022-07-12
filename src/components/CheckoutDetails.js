@@ -8,7 +8,7 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import AddCalcItemFinalPrice from '../helper/addCalcItemFinalPrice';
 import TotalPayablePrice from '../helper/totalPayablePrice';
-import countdownTimerLong from '../helper/countdownTimerLong';
+import CountdownTimerLong from '../helper/countdownTimerLong';
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -50,10 +50,10 @@ export function CheckoutDetails({navigation}){
         },[navigation])
     )
 
-    useEffect(() => {
-        countdownTimerLong(longTimer, navigation, setLongTimer);
-        // shortCountdownTImer(longTimer, navigation, setLongTimer);
-    },[isFocused])
+    // useEffect(() => {
+    //     countdownTimerLong(longTimer, navigation, setLongTimer);
+    //     // shortCountdownTImer(longTimer, navigation, setLongTimer);
+    // },[isFocused])
 
     // function PaySuccessModal(){
     //     return(
@@ -91,7 +91,7 @@ export function CheckoutDetails({navigation}){
                             <Text style = {styles.totalPayableLabel}>Total Payable:</Text>
                             <Text style = {styles.totalPayablePrice}>${totalPrice.toFixed(2)}</Text>
                         </View>
-                        <Text style = {styles.countdownTimer}>Timeout in {longTimer} seconds</Text>
+                        {/* <Text style = {styles.countdownTimer}>Timeout in {longTimer} seconds</Text> */}
 
                     </View>
                     <ScrollView contentContainerStyle = {{flexGrow: 1}} style = {styles.checkoutContainer}>
@@ -111,7 +111,7 @@ export function CheckoutDetails({navigation}){
                     {/* {returnPage()} */}
                     <Text>No items available for checkout</Text>
                     <Text style = {styles.ShoppingButton} onPress = {() => {navigation.navigate('cartItems')}}>Go back to Cart</Text>
-                    <Text style = {styles.countdownTimer}>Return to Cart in {longTimer} seconds</Text>
+                    {/* <Text style = {styles.countdownTimer}>Return to Cart in {longTimer} seconds</Text> */}
                 </View>
             }
         </View>
