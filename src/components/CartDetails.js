@@ -9,7 +9,7 @@ import jwt_decode from 'jwt-decode'
 
 import AddCalcItemFinalPrice from '../helper/addCalcItemFinalPrice'
 import TotalPayablePrice from '../helper/totalPayablePrice';
-import { returnToPreviousScreen, returntoCartItems } from '../helper/returnTo.js'
+import { returnToPreviousScreen, returnToCartItems } from '../helper/returnTo.js'
 
 
 export function CartDetails({navigation}){
