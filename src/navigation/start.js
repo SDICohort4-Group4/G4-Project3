@@ -38,7 +38,7 @@ export default function StartScreen() {
                     component = {HomeScreen} 
                     options = {{
                         title: "Let's go Shopin", 
-                        tabBarLabelStyle: {fontSize: 15, fontWeight:"bold", flex: 1, textAlignVertical: 'center'},
+                        tabBarLabelStyle: {fontSize: 15, fontWeight:"bold", textAlignVertical: 'center'},
                         // tabBarIconStyle:{display:'none',},
                         tabBarIcon : () => {
                             return (
@@ -58,7 +58,7 @@ export default function StartScreen() {
                     name = "Account" 
                     component = {AccountScreen} 
                     options = {{
-                        tabBarLabelStyle: {fontSize: 15, fontWeight: "bold", flex: 1, textAlignVertical: 'center'}, 
+                        tabBarLabelStyle: {fontSize: 15, fontWeight: "bold", textAlignVertical: 'center'}, 
                         // tabBarIconStyle:{display:'none',},
                         tabBarIcon : () => {
                             return (
@@ -74,7 +74,7 @@ export default function StartScreen() {
                     name = "Cart" 
                     component = {CartScreen} 
                     options = {{
-                        tabBarLabelStyle: {fontSize: 15, fontWeight: "bold", flex: 1, textAlignVertical: "center"},
+                        tabBarLabelStyle: {fontSize: 15, fontWeight: "bold", textAlignVertical: "center"},
                         tabBarIcon : () => {
                             return (
                                 <View style = {{...styles.cartIconContainer}}>
@@ -100,13 +100,8 @@ export default function StartScreen() {
 
 const styles = StyleSheet.create({
     cartIconContainer:{
-        width: windowWidth * 0.1,
-        height: windowHeight * 0.033,
-        // top:3,
-        justifyContent: "center",
-        // alignSelf: "center",
-        alignItems: "center",
-        top: 5,
+        justifyContent: "flex-end",
+        flex: 1,
     },
     cartIconBadge: {
         position: 'absolute',
@@ -114,10 +109,8 @@ const styles = StyleSheet.create({
         width: 14,
         height: 14,
         borderRadius: 15 / 2,
-        right: 0,
-        top: -5,
-        // right: 10,
-        // top: +10,
+        right: -5,
+        top: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },

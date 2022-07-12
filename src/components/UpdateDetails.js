@@ -67,42 +67,44 @@ export default function UpdateDetails({navigation}) {
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <LoadModal />
         <View style={styles.container}> 
-            <View style={styles.userDetails}>
-                <Text style={styles.infoHeader}>User Details:</Text>
-                <Text style={styles.label}>Name</Text>
-                <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userName: text})} value={tempData?.userName}></TextInput>
+            <View style={styles.userDetailsCon}>
+                <View style={styles.userDetails}>
+                    <Text style={styles.infoHeader}>User Details:</Text>
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userName: text})} value={tempData?.userName}></TextInput>
 
-                <Text style={styles.label}>Nickname</Text>
-                <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userNickname: text})} value={tempData?.userNickname}></TextInput>
+                    <Text style={styles.label}>Nickname</Text>
+                    <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userNickname: text})} value={tempData?.userNickname}></TextInput>
 
-                <Text style={styles.label}>Email</Text>
-                <TextInput style={styles.input} editable={false} value={tempData?.userEmail}></TextInput>
-                
-                <Text style={styles.label}>Contact</Text>
-                <View style={styles.contactWrap}>
-                    <TextInput style={[{...styles.input}, {flex: 1}]} onChangeText={text => setTempData({...tempData, userCountryCode: text})} value={`${tempData?.userCountryCode}`}></TextInput>
-                    <TextInput style={[{...styles.input}, {flex: 2, marginLeft:10}]} onChangeText={text => setTempData({...tempData, userPhoneNum: text})} value={`${tempData?.userPhoneNum}`}></TextInput>
-                </View>
-                <Text style={styles.label}>Address 1</Text>
-                <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userAddress1: text})} value={tempData?.userAddress1}></TextInput>
+                    <Text style={styles.label}>Email</Text>
+                    <TextInput style={styles.input} editable={false} value={tempData?.userEmail}></TextInput>
+                    
+                    <Text style={styles.label}>Contact</Text>
+                    <View style={styles.contactWrap}>
+                        <TextInput style={[{...styles.input}, {flex: 1}]} onChangeText={text => setTempData({...tempData, userCountryCode: text})} value={`${tempData?.userCountryCode}`}></TextInput>
+                        <TextInput style={[{...styles.input}, {flex: 2, marginLeft:10}]} onChangeText={text => setTempData({...tempData, userPhoneNum: text})} value={`${tempData?.userPhoneNum}`}></TextInput>
+                    </View>
+                    <Text style={styles.label}>Address 1</Text>
+                    <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userAddress1: text})} value={tempData?.userAddress1}></TextInput>
 
-                <Text style={styles.label}>Address 2</Text>
-                <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userAddress2: text})} value={tempData?.userAddress2}></TextInput>
+                    <Text style={styles.label}>Address 2</Text>
+                    <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userAddress2: text})} value={tempData?.userAddress2}></TextInput>
 
-                <View style={styles.CPWrap}>
-                    <View style={{flex:1}}>
-                        <Text style={styles.label}>Postal code</Text>
-                        <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userPostalCode: text})} value={tempData?.userPostalCode} ></TextInput>
+                    <View style={styles.CPWrap}>
+                        <View style={{flex:1}}>
+                            <Text style={styles.label}>Postal code</Text>
+                            <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userPostalCode: text})} value={tempData?.userPostalCode} ></TextInput>
+                        </View>
+
+                        <View style={{flex:1, marginLeft:10}}>
+                            <Text style={styles.label}>Country</Text>
+                            <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userCountry: text})} value={tempData?.userCountry}></TextInput>
+                        </View>
                     </View>
 
-                    <View style={{flex:1, marginLeft:10}}>
-                        <Text style={styles.label}>Country</Text>
-                        <TextInput style={styles.input} onChangeText={text => setTempData({...tempData, userCountry: text})} value={tempData?.userCountry}></TextInput>
+                    <View style={styles.btnCon}>
+                        <Text onPress={()=> handleUpdate(tempData)} style={styles.btn}>Update</Text>
                     </View>
-                </View>
-
-                <View style={styles.btnCon}>
-                    <Text onPress={()=> handleUpdate(tempData)} style={styles.btn}>Update</Text>
                 </View>
             </View>
         </View>
@@ -126,13 +128,20 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 
-    userDetails: {
+    userDetailsCon: {
         width: '90%',
         padding: 10,
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
         elevation: 10,
         backgroundColor: '#ffffff',
         marginBottom: 25,
+    },
+
+    userDetails: {
+        padding: 10,
+        paddingHorizontal: 15,
+        backgroundColor: 'rgba(52, 52, 52, 0.1)',
+        borderRadius: 5,
     },
 
     label: {
@@ -140,12 +149,12 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        borderWidth: 1,
         borderRadius: 5,
         width: '100%',
         fontSize: 18,
         paddingHorizontal: 10,
         marginBottom: 15,
+        backgroundColor: "white",
     },
 
     btn: {
