@@ -31,7 +31,7 @@ export default function StartScreen() {
                     headerStyle: {height: 60, backgroundColor: "#D1920D"},
                     headerShown: false,
                     headerTitleStyle: {color: "white"},
-                    tabBarStyle: {backgroundColor: "#FFD700", height: 50},
+                    tabBarStyle: {backgroundColor: "#FFD700"},
                 }}>
                 <Tab.Screen 
                     name = "Home" 
