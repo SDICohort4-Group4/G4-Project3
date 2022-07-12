@@ -10,9 +10,12 @@ const API = axios.create({
     baseURL:"https://sdic4-g4-project2.herokuapp.com/",
 });
 
-export default function PaymentScreen({navigation, userData, totalPrice, checkoutData, setDBCartArray, setCheckoutArray, paySuccessModalVisible, setPaySuccessModalVisible}) {
+export default function PaymentScreen({navigation, userData, totalPrice, checkoutData, setDBCartArray, setCheckoutArray, }) {
+  //paySuccessModalVisible, setPaySuccessModalVisible
   const { confirmPayment, loading } = useConfirmPayment();
   const [card, setCard] = useState(false)
+
+  const [paySuccessModalVisible, setPaySuccessModalVisible] = useState(false)
   
   const handlePayPress = async () => {
       // check that card details are complete
@@ -53,9 +56,9 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
           // console.log("Successfully Paid:\n", paymentIntent);
           paymentSuccess(paymentIntent);
           // clear cart contents in app
-          setDBCartArray([])
-          setCheckoutArray([])
-          setTimeout(() => {returnToHome({navigation})}, 1200)
+          // setDBCartArray([])
+          // setCheckoutArray([])
+          // setTimeout(() => {returnToHome({navigation})}, 1200)
       }
   };
 
@@ -77,8 +80,10 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
           Alert.alert('Saving buyHistory failed')
           console.log('Payment Success->saving buyHistory: ', error)
       }
-      setTimeout(() => {setPaySuccessModalVisible(true)}, 200)
-      setTimeout(() => {setPaySuccessModalVisible(false)}, 900)
+      setTimeout(() => {setPaySuccessModalVisible(true)}, 100)
+      // setTimeout(() => {setPaySuccessModalVisible(false)}, 900)
+      setTimeout(() => {returnToHome({navigation})}, 900)
+      setTimeout(() => {setDBCartArray([]);setCheckoutArray([])}, 900)
     } catch (error) {
       console.log('PaymentScreenStripe.js :', error)
     }
@@ -147,9 +152,27 @@ function LoadModal() {
       </Modal>
   )
 }
+
+function PaySuccessModal(){
+    return(
+        <Modal                
+            visible = {paySuccessModalVisible}
+            transparent = {true}
+            onRequestClose = {() => setPaySuccessModalVisible(false)}>
+            <View style = {styles.modalView}>
+                <View style = {styles.iconContainer}>
+                    <>
+                        <Text style={{fontSize: 20, color:'white', fontWeight: 'bold'}}>Payment Success</Text>
+                    </>
+                </View>
+            </View>
+        </Modal>
+    )
+}
   
   return (
     <View>
+      <PaySuccessModal />
       <CardField
         postalCodeEnabled={false}
         placeholder={{

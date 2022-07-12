@@ -23,7 +23,7 @@ export function CheckoutDetails({navigation}){
     const [shortTimer, setShortTimer] = useState(15)
 
     let isFocused = useIsFocused()
-    const [paySuccessModalVisible, setPaySuccessModalVisible] = useState(false)
+    // const [paySuccessModalVisible, setPaySuccessModalVisible] = useState(false)
     
     useEffect(() => {
         if(checkoutArray != undefined){
@@ -55,26 +55,26 @@ export function CheckoutDetails({navigation}){
         // shortCountdownTImer(longTimer, navigation, setLongTimer);
     },[isFocused])
 
-    function PaySuccessModal(){
-        return(
-            <Modal                
-                visible = {paySuccessModalVisible}
-                transparent = {true}
-                onRequestClose = {() => setPaySuccessModalVisible(false)}>
-                <View style = {styles.modalView}>
-                    <View style = {styles.iconContainer}>
-                        <>
-                            <Text style={{fontSize: 20, color:'white', fontWeight: 'bold'}}>Payment Success</Text>
-                        </>
-                    </View>
-                </View>
-            </Modal>
-        )
-    }
+    // function PaySuccessModal(){
+    //     return(
+    //         <Modal                
+    //             visible = {paySuccessModalVisible}
+    //             transparent = {true}
+    //             onRequestClose = {() => setPaySuccessModalVisible(false)}>
+    //             <View style = {styles.modalView}>
+    //                 <View style = {styles.iconContainer}>
+    //                     <>
+    //                         <Text style={{fontSize: 20, color:'white', fontWeight: 'bold'}}>Payment Success</Text>
+    //                     </>
+    //                 </View>
+    //             </View>
+    //         </Modal>
+    //     )
+    // }
 
     return(
         <View style = {{flex: 1}}>
-            <PaySuccessModal/>
+            {/* <PaySuccessModal/> */}
             {checkoutArray?.length > 0 ? 
                 <View>            
                     <View style = {styles.ccContainer}>
@@ -84,8 +84,8 @@ export function CheckoutDetails({navigation}){
                                         checkoutData={checkoutData} 
                                         setDBCartArray={setDBCartArray} 
                                         setCheckoutArray={setCheckoutArray}
-                                        paySuccessModalVisible = {paySuccessModalVisible}
-                                        setPaySuccessModalVisible = {setPaySuccessModalVisible}
+                                        // paySuccessModalVisible = {paySuccessModalVisible}
+                                        // setPaySuccessModalVisible = {setPaySuccessModalVisible}
                                         />
                         <View style = {styles.paymentContainer}>
                             <Text style = {styles.totalPayableLabel}>Total Payable:</Text>
