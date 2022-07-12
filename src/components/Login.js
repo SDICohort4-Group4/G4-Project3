@@ -63,12 +63,12 @@ export default function Login({navigation}) {
         try {
             let cartArray = await axios.get(`https://sdic4-g4-project2.herokuapp.com/cart/${decode.id}}`)
             let filteredData = [...(cartArray.data.data)].filter(index => index.item.Qty > 0)
-            //Ensures that Checkout Qty's maximum is set to Available Qty
-            for(let i = 0; i < filteredData.length; i++){
-                if(filteredData[i].itemQtyCart > filteredData[i].item.Qty){
-                    filteredData[i].itemQtyCart = filteredData[i].item.Qty
-                }
-            }
+            //Ensures that Checkout Qty's maximum is set to Available Qty //Doesn't seem to work
+            // for(let i = 0; i < filteredData.length; i++){
+            //     if(filteredData[i].itemQtyCart > filteredData[i].item.Qty){
+            //         filteredData[i].itemQtyCart = filteredData[i].item.Qty
+            //     }
+            // }
             setCheckoutArray(filteredData)
         } catch (error) {
             if(error.response.status == 404){

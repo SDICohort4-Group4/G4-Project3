@@ -4,19 +4,20 @@ import { CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 import axios from 'axios';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import { returnToHome } from "../helper/returnTo.js";
 
 const API = axios.create({
     baseURL:"https://sdic4-g4-project2.herokuapp.com/",
 });
 
-export default function PaymentScreen({navigation, userData, totalPrice, checkoutData, setDBCartArray, setCheckoutArray}) {
+export default function PaymentScreen({navigation, userData, totalPrice, checkoutData, setDBCartArray, setCheckoutArray, paySuccessModalVisible, setPaySuccessModalVisible}) {
   const { confirmPayment, loading } = useConfirmPayment();
   const [card, setCard] = useState(false)
   
   const handlePayPress = async () => {
       // check that card details are complete
       if (card?.complete===false || card===false){
-        Alert.alert("","Please fill in all your Card details",'',{cancelable: true})
+        Alert.alert("","Please enter valid card information",'',{cancelable: true})
         return;
       }
       
@@ -54,26 +55,34 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
           // clear cart contents in app
           setDBCartArray([])
           setCheckoutArray([])
-          navigation.navigate("Home");
+          setTimeout(() => {returnToHome({navigation})}, 1200)
       }
   };
 
   async function paymentSuccess(paymentIntent){
     let buyHistoryData = buyHistoryArray(checkoutData ,paymentIntent);
     let payload = [...buyHistoryData];
-    try {
-        await API.put(`/cart/delete/${userData.userID}`);
-    } catch (error) {
-        Alert.alert("deleteCart failed")
-        console.log('Payment Success->deleteCart: ', error);
-    }
 
     try {
-        await API.post("/buyhistory/save", payload)
+      try {
+        await API.put(`/cart/delete/${userData.userID}`);
+      } catch (error) {
+          Alert.alert("deleteCart failed")
+          console.log('Payment Success->deleteCart: ', error);
+      }
+
+      try {
+          await API.post("/buyhistory/save", payload)
+      } catch (error) {
+          Alert.alert('Saving buyHistory failed')
+          console.log('Payment Success->saving buyHistory: ', error)
+      }
+      setTimeout(() => {setPaySuccessModalVisible(true)}, 200)
+      setTimeout(() => {setPaySuccessModalVisible(false)}, 900)
     } catch (error) {
-        Alert.alert('Saving buyHistory failed')
-        console.log('Payment Success->saving buyHistory: ', error)
+      console.log('PaymentScreenStripe.js :', error)
     }
+
     return     
     
   } 

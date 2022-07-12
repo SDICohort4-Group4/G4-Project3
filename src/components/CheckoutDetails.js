@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, StyleSheet, TextInput, Dimensions } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, TextInput, Dimensions, Modal } from 'react-native';
 import { useState, useContext, useCallback, useEffect } from 'react';
 import AuthContext from '../contexts/AuthContext';
 
@@ -23,6 +23,7 @@ export function CheckoutDetails({navigation}){
     const [shortTimer, setShortTimer] = useState(15)
 
     let isFocused = useIsFocused()
+    const [paySuccessModalVisible, setPaySuccessModalVisible] = useState(false)
     
     useEffect(() => {
         if(checkoutArray != undefined){
@@ -54,8 +55,26 @@ export function CheckoutDetails({navigation}){
         // shortCountdownTImer(longTimer, navigation, setLongTimer);
     },[isFocused])
 
+    function PaySuccessModal(){
+        return(
+            <Modal                
+                visible = {paySuccessModalVisible}
+                transparent = {true}
+                onRequestClose = {() => setPaySuccessModalVisible(false)}>
+                <View style = {styles.modalView}>
+                    <View style = {styles.iconContainer}>
+                        <>
+                            <Text style={{fontSize: 20, color:'white', fontWeight: 'bold'}}>Payment Success</Text>
+                        </>
+                    </View>
+                </View>
+            </Modal>
+        )
+    }
+
     return(
         <View style = {{flex: 1}}>
+            <PaySuccessModal/>
             {checkoutArray?.length > 0 ? 
                 <View>            
                     <View style = {styles.ccContainer}>
@@ -64,7 +83,10 @@ export function CheckoutDetails({navigation}){
                                         totalPrice={totalPrice}
                                         checkoutData={checkoutData} 
                                         setDBCartArray={setDBCartArray} 
-                                        setCheckoutArray={setCheckoutArray}/>
+                                        setCheckoutArray={setCheckoutArray}
+                                        paySuccessModalVisible = {paySuccessModalVisible}
+                                        setPaySuccessModalVisible = {setPaySuccessModalVisible}
+                                        />
                         <View style = {styles.paymentContainer}>
                             <Text style = {styles.totalPayableLabel}>Total Payable:</Text>
                             <Text style = {styles.totalPayablePrice}>${totalPrice.toFixed(2)}</Text>
@@ -156,6 +178,20 @@ const styles = StyleSheet.create({
     countdownTimer:{
         color: "grey",
         textAlign: "center",
-    }
+    },
+    modalView:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    iconContainer:{
+        backgroundColor: '#00000060',
+        width: 120,
+        height: 120,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
 
 })

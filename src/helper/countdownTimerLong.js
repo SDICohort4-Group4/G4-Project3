@@ -1,7 +1,7 @@
 export default function longCountdownTimer(longTimer, navigation, setLongTimer){
     let decrementCount = longTimer;
     function decrementLongTimer(){
-        console.log(decrementCount);
+        // console.log(decrementCount);
         decrementCount = decrementCount - 1;
         if(navigation.getState().index == 1){
             setLongTimer(decrementCount);
