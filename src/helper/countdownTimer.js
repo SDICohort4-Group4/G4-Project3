@@ -1,32 +1,47 @@
 import {View, Text, StyleSheet} from 'react-native'
 
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
-export default function countdownTimer({navigation,}){
+export default function countdownTimer({navigation}){
     // longTimer, setLongTimer
     // const [longTimer, setLongTimer] = useState(60)
     const [timer, setTimer] = useState(60)
 
-    let decrementCount = timer;
-    function decrementLongTimer(){
-        console.log(decrementCount);
-        decrementCount = decrementCount - 1;
-        if(navigation.getState().index == 1){
-            // setLongTimer(decrementCount);
-            setTimer(decrementCount)
-        } else {
-            clearInterval(longCounter)
-        }
+    useEffect(()=>{
+        if (timer > 0) {
+            setTimeout(()=>{
+                setTimer(timer - 1);
+                console.log(timer); //for checking
+            }, 1000);
+        } 
 
-        if(decrementCount == 0){
-            clearInterval(longCounter)
+        if (timer == 0) {
             if(navigation.getState().index == 1){
                 navigation.navigate('cartItems')
             }
         }
-    }
-    let longCounter = setInterval(() => {decrementLongTimer()}, 1000)
+        
+    }, [timer])
 
+    // let decrementCount = timer;
+    // function decrementLongTimer(){
+    //     console.log(decrementCount);
+    //     decrementCount = decrementCount - 1;
+    //     if(navigation.getState().index == 1){
+    //         // setLongTimer(decrementCount);
+    //         setTimer(decrementCount)
+    //     } else {
+    //         clearInterval(longCounter)
+    //     }
+
+    //     if(decrementCount == 0){
+    //         clearInterval(longCounter)
+    //         if(navigation.getState().index == 1){
+    //             navigation.navigate('cartItems')
+    //         }
+    //     }
+    // }
+    // let longCounter = setInterval(() => {decrementLongTimer()}, 1000)
 
     return(
         <>
