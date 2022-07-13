@@ -1,16 +1,15 @@
-import { View, ScrollView, Text, StyleSheet, Dimensions, Alert } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Alert } from 'react-native';
 import { useState, useContext, useEffect } from 'react';
 import AuthContext from '../contexts/AuthContext';
 import axios from 'axios'
 import DisplayCartItem from '../components/displayCartItem.js'
-import { useFocusEffect, useCallback , useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode'
 
 import AddCalcItemFinalPrice from '../helper/addCalcItemFinalPrice'
 import TotalPayablePrice from '../helper/totalPayablePrice';
 import { returnToPreviousScreen, returnToCartItems } from '../helper/returnTo.js'
-
 
 export function CartDetails({navigation}){
 

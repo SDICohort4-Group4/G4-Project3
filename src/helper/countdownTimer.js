@@ -25,7 +25,7 @@ export default function countdownTimer({navigation}){
             if(navigation.getState().index == 1){
                 timerTimeout = setTimeout(()=>{
                     setTimer(timer - 1);
-                    console.log(timer, new Date); //for checking
+                    // console.log(timer, new Date); //for checking
                 }, 970);
             }
         } 

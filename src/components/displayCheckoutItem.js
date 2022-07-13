@@ -1,6 +1,4 @@
-import { StyleSheet, Text, View, Image, Alert, Dimensions} from 'react-native';
-import { useState, useContext } from 'react'
-import AuthContext from '../contexts/AuthContext';
+import { StyleSheet, Text, View} from 'react-native';
 import { Card, Button } from 'react-native-paper';
 
 

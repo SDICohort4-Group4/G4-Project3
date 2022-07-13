@@ -75,17 +75,22 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
       }
 
       try {
-          await API.post("/buyhistory/save", payload)
+          await API.post("/buyhistory/save", payload);
       } catch (error) {
-          Alert.alert('Saving buyHistory failed')
-          console.log('Payment Success->saving buyHistory: ', error)
+          Alert.alert('Saving buyHistory failed');
+          console.log('Payment Success->saving buyHistory: ', error);
       }
       setPaySuccessModalVisible(true)
       // setTimeout(() => {setPaySuccessModalVisible(false)}, 900)
-      setTimeout(() => {returnToHome({navigation})}, 2000)
-      setTimeout(() => {setDBCartArray([]);setCheckoutArray([])}, 2000)
+      // setTimeout(() => {returnToHome({navigation})}, 2000);
+      // setTimeout(() => {setDBCartArray([]);setCheckoutArray([])}, 2000);
+      setTimeout(() => {
+        returnToHome({navigation});
+        setDBCartArray([]);
+        setCheckoutArray([])
+      }, 2000);
     } catch (error) {
-      console.log('PaymentScreenStripe.js :', error)
+      console.log('PaymentScreenStripe.js :', error);
     }
 
     return     

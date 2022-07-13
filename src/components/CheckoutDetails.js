@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, StyleSheet, TextInput, Dimensions, Modal } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, TextInput, Dimensions } from 'react-native';
 import { useState, useContext, useCallback, useEffect } from 'react';
 import AuthContext from '../contexts/AuthContext';
 
@@ -8,7 +8,6 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import AddCalcItemFinalPrice from '../helper/addCalcItemFinalPrice';
 import TotalPayablePrice from '../helper/totalPayablePrice';
-import countdownTimerLong from '../helper/countdownTimerLong';
 
 import CountdownTimer from '../helper/countdownTimer'
 
@@ -21,11 +20,11 @@ export function CheckoutDetails({navigation}){
     const [totalPrice, setTotalPrice] = useState(0);
     const [checkoutData, setCheckoutData] = useState([]);
 
-    const [longTimer, setLongTimer] = useState(60)
-    const [shortTimer, setShortTimer] = useState(15)
+    // const [longTimer, setLongTimer] = useState(60)
+    // const [shortTimer, setShortTimer] = useState(15)
 
-    let isFocused = useIsFocused()
-    const [paySuccessModalVisible, setPaySuccessModalVisible] = useState(false)
+    // let isFocused = useIsFocused()
+    // const [paySuccessModalVisible, setPaySuccessModalVisible] = useState(false)
     
     useEffect(() => {
         if(checkoutArray != undefined){
@@ -57,26 +56,8 @@ export function CheckoutDetails({navigation}){
     //     // shortCountdownTImer(longTimer, navigation, setLongTimer);
     // },[isFocused])
 
-    // function PaySuccessModal(){
-    //     return(
-    //         <Modal                
-    //             visible = {paySuccessModalVisible}
-    //             transparent = {true}
-    //             onRequestClose = {() => setPaySuccessModalVisible(false)}>
-    //             <View style = {styles.modalView}>
-    //                 <View style = {styles.iconContainer}>
-    //                     <>
-    //                         <Text style={{fontSize: 20, color:'white', fontWeight: 'bold'}}>Payment Success</Text>
-    //                     </>
-    //                 </View>
-    //             </View>
-    //         </Modal>
-    //     )
-    // }
-
     return(
         <View style = {{flex: 1}}>
-            {/* <PaySuccessModal/> */}
             {checkoutArray?.length > 0 ? 
                 <View>            
                     <View style = {styles.ccContainer}>
@@ -86,15 +67,12 @@ export function CheckoutDetails({navigation}){
                                         checkoutData={checkoutData} 
                                         setDBCartArray={setDBCartArray} 
                                         setCheckoutArray={setCheckoutArray}
-                                        // paySuccessModalVisible = {paySuccessModalVisible}
-                                        // setPaySuccessModalVisible = {setPaySuccessModalVisible}
                                         />
                         <View style = {styles.paymentContainer}>
                             <Text style = {styles.totalPayableLabel}>Total Payable:</Text>
                             <Text style = {styles.totalPayablePrice}>${totalPrice.toFixed(2)}</Text>
 
                         </View>
-                        {/* <Text style = {styles.countdownTimer}>Timeout in {longTimer} seconds</Text> */}
                         <CountdownTimer
                             navigation = {navigation}
                         />
@@ -114,10 +92,8 @@ export function CheckoutDetails({navigation}){
                 </View>
             :   
                 <View style = {styles.emptyCon}>
-                    {/* {returnPage()} */}
                     <Text>No items available for checkout</Text>
                     <Text style = {styles.ShoppingButton} onPress = {() => {navigation.navigate('cartItems')}}>Go back to Cart</Text>
-                    {/* <Text style = {styles.countdownTimer}>Return to Cart in {longTimer} seconds</Text> */}
                     <CountdownTimer
                         navigation = {navigation}
                     />

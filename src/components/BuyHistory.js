@@ -10,10 +10,6 @@ export default function BuyHistory({navigation}){
     const {historyArray} = useContext(AuthContext);
     const [transactionData, setTransactionData] = useState([]);
 
-    // function printValue(){
-    //     console.log('historyArray: ', historyArray)
-    // }
-
     // on blur pop till first page
     useFocusEffect(
         useCallback( ()=>{

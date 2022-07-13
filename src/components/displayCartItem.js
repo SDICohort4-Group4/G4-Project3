@@ -1,13 +1,9 @@
-import { StyleSheet, Text, View, Image, Alert, Dimensions} from 'react-native';
+import { StyleSheet, Text, View, Image, Alert} from 'react-native';
 import { useState, useContext } from 'react'
 import AuthContext from '../contexts/AuthContext';
 import axios from 'axios'
 import noImage from '../../assets/photo-soon.jpg';
 import { Card, Button } from 'react-native-paper';
-import DisplaySalePrice from './displaySalePrice';
-
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
 
 export default function DisplayCartItem(props){
 
@@ -31,8 +27,7 @@ export default function DisplayCartItem(props){
             console.log('displayCartItem.js function removeItem, removeItemFromCart: ', error)
             Alert.alert("Connection Timeout","Could not remove item")
         }
-        // setItemData({})
-        // console.log(itemData)
+
     }
 
     return(
