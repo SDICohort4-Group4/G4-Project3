@@ -80,10 +80,10 @@ export default function PaymentScreen({navigation, userData, totalPrice, checkou
           Alert.alert('Saving buyHistory failed')
           console.log('Payment Success->saving buyHistory: ', error)
       }
-      setTimeout(() => {setPaySuccessModalVisible(true)}, 100)
+      setPaySuccessModalVisible(true)
       // setTimeout(() => {setPaySuccessModalVisible(false)}, 900)
-      setTimeout(() => {returnToHome({navigation})}, 1500)
-      setTimeout(() => {setDBCartArray([]);setCheckoutArray([])}, 1500)
+      setTimeout(() => {returnToHome({navigation})}, 2000)
+      setTimeout(() => {setDBCartArray([]);setCheckoutArray([])}, 2000)
     } catch (error) {
       console.log('PaymentScreenStripe.js :', error)
     }

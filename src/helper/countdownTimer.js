@@ -8,11 +8,23 @@ export default function countdownTimer({navigation}){
     const [timer, setTimer] = useState(60)
 
     useEffect(()=>{
+        // if(navigation.getState().index == 1){
+        //     if(timer > 0){
+        //         setTimeout(() => {
+        //             setTimer(timer - 1);
+        //             console.log(timer);
+        //         }, 1000);
+        //     } else {
+        //         navigation.navigate('cartItems')
+        //     }
+        // } 
         if (timer > 0) {
-            setTimeout(()=>{
-                setTimer(timer - 1);
-                console.log(timer); //for checking
-            }, 1000);
+            if(navigation.getState().index == 1){
+                setTimeout(()=>{
+                    setTimer(timer - 1);
+                    console.log(timer, new Date); //for checking
+                }, 970);
+            }
         } 
 
         if (timer == 0) {
