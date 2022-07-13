@@ -18,9 +18,12 @@ export default function countdownTimer({navigation}){
         //         navigation.navigate('cartItems')
         //     }
         // } 
+
+        let timerTimeout;
+
         if (timer > 0) {
             if(navigation.getState().index == 1){
-                setTimeout(()=>{
+                timerTimeout = setTimeout(()=>{
                     setTimer(timer - 1);
                     console.log(timer, new Date); //for checking
                 }, 970);
@@ -33,6 +36,9 @@ export default function countdownTimer({navigation}){
             }
         }
         
+        return ()=> {
+            clearTimeout(timerTimeout);
+        } 
     }, [timer])
 
     // let decrementCount = timer;
