@@ -97,7 +97,8 @@ export function CartDetails({navigation}){
                 }
             }
             // console.log(filteredData)
-            setCheckoutArray([...filteredData])
+            setCheckoutArray([...filteredData]);
+            navigation.navigate('Cart', {screen: 'checkoutItems'});
         } catch (error) {
             Alert.alert("Connection Timeout","Could not get updated Checkout")
             setTimeout(() => {returnToCartItems()},1000)
@@ -118,7 +119,7 @@ export function CartDetails({navigation}){
                         {showDisclaimer === true? <Text style = {styles.disclaimerText}>* Orders may only be partially filled</Text>: null}
                         <View style = {styles.paymentContainer}>
                             <Text style = {styles.totalPayable}>Total Price: ${totalPrice.toFixed(2)}</Text>
-                            <Text style = {styles.checkoutButton} onPress = {() => {getCheckoutData(); navigation.navigate('Cart', {screen: 'checkoutItems'})}}>Checkout</Text> 
+                            <Text style = {styles.checkoutButton} onPress = {() => {getCheckoutData()}}>Checkout</Text> 
                         </View>
                     </View>
                 :   
